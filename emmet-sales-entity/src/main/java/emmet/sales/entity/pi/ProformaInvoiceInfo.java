@@ -63,10 +63,10 @@ public class ProformaInvoiceInfo implements Serializable{
 
 	private Integer warrantyYear;
 
-	@ManyToOne
+	@OneToOne
 	private Currency currency;
 
-	@ManyToOne
+	@OneToOne
 	private TaxType taxType;
 
 	public Integer getId() {

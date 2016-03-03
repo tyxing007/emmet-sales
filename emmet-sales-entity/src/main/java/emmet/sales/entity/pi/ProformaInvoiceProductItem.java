@@ -3,7 +3,6 @@ package emmet.sales.entity.pi;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,10 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import emmet.common.service.entity.Currency;
 import emmet.core.data.entity.Product;
 
 @Entity
@@ -37,7 +35,10 @@ public class ProformaInvoiceProductItem implements Serializable {
 	private Integer quantity;
 	private String unit;
 	private BigDecimal unitPrice;
-	private String currency;
+	
+
+	@ManyToOne
+	private Currency currency;
 
 	public Integer getId() {
 		return id;
@@ -89,11 +90,11 @@ public class ProformaInvoiceProductItem implements Serializable {
 		this.unitPrice = unitPrice;
 	}
 
-	public String getCurrency() {
+	public Currency getCurrency() {
 		return currency;
 	}
 
-	public void setCurrency(String currency) {
+	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
 

@@ -84,7 +84,8 @@ public class ProformaInvoiceIntegrationTest {
 						"\"unit\":\"PCS\", \"currency\":\"USD\", \"quantity\":1, \"unitPrice\":100.5 }]," + //
 						"\"info\":{\"customerDocumentId\":\"8888\"}" + //
 						"}"))//
-				.andDo(print()).andExpect(status().isCreated());//
+				.andDo(print()).andExpect(status().isCreated())
+				.andExpect(jsonPath("id", equalTo(id)));//
 
 		this.mvc.perform(get("/proformaInvoices"))//
 				.andDo(print()).andExpect(status().isOk())//

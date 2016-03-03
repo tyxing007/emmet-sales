@@ -40,7 +40,7 @@ public class ProformaInvoiceService {
 	}
 
 	@Transactional
-	public ProformaInvoiceVersion updateProformaInvoice(ProformaInvoiceVersion thisVersion)
+	public ProformaInvoice updateProformaInvoice(ProformaInvoiceVersion thisVersion)
 			throws OperationNotPermitException {
 		String proformaInvoiceId = thisVersion.getProformaInvoice().getId();
 		ProformaInvoice proformaInvoice = proformaInvoiceRepository.findOne(proformaInvoiceId);
@@ -48,8 +48,8 @@ public class ProformaInvoiceService {
 		if (proformaInvoice.isConfirmed()) {
 			throw new OperationNotPermitException("This proforma invoice had comfirmed, you can not modify it.");
 		}
-
-		return persistNewVersion(thisVersion, proformaInvoice);
+		persistNewVersion(thisVersion, proformaInvoice);
+		return thisVersion.getProformaInvoice();
 	}
 
 	private ProformaInvoiceVersion persistNewVersion(ProformaInvoiceVersion thisVersion,

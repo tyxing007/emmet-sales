@@ -60,7 +60,7 @@ public class ProformaInvoiceController {
 
 		try {
 
-			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoice(invoice),
+			return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.updateProformaInvoice(invoice),
 					HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {

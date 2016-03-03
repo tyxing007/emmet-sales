@@ -12,15 +12,13 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "customerCommonName" : "AP",
     "contactName" : "Jonh Doe",
     "shippingDate" : "2016-2-1",
-    "sales" : {"id" : "EM0000112"
-     },
-    "dataEntryClerk" : {"id" : "EM0000112"
-     },
+    "sales" : {"id" : "EM0000112"},
+    "dataEntryClerk" : {"id" : "EM0000112"},
     "customer" : {"id":"AU006"},
     "corporation" : {"id":"98336"},
     "warrantyYear" : 1,
-    "currency" : null,
-    "taxType" : null
+    "currency" : {"id":"USD"},
+    "taxType" : {"id":"EXTRA"}
   },
   "extraCharges" : [ {
 
@@ -37,7 +35,7 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "quantity" : 1,
     "unit" : "PCS",
     "unitPrice" : 100.50,
-    "currency" : null
+    "currency" : {"id":"USD"}
   } ]
 }
 ' http://api.mycompany.com/sales/proformaInvoice/proformaInvoices
