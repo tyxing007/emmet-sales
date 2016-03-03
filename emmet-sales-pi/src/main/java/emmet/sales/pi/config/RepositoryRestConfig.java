@@ -23,14 +23,13 @@ import emmet.core.data.entity.Purchase;
 import emmet.core.data.entity.Stock;
 import emmet.core.data.entity.StorageSpace;
 import emmet.core.data.entity.Supplier;
+import emmet.sales.entity.pi.ProformaInvoice;
 
 @Configuration
 public class RepositoryRestConfig extends RepositoryRestMvcConfiguration {
 	@Override
 	protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-
-		config.exposeIdsFor(Partner.class);
-	
-
+		config.exposeIdsFor(ProformaInvoice.class);
+		config.setReturnBodyOnCreate(true);
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EntityScan(basePackages={"emmet.core.data.entity", "emmet.partner.entity", "emmet.common.entity", "emmet.sales.pi.entity"})
+@EntityScan(basePackages={"emmet"})
 public class SalesProformaInvoiceApplication {
 
     public static void main(String[] args) {

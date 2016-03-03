@@ -1,55 +1,40 @@
 package emmet.sales.entity.pi;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import emmet.common.service.entity.Currency;
-import emmet.common.service.entity.TaxType;
-import emmet.core.data.entity.Partner;
-import emmet.partner.entity.PartnerContact;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "sales_pi")
-public class ProformaInvoice  implements Serializable{
-	private static final long serialVersionUID = 3100380561005523630L;
+@Table(name = "sales_proforma_invoice")
+public class ProformaInvoice implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "idGenerator")
+	@GenericGenerator(name = "idGenerator", strategy = "emmet.sales.entity.pi.DatePrifixIdGenerator")
 	private String id;
-	private String customerDocumentId;
-	private Date date;
+
+
+	@OneToMany(mappedBy = "proformaInvoice", cascade = CascadeType.ALL)
+	private List<ProformaInvoiceVersion> versions;
 
 	@OneToOne
-	private ProformaInvoiceAuthorization authoziation;
-
-	@OneToOne
-	private Partner customer;
-
-	@OneToOne
-	private PartnerContact contact;
-
-	@OneToMany(mappedBy = "proformaInvoice")
-	private List<PiProductItem> productItems;
-
-	private Integer warrantyYear;
-
-	@OneToOne
-	private Currency currency;
-
-	@OneToOne
-	private TaxType taxType;
-
-	@OneToOne
-	private PartnerShipment shipment;
-
-	private BigDecimal shipmentFee;
-	private BigDecimal extraFee;
+	private ProformaInvoiceVersion finalVersion;
+	
+	private Boolean confirmed;
 
 	public String getId() {
 		return id;
@@ -59,100 +44,29 @@ public class ProformaInvoice  implements Serializable{
 		this.id = id;
 	}
 
-	public String getCustomerDocumentId() {
-		return customerDocumentId;
+	@JsonIgnore
+	public List<ProformaInvoiceVersion> getVersions() {
+		return versions;
 	}
 
-	public void setCustomerDocumentId(String customerDocumentId) {
-		this.customerDocumentId = customerDocumentId;
+	public void setVersions(List<ProformaInvoiceVersion> versions) {
+		this.versions = versions;
 	}
 
-	public Date getDate() {
-		return date;
+	public ProformaInvoiceVersion getFinalVersion() {
+		return finalVersion;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setFinalVersion(ProformaInvoiceVersion finalVersion) {
+		this.finalVersion = finalVersion;
 	}
 
-	public ProformaInvoiceAuthorization getAuthoziation() {
-		return authoziation;
+	public Boolean isConfirmed() {
+		return confirmed;
 	}
 
-	public void setAuthoziation(ProformaInvoiceAuthorization authoziation) {
-		this.authoziation = authoziation;
-	}
-
-	public Partner getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Partner customer) {
-		this.customer = customer;
-	}
-
-	public PartnerContact getContact() {
-		return contact;
-	}
-
-	public void setContact(PartnerContact contact) {
-		this.contact = contact;
-	}
-
-	public List<PiProductItem> getProductItems() {
-		return productItems;
-	}
-
-	public void setProductItems(List<PiProductItem> productItems) {
-		this.productItems = productItems;
-	}
-
-	public Integer getWarrantyYear() {
-		return warrantyYear;
-	}
-
-	public void setWarrantyYear(Integer warrantyYear) {
-		this.warrantyYear = warrantyYear;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-
-	public TaxType getTaxType() {
-		return taxType;
-	}
-
-	public void setTaxType(TaxType taxType) {
-		this.taxType = taxType;
-	}
-
-	public PartnerShipment getShipment() {
-		return shipment;
-	}
-
-	public void setShipment(PartnerShipment shipment) {
-		this.shipment = shipment;
-	}
-
-	public BigDecimal getShipmentFee() {
-		return shipmentFee;
-	}
-
-	public void setShipmentFee(BigDecimal shipmentFee) {
-		this.shipmentFee = shipmentFee;
-	}
-
-	public BigDecimal getExtraFee() {
-		return extraFee;
-	}
-
-	public void setExtraFee(BigDecimal extraFee) {
-		this.extraFee = extraFee;
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 
 }

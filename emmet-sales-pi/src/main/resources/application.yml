@@ -1,0 +1,37 @@
+server:
+  context-path: /sales
+
+spring:
+  profiles.active: default
+  
+---
+spring:
+  profiles: default
+
+
+logging:
+  level:
+    org.springframework.cloud.consul: DEBUG
+
+
+---
+spring:
+  profiles: local
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/emmet
+    username: emmet
+    password: masterbuilder
+
+
+---
+spring:
+  profiles: staging
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.1.14:6543/emmet
+    username: emmet
+    password: masterbuilder
+    

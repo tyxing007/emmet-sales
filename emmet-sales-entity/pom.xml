@@ -13,18 +13,24 @@
 		<dependency>
 			<groupId>emmet</groupId>
 			<artifactId>emmet-core-data</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>emmet</groupId>
 			<artifactId>emmet-common-services</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.1.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>emmet</groupId>
 			<artifactId>emmet-partner-contact</artifactId>
+			<version>0.1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>emmet</groupId>
+			<artifactId>emmet-customer-entity</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
