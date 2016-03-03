@@ -81,7 +81,7 @@ public class ProformaInvoiceIntegrationTest {
 				.content("{" + //
 						"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
 						"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //
-						"\"unit\":\"PCS\", \"currency\":\"USD\", \"quantity\":1, \"unitPrice\":100.5 }]," + //
+						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 }]," + //
 						"\"info\":{\"customerDocumentId\":\"8888\"}" + //
 						"}"))//
 				.andDo(print()).andExpect(status().isCreated())
@@ -106,14 +106,14 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.productItems[0].unit", equalTo("PCS")))//
 				.andExpect(jsonPath("finalVersion.productItems[0].quantity", equalTo(1)))//
 				.andExpect(jsonPath("finalVersion.productItems[0].unitPrice", equalTo(100.5)))//
-				.andExpect(jsonPath("finalVersion.productItems[0].currency", equalTo("USD")));//
+				.andExpect(jsonPath("finalVersion.productItems[0].currency.id", equalTo("USD")));//
 
 		// Modify
 		this.mvc.perform(put("/proformaInvoices/" + id).contentType(MediaType.APPLICATION_JSON_VALUE)//
 				.content("{" + //
 						"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
 						"\"productItems\":[{\"product\":{\"id\":\"0000-0002\"}, " + //
-						"\"unit\":\"PCS\", \"currency\":\"USD\", \"quantity\":1, \"unitPrice\":100.5 }]," + //
+						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 }]," + //
 						"\"info\":{\"customerDocumentId\":\"8888\"}" + //
 						"}"))//
 				.andDo(print()).andExpect(status().isCreated());//

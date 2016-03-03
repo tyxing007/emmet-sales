@@ -8,14 +8,12 @@ curl -iX POST -H "Content-Type: application/json" -d '
   "info" : {
     "customerDocumentId" : "8888",
     "proformaInvoiceDate" : "2016-1-1",
-    "customerFormalName" : "A Company",
-    "customerCommonName" : "AP",
-    "contactName" : "Jonh Doe",
+    "contact" : {"id":557088},
     "shippingDate" : "2016-2-1",
     "sales" : {"id" : "EM0000112"},
     "dataEntryClerk" : {"id" : "EM0000112"},
     "customer" : {"id":"AU006"},
-    "corporation" : {"id":"98336"},
+    "corporation" : {"id":98336},
     "warrantyYear" : 1,
     "currency" : {"id":"USD"},
     "taxType" : {"id":"EXTRA"}

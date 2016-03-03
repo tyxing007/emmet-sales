@@ -3,13 +3,11 @@ package emmet.sales.entity.pi;
 import java.io.Serializable;
 import java.sql.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -20,19 +18,19 @@ import emmet.common.service.entity.Currency;
 import emmet.common.service.entity.TaxType;
 import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
+import emmet.partner.entity.PartnerContact;
 import emmet.partner.entity.PartnerCorporation;
 
 @Entity
 @Table(name = "sales_proforma_invoice_info", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"proforma_invoice_version_id"}) })
+		@UniqueConstraint(columnNames = { "proforma_invoice_version_id" }) })
 
-public class ProformaInvoiceInfo implements Serializable{
+public class ProformaInvoiceInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Integer id;
-
 
 	@OneToOne
 	@JoinColumn(name = "proforma_invoice_version_id")
@@ -42,10 +40,8 @@ public class ProformaInvoiceInfo implements Serializable{
 	private Date createDate;
 	private Date proformaInvoiceDate;
 
-	private String customerFormalName;
-	private String customerCommonName;
-
-	private String contactName;
+	@OneToOne
+	private PartnerContact contact;
 
 	private Date shippingDate;
 
@@ -76,7 +72,6 @@ public class ProformaInvoiceInfo implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public String getCustomerDocumentId() {
 		return customerDocumentId;
@@ -111,32 +106,17 @@ public class ProformaInvoiceInfo implements Serializable{
 		this.proformaInvoiceDate = proformaInvoiceDate;
 	}
 
-	public String getCustomerFormalName() {
-		return customerFormalName;
-	}
-
-	public void setCustomerFormalName(String customerFormalName) {
-		this.customerFormalName = customerFormalName;
-	}
-
-	public String getCustomerCommonName() {
-		return customerCommonName;
-	}
-
-	public void setCustomerCommonName(String customerCommonName) {
-		this.customerCommonName = customerCommonName;
-	}
-
-	public String getContactName() {
-		return contactName;
-	}
-
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
-	}
 
 	public Date getShippingDate() {
 		return shippingDate;
+	}
+
+	public PartnerContact getContact() {
+		return contact;
+	}
+
+	public void setContact(PartnerContact contact) {
+		this.contact = contact;
 	}
 
 	public void setShippingDate(Date shippingDate) {

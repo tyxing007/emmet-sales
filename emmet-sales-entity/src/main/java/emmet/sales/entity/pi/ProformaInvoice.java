@@ -35,6 +35,8 @@ public class ProformaInvoice implements Serializable {
 	private ProformaInvoiceVersion finalVersion;
 	
 	private Boolean confirmed;
+	
+	private String snapshot;
 
 	public String getId() {
 		return id;
@@ -68,5 +70,19 @@ public class ProformaInvoice implements Serializable {
 	public void setConfirmed(Boolean confirmed) {
 		this.confirmed = confirmed;
 	}
+
+	public String getSnapshot() {
+		return snapshot;
+	}
+
+	public void setSnapshot(String snapshot) {
+		this.snapshot = snapshot;
+	}
+
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+	
+	
 
 }
