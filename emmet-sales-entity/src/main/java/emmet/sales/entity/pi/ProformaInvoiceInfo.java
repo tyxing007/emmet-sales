@@ -49,7 +49,7 @@ public class ProformaInvoiceInfo implements Serializable{
 
 	private Date shippingDate;
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	private Employee sales;
 
 	@ManyToOne
