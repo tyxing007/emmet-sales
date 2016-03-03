@@ -29,13 +29,13 @@ public class ProformaInvoiceService {
 	ProformaInvoiceVersionRepsitory proformaInvoiceVersionRepsitory;
 
 	@Transactional
-	public ProformaInvoiceVersion createProformaInvoice(ProformaInvoiceVersion thisVersion) {
+	public ProformaInvoice createProformaInvoice(ProformaInvoiceVersion thisVersion) {
 
 		ProformaInvoice newProformaInvoice = new ProformaInvoice();
 		newProformaInvoice.setConfirmed(false);
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
-
-		return persistNewVersion(thisVersion, newProformaInvoice);
+		persistNewVersion(thisVersion, newProformaInvoice);
+		return thisVersion.getProformaInvoice();
 
 	}
 

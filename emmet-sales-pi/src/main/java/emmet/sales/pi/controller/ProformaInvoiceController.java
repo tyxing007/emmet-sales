@@ -46,7 +46,7 @@ public class ProformaInvoiceController {
 	@RequestMapping(value = "/proformaInvoices", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveProformaInvoice(@RequestBody ProformaInvoiceVersion invoice) {
 
-		return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(invoice),
+		return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.createProformaInvoice(invoice),
 				HttpStatus.CREATED);
 
 	}
