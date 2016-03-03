@@ -37,7 +37,7 @@ public class ProformaInvoiceProductItem implements Serializable {
 	private BigDecimal unitPrice;
 	
 
-	@ManyToOne
+	@OneToOne
 	private Currency currency;
 
 	public Integer getId() {

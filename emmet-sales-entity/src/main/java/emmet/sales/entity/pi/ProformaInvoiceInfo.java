@@ -49,16 +49,16 @@ public class ProformaInvoiceInfo implements Serializable{
 
 	private Date shippingDate;
 
-	@ManyToOne
+	@OneToOne
 	private Employee sales;
 
-	@ManyToOne
+	@OneToOne
 	private Employee dataEntryClerk;
 
-	@ManyToOne
+	@OneToOne
 	private Customer customer;
 
-	@ManyToOne
+	@OneToOne
 	private PartnerCorporation corporation;
 
 	private Integer warrantyYear;
