@@ -1,6 +1,6 @@
 package emmet.sales.pi.controller;
 
-import javax.ws.rs.core.MediaType;
+import org.springframework.http.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -43,7 +43,7 @@ public class ProformaInvoiceController {
 
 	}
 
-	@RequestMapping(value = "/proformaInvoices", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/proformaInvoices", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveProformaInvoice(@RequestBody ProformaInvoiceVersion invoice) {
 
 		return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(invoice),
@@ -51,7 +51,7 @@ public class ProformaInvoiceController {
 
 	}
 
-	@RequestMapping(value = "/proformaInvoices/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/proformaInvoices/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateProformaInvoice(@PathVariable String id,
 			@RequestBody ProformaInvoiceVersion invoice) {
 
