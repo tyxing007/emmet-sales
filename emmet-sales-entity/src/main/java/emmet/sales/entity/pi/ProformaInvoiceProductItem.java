@@ -13,12 +13,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import emmet.common.service.entity.Currency;
 import emmet.core.data.entity.Product;
 
 @Entity
 @Table(name = "sales_proforma_invoice_products")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProformaInvoiceProductItem implements Serializable {
 	private static final long serialVersionUID = 1L;;
 

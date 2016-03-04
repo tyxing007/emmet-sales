@@ -30,10 +30,10 @@ public class ProformaInvoiceVersion implements Serializable {
 	@JoinColumn(name = "proforma_invoice_id", nullable = false)
 	private ProformaInvoice proformaInvoice;
 
-	@Column(nullable = false)
+
 	private Integer versionSequence;
 
-	@Column(nullable = false)
+
 	private Calendar createDateTime;
 
 	@OneToOne(mappedBy = "version", cascade = CascadeType.ALL)

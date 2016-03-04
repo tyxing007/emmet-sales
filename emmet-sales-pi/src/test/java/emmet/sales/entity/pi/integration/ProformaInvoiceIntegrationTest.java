@@ -57,17 +57,19 @@ public class ProformaInvoiceIntegrationTest {
 	@Test
 	public void savePiTest() throws Exception {
 		String id = "PI" + dateInString + "01";
+		String requestBody = "{" + //
+				"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
+				"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //
+				"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }],"
+				+ //
+				"\"info\":{" + //
+				"\"customerDocumentId\":\"8888\"," + //
+				"\"proformaInvoiceDate\":\"2016-1-1\"" + //
+				"}" + //
+				"}";
+		System.out.println("-->"+requestBody);
 		this.mvc.perform(post("/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
-				.content("{" + //
-						"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
-						"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //
-						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }],"
-						+ //
-						"\"info\":{" + //
-						"\"customerDocumentId\":\"8888\"," + //
-						"\"proformaInvoiceDate\":\"2016-1-1\"" + //
-						"}" + //
-						"}"))//
+				.content(requestBody))//
 				.andDo(print()).andExpect(status().isCreated()).andExpect(jsonPath("id", equalTo(id)));//
 
 		this.mvc.perform(get("/proformaInvoices"))//

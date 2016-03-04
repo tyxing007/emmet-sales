@@ -35,9 +35,10 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "unitPrice" : 100.50,
     "note1" : "123",
     "note2" : "456",
-    "note3" : "789",
+    "note3" : "{\"aaa\":\"ccc\"}",
     "currency" : {"id":"USD"}
   } ]
 }
 ' http://api.mycompany.com/sales/proformaInvoice/proformaInvoices
 ```
+It can also put the JSON that has escaped the quotes to the notes fields.
