@@ -1,22 +1,24 @@
 package emmet.sales.pi.controller;
 
-import org.springframework.http.MediaType;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import emmet.sales.entity.pi.ProformaInvoice;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.pi.exception.OperationNotPermitException;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.service.ProformaInvoiceService;
-
 @RepositoryRestController()
 public class ProformaInvoiceController {
 
@@ -38,8 +40,33 @@ public class ProformaInvoiceController {
 
 	@RequestMapping(value = "/proformaInvoices/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getProformaInvoice(@PathVariable String id) {
+		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
 
-		return ResponseEntity.ok(proformaInvoiceRepsitory.findOne(id));
+/*		Resource<ProformaInvoice> resources = new Resource<ProformaInvoice>(proformaInvoice); 
+		resources.add(linkTo(ProformaInvoiceController.class).slash(id).slash("versions").withRel("version"));*/
+		
+		return ResponseEntity.ok(proformaInvoice);
+		
+
+	}
+	
+	@RequestMapping(value = "/proformaInvoices/search/findBySales", method = RequestMethod.GET)
+	public ResponseEntity<?> findProformaInvoiceBySels(@RequestParam("id") String id, Pageable page) {
+		
+		Page<ProformaInvoice> proformaInvoicePage = proformaInvoiceRepsitory.findBySales(id, page);
+/*		Page<ProformaInvoice> resultPage = new PageImpl<ProformaInvoice>(proformaInvoicePage.getContent(), page,
+				proformaInvoicePage.getTotalElements());*/
+
+		
+		return ResponseEntity.ok(proformaInvoicePage);
+		
+
+	}
+	
+	@RequestMapping(value = "/proformaInvoices/{id}/versions", method = RequestMethod.GET)
+	public ResponseEntity<?> getProformaInvoiceVersions(@PathVariable String id) {
+
+		return null;
 
 	}
 

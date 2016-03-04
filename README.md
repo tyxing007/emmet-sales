@@ -42,3 +42,7 @@ curl -iX POST -H "Content-Type: application/json" -d '
 ' http://api.mycompany.com/sales/proformaInvoice/proformaInvoices
 ```
 If you'd like to put the JSON to the notes fields, escape the quotes, make it like common string.
+
+
+### Find By Sales ID
+***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{id}
