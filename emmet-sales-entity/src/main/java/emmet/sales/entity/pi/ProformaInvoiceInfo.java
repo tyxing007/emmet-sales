@@ -62,8 +62,7 @@ public class ProformaInvoiceInfo implements Serializable {
 	@OneToOne
 	private Currency currency;
 
-	@OneToOne
-	private TaxType taxType;
+	private String taxType;
 
 	public Integer getId() {
 		return id;
@@ -171,11 +170,11 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.currency = currency;
 	}
 
-	public TaxType getTaxType() {
+	public String getTaxType() {
 		return taxType;
 	}
 
-	public void setTaxType(TaxType taxType) {
+	public void setTaxType(String taxType) {
 		this.taxType = taxType;
 	}
 

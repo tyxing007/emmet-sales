@@ -16,7 +16,7 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "corporation" : {"id":98336},
     "warrantyYear" : 1,
     "currency" : {"id":"USD"},
-    "taxType" : {"id":"EXTRA"}
+    "taxType" : "Extra"
   },
   "extraCharges" : [ {
 
