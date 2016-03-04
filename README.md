@@ -41,4 +41,4 @@ curl -iX POST -H "Content-Type: application/json" -d '
 }
 ' http://api.mycompany.com/sales/proformaInvoice/proformaInvoices
 ```
-It can also put the JSON that has escaped the quotes to the notes fields.
+If you'd like to put the JSON to the notes fields, escape the quotes, make it like common string.
