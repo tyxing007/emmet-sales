@@ -1,11 +1,11 @@
 package emmet.sales.entity.pi;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,11 +27,13 @@ public class ProformaInvoiceVersion implements Serializable {
 	private String id;
 
 	@ManyToOne
-	@JoinColumn(name = "proforma_invoice_id")
+	@JoinColumn(name = "proforma_invoice_id", nullable = false)
 	private ProformaInvoice proformaInvoice;
 
+	@Column(nullable = false)
 	private Integer versionSequence;
 
+	@Column(nullable = false)
 	private Calendar createDateTime;
 
 	@OneToOne(mappedBy = "version", cascade = CascadeType.ALL)
@@ -45,6 +47,9 @@ public class ProformaInvoiceVersion implements Serializable {
 
 	@OneToMany(mappedBy = "version", cascade = CascadeType.ALL)
 	private List<ProformaInvoiceProductItem> productItems;
+
+	@Column(length = 2048)
+	private String snapshot;
 
 	public String getId() {
 		return id;
@@ -70,8 +75,6 @@ public class ProformaInvoiceVersion implements Serializable {
 	public void setVersionSequence(Integer versionSequence) {
 		this.versionSequence = versionSequence;
 	}
-
-
 
 	public ProformaInvoiceInfo getInfo() {
 		return info;
@@ -111,6 +114,15 @@ public class ProformaInvoiceVersion implements Serializable {
 
 	public void setCreateDateTime(Calendar createDateTime) {
 		this.createDateTime = createDateTime;
+	}
+
+	@JsonIgnore
+	public String getSnapshot() {
+		return snapshot;
+	}
+
+	public void setSnapshot(String snapshot) {
+		this.snapshot = snapshot;
 	}
 
 }

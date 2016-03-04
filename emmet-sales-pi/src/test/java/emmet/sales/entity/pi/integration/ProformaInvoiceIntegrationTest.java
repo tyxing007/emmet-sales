@@ -54,26 +54,6 @@ public class ProformaInvoiceIntegrationTest {
 		dateInString = df.format(today);
 	}
 
-	// @Test
-	// public void savePiTest() throws Exception {
-	// this.mvc.perform(post("/list/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
-	// .content("{\"id\":\"PI001\", " + //
-	// "\"info\":{\"customerDocumentId\":\"8888\", " + //
-	// "\"sales\":{\"id\":\"EM001\"}}}"))//
-	// .andDo(print()).andExpect(status().isOk());
-	//
-	// }
-	//
-	// @Test
-	// public void savePiTest2() throws Exception {
-	// String id = "PI" + dateInString + "01";
-	// this.mvc.perform(post("/list/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
-	// .content("{}"))//
-	// .andDo(print()).andExpect(status().isOk())//
-	// .andExpect(jsonPath("id", equalTo(id)));
-	//
-	// }
-
 	@Test
 	public void savePiTest() throws Exception {
 		String id = "PI" + dateInString + "01";
@@ -81,8 +61,12 @@ public class ProformaInvoiceIntegrationTest {
 				.content("{" + //
 						"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
 						"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //
-						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }]," + //
-						"\"info\":{\"customerDocumentId\":\"8888\"}" + //
+						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }],"
+						+ //
+						"\"info\":{" + //
+						"\"customerDocumentId\":\"8888\"," + //
+						"\"proformaInvoiceDate\":\"2016-1-1\"" + //
+						"}" + //
 						"}"))//
 				.andDo(print()).andExpect(status().isCreated()).andExpect(jsonPath("id", equalTo(id)));//
 
@@ -94,6 +78,12 @@ public class ProformaInvoiceIntegrationTest {
 				.andDo(print()).andExpect(status().isOk())//
 				.andExpect(jsonPath("id", equalTo(id)))//
 				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-1")))//
+				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				.andExpect(jsonPath("finalVersion.info.proformaInvoiceDate", equalTo("2016-01-01")))//
+				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
 				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
 				//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].itemName", equalTo("Foo")))//

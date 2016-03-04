@@ -1,6 +1,7 @@
 package emmet.sales.entity.pi;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import javax.persistence.Entity;
@@ -15,7 +16,6 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import emmet.common.service.entity.Currency;
-import emmet.common.service.entity.TaxType;
 import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
 import emmet.partner.entity.PartnerContact;
@@ -63,6 +63,8 @@ public class ProformaInvoiceInfo implements Serializable {
 	private Currency currency;
 
 	private String taxType;
+	
+	private BigDecimal discount;
 
 	public Integer getId() {
 		return id;
@@ -178,4 +180,14 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.taxType = taxType;
 	}
 
+	public BigDecimal getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(BigDecimal discount) {
+		this.discount = discount;
+	}
+
+	
+	
 }

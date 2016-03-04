@@ -1,5 +1,7 @@
 package emmet.sales.pi.service;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -7,6 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import emmet.sales.entity.pi.ProformaInvoice;
 import emmet.sales.entity.pi.ProformaInvoiceExtraCharge;
@@ -63,6 +67,7 @@ public class ProformaInvoiceService {
 		thisVersion = linkAssociationEntities(thisVersion);
 
 		thisVersion = proformaInvoiceVersionRepsitory.save(thisVersion);
+		saveSnapshoot(thisVersion);
 
 		// Setting up the version
 		proformaInvoice.setFinalVersion(thisVersion);
@@ -75,6 +80,21 @@ public class ProformaInvoiceService {
 
 		return proformaInvoiceId + "-" + (getNextVersionSequence(proformaInvoiceId));
 
+	}
+	
+	
+	private void saveSnapshoot(ProformaInvoiceVersion piVersion){
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		try {
+			mapper.writeValue(writer, piVersion);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		piVersion.setSnapshot(writer.toString());
+		
+		proformaInvoiceVersionRepsitory.save(piVersion);
+		
 	}
 
 	private Integer getNextVersionSequence(String proformaInvoiceId) {
