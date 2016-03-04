@@ -33,6 +33,8 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "quantity" : 1,
     "unit" : "PCS",
     "unitPrice" : 100.50,
+    "note1" : "123",
+    "note2" : "456",
     "currency" : {"id":"USD"}
   } ]
 }

@@ -35,7 +35,8 @@ public class ProformaInvoiceProductItem implements Serializable {
 	private Integer quantity;
 	private String unit;
 	private BigDecimal unitPrice;
-	
+	private String note1;
+	private String note2;
 
 	@OneToOne
 	private Currency currency;
@@ -60,7 +61,6 @@ public class ProformaInvoiceProductItem implements Serializable {
 	public Product getProduct() {
 		return product;
 	}
-
 
 	public void setProduct(Product product) {
 		this.product = product;
@@ -96,6 +96,22 @@ public class ProformaInvoiceProductItem implements Serializable {
 
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
+	}
+
+	public String getNote1() {
+		return note1;
+	}
+
+	public void setNote1(String note1) {
+		this.note1 = note1;
+	}
+
+	public String getNote2() {
+		return note2;
+	}
+
+	public void setNote2(String note2) {
+		this.note2 = note2;
 	}
 
 }

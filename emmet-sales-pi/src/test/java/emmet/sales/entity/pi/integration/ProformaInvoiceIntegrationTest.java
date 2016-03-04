@@ -81,11 +81,10 @@ public class ProformaInvoiceIntegrationTest {
 				.content("{" + //
 						"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
 						"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //
-						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 }]," + //
+						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }]," + //
 						"\"info\":{\"customerDocumentId\":\"8888\"}" + //
 						"}"))//
-				.andDo(print()).andExpect(status().isCreated())
-				.andExpect(jsonPath("id", equalTo(id)));//
+				.andDo(print()).andExpect(status().isCreated()).andExpect(jsonPath("id", equalTo(id)));//
 
 		this.mvc.perform(get("/proformaInvoices"))//
 				.andDo(print()).andExpect(status().isOk())//
@@ -120,7 +119,8 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(get("/proformaInvoices/" + id))//
 				.andDo(print()).andExpect(status().isOk())//
-				.andExpect(jsonPath("id", equalTo(id))).andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")))//
+				.andExpect(jsonPath("id", equalTo(id)))// version change to 2
+				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")))//
 				.andExpect(jsonPath("finalVersion.productItems", hasSize(1)))//
 				.andExpect(jsonPath("finalVersion.productItems[0].product.id", equalTo("0000-0002")));//
 
