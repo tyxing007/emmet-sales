@@ -39,9 +39,6 @@ public class ProformaInvoiceIntegrationTest {
 	@Autowired
 	private WebApplicationContext context;
 
-	@Autowired
-	private ProformaInvoiceRepsitory proformaInvoiceRepsitory;
-
 	private MockMvc mvc;
 
 	String dateInString;
@@ -74,7 +71,7 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(get("/proformaInvoices"))//
 				.andDo(print()).andExpect(status().isOk())//
-				.andExpect(jsonPath("$[0].id", equalTo(id)));
+				.andExpect(jsonPath("content[0].id", equalTo(id)));
 
 		this.mvc.perform(get("/proformaInvoices/" + id))//
 				.andDo(print()).andExpect(status().isOk())//
@@ -115,6 +112,10 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")))//
 				.andExpect(jsonPath("finalVersion.productItems", hasSize(1)))//
 				.andExpect(jsonPath("finalVersion.productItems[0].product.id", equalTo("0000-0002")));//
+
+		
+		this.mvc.perform(get("/proformaInvoices/" + id + "/versions"))//
+		.andDo(print()).andExpect(status().isOk());//
 
 	}
 

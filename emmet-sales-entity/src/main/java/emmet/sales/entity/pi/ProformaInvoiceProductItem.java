@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import emmet.common.service.entity.Currency;
 import emmet.core.data.entity.Product;
@@ -32,8 +34,7 @@ public class ProformaInvoiceProductItem implements Serializable {
 	@JoinColumn(name = "proforma_invoice_version_id")
 	private ProformaInvoiceVersion version;
 
-	@OneToOne
-	private Product product;
+
 	private Integer quantity;
 	private String unit;
 	private BigDecimal unitPrice;
@@ -41,9 +42,13 @@ public class ProformaInvoiceProductItem implements Serializable {
 	private String note2;
 	private String note3;
 
+	
 	@OneToOne
 	private Currency currency;
 
+	@OneToOne
+	private Product product;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -68,6 +73,15 @@ public class ProformaInvoiceProductItem implements Serializable {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
 
 	public Integer getQuantity() {
 		return quantity;
@@ -93,13 +107,6 @@ public class ProformaInvoiceProductItem implements Serializable {
 		this.unitPrice = unitPrice;
 	}
 
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
 
 	public String getNote1() {
 		return note1;
