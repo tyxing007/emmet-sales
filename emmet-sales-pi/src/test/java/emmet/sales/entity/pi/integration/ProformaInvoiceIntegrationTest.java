@@ -66,7 +66,7 @@ public class ProformaInvoiceIntegrationTest {
 				"\"shippingDate\":\"2016-3-1\"" + //
 				"}" + //
 				"}";
-		System.out.println("-->"+requestBody);
+		System.out.println("-->" + requestBody);
 		this.mvc.perform(post("/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
 				.content(requestBody))//
 				.andDo(print()).andExpect(status().isCreated()).andExpect(jsonPath("id", equalTo(id)));//
@@ -110,14 +110,17 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(get("/proformaInvoices/" + id))//
 				.andDo(print()).andExpect(status().isOk())//
-				.andExpect(jsonPath("id", equalTo(id)))// version change to 2
-				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")))//
+				.andExpect(jsonPath("id", equalTo(id)))//
+
+				// version change to 2
+				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")))
 				.andExpect(jsonPath("finalVersion.productItems", hasSize(1)))//
 				.andExpect(jsonPath("finalVersion.productItems[0].product.id", equalTo("0000-0002")));//
 
-		
 		this.mvc.perform(get("/proformaInvoices/" + id + "/versions"))//
-		.andDo(print()).andExpect(status().isOk());//
+				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));//
+		
+		// Set confirmed version
 
 	}
 

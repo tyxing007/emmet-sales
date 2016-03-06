@@ -1,6 +1,6 @@
 # emmet-sales
-##Profoma Invoice
-### Create
+## Proforma Invoice
+### Create a new Proforma Invoice
 Example:
 ```json
 curl -iX POST -H "Content-Type: application/json" -d '
@@ -43,6 +43,15 @@ curl -iX POST -H "Content-Type: application/json" -d '
 ```
 If you'd like to put the JSON to the notes fields, escape the quotes, make it like common string.
 
+### Update
+***PUT*** /sales/proformaInvoices/{id}
+
+The format is same to create. Every time update a proforma invoice there creates a new version instead, and it becomes the final version automatically. The old version could find and set it to final version again.
+### Get One by its ID
+***GET*** /sales/proformaInvoices/{id}
+
+### Get Versions
+***GET*** /sales/proformaInvoices/{id}/versions
 
 ### Find By Sales ID
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{id}
