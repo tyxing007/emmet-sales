@@ -47,11 +47,11 @@ If you'd like to put the JSON to the notes fields, escape the quotes, make it li
 ***PUT*** /sales/proformaInvoices/{id}
 
 The format is same to create. Every time update a proforma invoice there creates a new version instead, and it becomes the final version automatically. The old version could find and set it to final version again.
-### Get One by its ID
+### Get one by its ID
 ***GET*** /sales/proformaInvoices/{id}
 
-### Get Versions
+### Get versions
 ***GET*** /sales/proformaInvoices/{id}/versions
 
-### Find By Sales ID
+### Find by sales ID
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{id}
