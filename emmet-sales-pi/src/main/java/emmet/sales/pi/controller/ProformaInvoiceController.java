@@ -64,8 +64,6 @@ public class ProformaInvoiceController {
 
 		ProformaInvoiceResource resource = proformaInvoiceResourceAssembler.toResource(proformaInvoice);
 		return ResponseEntity.ok(resource);
-		
-//		return  ResponseEntity.ok(proformaInvoice);
 
 	}
 
@@ -116,4 +114,12 @@ public class ProformaInvoiceController {
 		}
 
 	}
+	
+	@RequestMapping(value = "/{id}/finalVersion", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<?> setFinalVersion(String versionId){
+		return null;
+		
+	}
+	
+	
 }

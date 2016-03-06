@@ -61,7 +61,9 @@ public class ProformaInvoiceIntegrationTest {
 				+ //
 				"\"info\":{" + //
 				"\"customerDocumentId\":\"8888\"," + //
-				"\"proformaInvoiceDate\":\"2016-1-1\"" + //
+				"\"proformaInvoiceDate\":\"2016-1-1\"," + //
+				"\"contact\":{\"id\":1,\"firstName\":\"Jonh\",\"lastName\":\"Doe\"}," + //
+				"\"shippingDate\":\"2016-3-1\"" + //
 				"}" + //
 				"}";
 		System.out.println("-->"+requestBody);
@@ -79,9 +81,9 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-1")))//
 				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
 				.andExpect(jsonPath("finalVersion.info.proformaInvoiceDate", equalTo("2016-01-01")))//
-				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
-				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
-				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				.andExpect(jsonPath("finalVersion.info.contact.id", equalTo(1)))//
+				.andExpect(jsonPath("finalVersion.info.contact.firstName", equalTo("John")))//
+				.andExpect(jsonPath("finalVersion.info.shippingDate", equalTo("2016-03-01")))//
 				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
 				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
 				//
