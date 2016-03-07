@@ -44,14 +44,14 @@ curl -iX POST -H "Content-Type: application/json" -d '
 If you'd like to put the JSON to the notes fields, escape the quotes, make it like common string.
 
 ### Update
-***PUT*** /sales/proformaInvoices/{id}
+***PUT*** /sales/proformaInvoice/proformaInvoices/{id}
 
 The format is same to create. Every time update a proforma invoice there creates a new version instead, and it becomes the final version automatically. The old version could find and set it to final version again.
 ### Get one by its ID
-***GET*** /sales/proformaInvoices/{id}
+***GET*** /sales/proformaInvoice/proformaInvoices/{id}
 
 ### Get versions
-***GET*** /sales/proformaInvoices/{id}/versions
+***GET*** /sales/proformaInvoice/proformaInvoices/{id}/versions
 
 ### Find by sales ID
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{id}
