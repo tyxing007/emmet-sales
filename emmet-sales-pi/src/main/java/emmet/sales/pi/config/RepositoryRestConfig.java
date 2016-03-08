@@ -6,6 +6,7 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 
 import emmet.common.service.entity.Currency;
 import emmet.core.data.entity.Customer;
+import emmet.core.data.entity.Employee;
 import emmet.core.data.entity.Partner;
 import emmet.core.data.entity.Product;
 import emmet.partner.entity.PartnerContact;
@@ -20,6 +21,7 @@ public class RepositoryRestConfig extends RepositoryRestMvcConfiguration {
 		config.exposeIdsFor(ProformaInvoice.class);
 		config.exposeIdsFor(PartnerContact.class);
 		config.exposeIdsFor(Customer.class);
+		config.exposeIdsFor(Employee.class);
 		config.exposeIdsFor(Partner.class);
 		config.exposeIdsFor(Product.class);
 		config.exposeIdsFor(PartnerCorporation.class);
