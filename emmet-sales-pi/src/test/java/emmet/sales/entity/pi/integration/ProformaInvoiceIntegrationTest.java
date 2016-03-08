@@ -119,8 +119,16 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(get("/proformaInvoices/" + id + "/versions"))//
 				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));//
-		
+
 		// Set confirmed version
+
+	}
+	
+
+	@Test
+	public void savePiErrorHandlingTest() throws Exception {
+		this.mvc.perform(get("/proformaInvoices/NOT_EXIST"))//
+				.andDo(print()).andExpect(status().isNotFound());
 
 	}
 

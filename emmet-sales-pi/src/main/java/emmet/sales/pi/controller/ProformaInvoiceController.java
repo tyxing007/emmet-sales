@@ -59,8 +59,11 @@ public class ProformaInvoiceController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ProformaInvoiceResource> getProformaInvoice(@PathVariable String id) {
+	public ResponseEntity<?> getProformaInvoice(@PathVariable String id) {
 		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
+		if(proformaInvoice == null){
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
 
 		ProformaInvoiceResource resource = proformaInvoiceResourceAssembler.toResource(proformaInvoice);
 		return ResponseEntity.ok(resource);
@@ -84,6 +87,8 @@ public class ProformaInvoiceController {
 	@RequestMapping(value = "/{id}/versions", method = RequestMethod.GET)
 	public ResponseEntity<?> getProformaInvoiceVersions(@PathVariable String id) {
 		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
+		
+		
 		return ResponseEntity.ok(proformaInvoice.getVersions());
 
 	}
