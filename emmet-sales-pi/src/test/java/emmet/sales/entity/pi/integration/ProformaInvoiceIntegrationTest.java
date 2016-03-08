@@ -62,11 +62,13 @@ public class ProformaInvoiceIntegrationTest {
 				"\"info\":{" + //
 				"\"customerDocumentId\":\"8888\"," + //
 				"\"proformaInvoiceDate\":\"2016-1-1\"," + //
+				"\"customer\":{\"id\":\"AU00000001\"}," + //
+				"\"corporation\":{\"id\":10}," + //
 				"\"contact\":{\"id\":1,\"firstName\":\"Jonh\",\"lastName\":\"Doe\"}," + //
 				"\"shippingDate\":\"2016-3-1\"" + //
 				"}" + //
 				"}";
-		System.out.println("-->" + requestBody);
+
 		this.mvc.perform(post("/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
 				.content(requestBody))//
 				.andDo(print()).andExpect(status().isCreated()).andExpect(jsonPath("id", equalTo(id)));//
@@ -84,7 +86,8 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.info.contact.id", equalTo(1)))//
 				.andExpect(jsonPath("finalVersion.info.contact.firstName", equalTo("John")))//
 				.andExpect(jsonPath("finalVersion.info.shippingDate", equalTo("2016-03-01")))//
-				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				.andExpect(jsonPath("finalVersion.info.customer.id", equalTo("AU00000001")))//
+				.andExpect(jsonPath("finalVersion.info.corporation.id", equalTo(10)))//
 				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
 				//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].itemName", equalTo("Foo")))//
