@@ -1,5 +1,5 @@
 server:
-  context-path: /proformaInvoice
+  context-path: /sales/proformaInvoice
 
 spring:
   profiles.active: default
