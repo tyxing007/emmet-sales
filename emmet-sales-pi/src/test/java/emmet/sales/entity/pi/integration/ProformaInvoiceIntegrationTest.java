@@ -113,7 +113,7 @@ public class ProformaInvoiceIntegrationTest {
 				+ //
 				"\"info\":{" + //
 				"\"customer\":{\"id\":\"AU00000001\"}" + //
-				"}";
+				"}}";
 
 		this.mvc.perform(put("/proformaInvoices/" + id).contentType(MediaType.APPLICATION_JSON_VALUE)//
 				.content(requestBody2))//
