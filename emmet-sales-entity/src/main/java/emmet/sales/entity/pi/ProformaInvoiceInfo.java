@@ -57,13 +57,13 @@ public class ProformaInvoiceInfo implements Serializable {
 	@OneToOne
 	private PartnerCorporation corporation;
 
-	private Integer warrantyYear;
+	private String warranty;
 
 	@OneToOne
 	private Currency currency;
 
-	private String taxType;
-	
+	private String tax;
+
 	private BigDecimal discount;
 
 	public Integer getId() {
@@ -106,7 +106,6 @@ public class ProformaInvoiceInfo implements Serializable {
 	public void setProformaInvoiceDate(Date proformaInvoiceDate) {
 		this.proformaInvoiceDate = proformaInvoiceDate;
 	}
-
 
 	public Date getShippingDate() {
 		return shippingDate;
@@ -156,12 +155,12 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.corporation = corporation;
 	}
 
-	public Integer getWarrantyYear() {
-		return warrantyYear;
+	public String getWarranty() {
+		return warranty;
 	}
 
-	public void setWarrantyYear(Integer warrantyYear) {
-		this.warrantyYear = warrantyYear;
+	public void setWarranty(String warranty) {
+		this.warranty = warranty;
 	}
 
 	public Currency getCurrency() {
@@ -172,12 +171,12 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.currency = currency;
 	}
 
-	public String getTaxType() {
-		return taxType;
+	public String getTax() {
+		return tax;
 	}
 
-	public void setTaxType(String taxType) {
-		this.taxType = taxType;
+	public void setTax(String tax) {
+		this.tax = tax;
 	}
 
 	public BigDecimal getDiscount() {
@@ -188,6 +187,4 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.discount = discount;
 	}
 
-	
-	
 }
