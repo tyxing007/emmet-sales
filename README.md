@@ -14,9 +14,9 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "dataEntryClerk" : {"id" : "EM0000112"},
     "customer" : {"id":"AU006"},
     "corporation" : {"id":98336},
-    "warrantyYear" : 1,
+    "warranty" : "2 years, and bala...",
     "currency" : {"id":"USD"},
-    "taxType" : "Extra"
+    "tax" : "Extra"
   },
   "extraCharges" : [ {
 
