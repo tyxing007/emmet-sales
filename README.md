@@ -24,7 +24,11 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "price" : 100.50,
     "tax" : 5.00
   } ],
-  "shipping" : null,
+  "shipping" : {
+     "info" : "DHL, ...",
+     "fare" : 10.50,
+     "tax" : 0
+   },
   "productItems" : [ {
 
     "product" : {

@@ -101,7 +101,6 @@ public class ProformaInvoiceService {
 		if (proformaInvoiceVersionRepsitory.findByProformaInvoiceId(proformaInvoiceId).isEmpty()) {
 			return 1;
 		}
-
 		
 		return proformaInvoiceVersionRepsitory.findLastVersionSequenceOfProformainvoice(proformaInvoiceId) + 1;
 	}
@@ -132,6 +131,11 @@ public class ProformaInvoiceService {
 			}
 		}
 
+		// Shipping
+		if (invoiceVersionEntity.getShipping() != null) {
+			invoiceVersionEntity.getShipping().setVersion(invoiceVersionEntity);
+		}	
+		
 		return invoiceVersionEntity;
 
 	}

@@ -17,15 +17,15 @@ public class ShippingCompanyController {
 	public List<ShippingCompany> getAll() {
 		
 		ShippingCompany sp1 = new ShippingCompany();
-		sp1.setId(1);
+		sp1.setId("DHL");
 		sp1.setName("DHL");
 
 		ShippingCompany sp2 = new ShippingCompany();
-		sp2.setId(2);
+		sp2.setId("UPS");
 		sp2.setName("UPS");
 
 		ShippingCompany sp3 = new ShippingCompany();
-		sp3.setId(3);
+		sp3.setId("TNT");
 		sp3.setName("TNT");
 
 		return Arrays.asList(new ShippingCompany[] { sp1, sp2, sp3 });

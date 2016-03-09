@@ -1,3 +1,4 @@
+DELETE FROM sales_proforma_invoice_shipping;
 DELETE FROM sales_proforma_invoice_products;
 DELETE FROM sales_proforma_invoice_info;
 DELETE FROM sales_proforma_invoice_extra_charge;

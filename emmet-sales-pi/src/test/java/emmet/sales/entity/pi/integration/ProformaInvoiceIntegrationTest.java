@@ -66,7 +66,8 @@ public class ProformaInvoiceIntegrationTest {
 				"\"corporation\":{\"id\":10}," + //
 				"\"contact\":{\"id\":1,\"firstName\":\"Jonh\",\"lastName\":\"Doe\"}," + //
 				"\"shippingDate\":\"2016-3-1\"" + //
-				"}" + //
+				"}," + //
+				"\"shipping\":{\"fare\":10.5,\"tax\": 0.1,\"info\":\"ASAP\"}" + //
 				"}";
 
 		this.mvc.perform(post("/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
@@ -89,6 +90,10 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.info.customer.id", equalTo("AU00000001")))//
 				.andExpect(jsonPath("finalVersion.info.corporation.id", equalTo(10)))//
 				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
+				//
+				.andExpect(jsonPath("finalVersion.shipping.fare", equalTo(10.5)))//
+				.andExpect(jsonPath("finalVersion.shipping.tax", equalTo(0.1)))//
+				.andExpect(jsonPath("finalVersion.shipping.info", equalTo("ASAP")))//
 				//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].itemName", equalTo("Foo")))//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].price", equalTo(100.5)))//
