@@ -21,6 +21,9 @@ COMMIT;
 
 INSERT INTO core_partner (id) VALUES ('PA00000001');
 INSERT INTO core_customer (id, partner_id) VALUES ('AU00000001', 'PA00000001');
+INSERT INTO core_partner (id) VALUES ('PA00000002');
+INSERT INTO core_customer (id, partner_id) VALUES ('AU00000002', 'PA00000002');
+
 INSERT INTO common_country(id, iso3166_two_letter_code, iana_country_codetld) VALUES ('9', 'AU', '.au');
 
 INSERT INTO partner_corporation (id, formal_name, common_name, partner_id, country_id, valid_date) VALUES (10, 'AU001 Corporation','AU1', 'PA00000001', '9', '2016-1-29');

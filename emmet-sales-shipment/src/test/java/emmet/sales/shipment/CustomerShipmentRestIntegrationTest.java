@@ -53,7 +53,7 @@ public class CustomerShipmentRestIntegrationTest {
 		resultActions.andDo(MockMvcResultHandlers.print());
 		
 		this.mvc.perform(get("/order/shipment/shippingCompany")).andExpect(jsonPath("$", hasSize(3)))
-				.andExpect(jsonPath("$[0].id", equalTo(1))).andExpect(jsonPath("$[0].name", equalTo("DHL")))
+				.andExpect(jsonPath("$[0].id", equalTo("DHL"))).andExpect(jsonPath("$[0].name", equalTo("DHL")))
 				.andExpect(jsonPath("$[2].name", equalTo("TNT")));
 
 	}

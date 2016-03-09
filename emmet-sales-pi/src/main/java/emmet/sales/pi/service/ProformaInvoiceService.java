@@ -16,6 +16,7 @@ import emmet.sales.entity.pi.ProformaInvoice;
 import emmet.sales.entity.pi.ProformaInvoiceExtraCharge;
 import emmet.sales.entity.pi.ProformaInvoiceProductItem;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
+import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
@@ -23,8 +24,8 @@ import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
 @Service
 public class ProformaInvoiceService {
 
-	// @Autowired
-	// ProformaInvoiceModelFactory proformaInvoiceModelFactory;
+	@Autowired
+	ProformaInvoiceRepsitory proformaInvoiceRepsitory;
 
 	@Autowired
 	ProformaInvoiceRepsitory proformaInvoiceRepository;
@@ -44,14 +45,25 @@ public class ProformaInvoiceService {
 	}
 
 	@Transactional
-	public ProformaInvoice updateProformaInvoice(ProformaInvoiceVersion thisVersion)
-			throws OperationNotPermitException {
-		String proformaInvoiceId = thisVersion.getProformaInvoice().getId();
-		ProformaInvoice proformaInvoice = proformaInvoiceRepository.findOne(proformaInvoiceId);
+	public ProformaInvoice updateProformaInvoice(ProformaInvoiceVersion thisVersion, String id)
+			throws OperationNotPermitException, DataNotFoundException {
+
+		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
+		if (proformaInvoice == null) {
+			throw new DataNotFoundException("Can not find the proforma invoice, ID:" + id);
+		}
+
+		thisVersion.setProformaInvoice(proformaInvoice);
 
 		if (proformaInvoice.isConfirmed()) {
 			throw new OperationNotPermitException("This proforma invoice had comfirmed, you can not modify it.");
 		}
+
+		if (!thisVersion.getInfo().getCustomer().getId()//
+				.equals(proformaInvoice.getFinalVersion().getInfo().getCustomer().getId())) {
+			throw new OperationNotPermitException("Modify the customer of an invoice is not permited.");
+		}
+
 		persistNewVersion(thisVersion, proformaInvoice);
 		return thisVersion.getProformaInvoice();
 	}
@@ -81,9 +93,8 @@ public class ProformaInvoiceService {
 		return proformaInvoiceId + "-" + (getNextVersionSequence(proformaInvoiceId));
 
 	}
-	
-	
-	private void saveSnapshoot(ProformaInvoiceVersion piVersion){
+
+	private void saveSnapshoot(ProformaInvoiceVersion piVersion) {
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
 		try {
@@ -92,16 +103,16 @@ public class ProformaInvoiceService {
 			e.printStackTrace();
 		}
 		piVersion.setSnapshot(writer.toString());
-		
+
 		proformaInvoiceVersionRepsitory.save(piVersion);
-		
+
 	}
 
 	private Integer getNextVersionSequence(String proformaInvoiceId) {
 		if (proformaInvoiceVersionRepsitory.findByProformaInvoiceId(proformaInvoiceId).isEmpty()) {
 			return 1;
 		}
-		
+
 		return proformaInvoiceVersionRepsitory.findLastVersionSequenceOfProformainvoice(proformaInvoiceId) + 1;
 	}
 
@@ -134,8 +145,8 @@ public class ProformaInvoiceService {
 		// Shipping
 		if (invoiceVersionEntity.getShipping() != null) {
 			invoiceVersionEntity.getShipping().setVersion(invoiceVersionEntity);
-		}	
-		
+		}
+
 		return invoiceVersionEntity;
 
 	}

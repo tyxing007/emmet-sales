@@ -67,7 +67,7 @@ public class ProformaInvoiceIntegrationTest {
 				"\"contact\":{\"id\":1,\"firstName\":\"Jonh\",\"lastName\":\"Doe\"}," + //
 				"\"shippingDate\":\"2016-3-1\"" + //
 				"}," + //
-				"\"shipping\":{\"fare\":10.5,\"tax\": 0.1,\"info\":\"ASAP\"}" + //
+				"\"shipping\":{\"fare\":10.5,\"tax\": 0.1,\"info\":\"TNT, ASAP\"}" + //
 				"}";
 
 		this.mvc.perform(post("/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
@@ -93,7 +93,7 @@ public class ProformaInvoiceIntegrationTest {
 				//
 				.andExpect(jsonPath("finalVersion.shipping.fare", equalTo(10.5)))//
 				.andExpect(jsonPath("finalVersion.shipping.tax", equalTo(0.1)))//
-				.andExpect(jsonPath("finalVersion.shipping.info", equalTo("ASAP")))//
+				.andExpect(jsonPath("finalVersion.shipping.info", equalTo("TNT, ASAP")))//
 				//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].itemName", equalTo("Foo")))//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].price", equalTo(100.5)))//
@@ -107,13 +107,16 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.productItems[0].currency.id", equalTo("USD")));//
 
 		// Modify
+		String requestBody2 = "{" + //
+				"\"productItems\":[{\"product\":{\"id\":\"0000-0002\"}, " + //
+				"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }],"
+				+ //
+				"\"info\":{" + //
+				"\"customer\":{\"id\":\"AU00000001\"}" + //
+				"}";
+
 		this.mvc.perform(put("/proformaInvoices/" + id).contentType(MediaType.APPLICATION_JSON_VALUE)//
-				.content("{" + //
-						"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
-						"\"productItems\":[{\"product\":{\"id\":\"0000-0002\"}, " + //
-						"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 }]," + //
-						"\"info\":{\"customerDocumentId\":\"8888\"}" + //
-						"}"))//
+				.content(requestBody2))//
 				.andDo(print()).andExpect(status().isCreated());//
 
 		this.mvc.perform(get("/proformaInvoices/" + id))//
@@ -128,10 +131,20 @@ public class ProformaInvoiceIntegrationTest {
 		this.mvc.perform(get("/proformaInvoices/" + id + "/versions"))//
 				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));//
 
+		// Modify
+		String requestBody3 = "{" + //
+		"\"info\":{" + //
+				"\"customer\":{\"id\":\"AU00000002\"}" + //
+				"}"//
+				+ "}";
+
+		this.mvc.perform(put("/proformaInvoices/" + id).contentType(MediaType.APPLICATION_JSON_VALUE)//
+				.content(requestBody3))//
+				.andDo(print()).andExpect(status().isConflict());//
+
 		// Set confirmed version
 
 	}
-	
 
 	@Test
 	public void savePiErrorHandlingTest() throws Exception {

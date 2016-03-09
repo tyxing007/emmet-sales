@@ -22,6 +22,7 @@ import emmet.sales.entity.pi.ProformaInvoice;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.pi.domain.ProformaInvoiceResource;
 import emmet.sales.pi.domain.ProformaInvoiceResourceAssembler;
+import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.service.ProformaInvoiceService;
@@ -105,17 +106,17 @@ public class ProformaInvoiceController {
 	public ResponseEntity<?> updateProformaInvoice(@PathVariable String id,
 			@RequestBody ProformaInvoiceVersion invoice) {
 
-		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
-		invoice.setProformaInvoice(proformaInvoice);
-
 		try {
 
-			return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.updateProformaInvoice(invoice),
+			return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.updateProformaInvoice(invoice, id),
 					HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {
 
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		} catch (DataNotFoundException e) {
+			
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 
 	}
