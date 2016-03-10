@@ -47,13 +47,13 @@ public class ProformaInvoiceController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> getProformaInvoices(Pageable page) {
-		
+
 		Page<ProformaInvoice> proformaInvoicePage = proformaInvoiceRepsitory.findAll(page);
-		
-		List<ProformaInvoiceResource> resources = proformaInvoiceResourceAssembler.toResources(proformaInvoicePage.getContent());
-		  Page<ProformaInvoiceResource> resultPage = new
-		  PageImpl<ProformaInvoiceResource>(resources, page,
-		  proformaInvoicePage.getTotalElements());
+
+		List<ProformaInvoiceResource> resources = proformaInvoiceResourceAssembler
+				.toResources(proformaInvoicePage.getContent());
+		Page<ProformaInvoiceResource> resultPage = new PageImpl<ProformaInvoiceResource>(resources, page,
+				proformaInvoicePage.getTotalElements());
 
 		return ResponseEntity.ok(resultPage);
 
@@ -62,7 +62,7 @@ public class ProformaInvoiceController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getProformaInvoice(@PathVariable String id) {
 		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
-		if(proformaInvoice == null){
+		if (proformaInvoice == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 
@@ -75,11 +75,11 @@ public class ProformaInvoiceController {
 	public ResponseEntity<?> findProformaInvoiceBySels(@RequestParam("id") String id, Pageable page) {
 
 		Page<ProformaInvoice> proformaInvoicePage = proformaInvoiceRepsitory.findBySales(id, page);
-		
-		List<ProformaInvoiceResource> resources = proformaInvoiceResourceAssembler.toResources(proformaInvoicePage.getContent());
-		  Page<ProformaInvoiceResource> resultPage = new
-		  PageImpl<ProformaInvoiceResource>(resources, page,
-		  proformaInvoicePage.getTotalElements());
+
+		List<ProformaInvoiceResource> resources = proformaInvoiceResourceAssembler
+				.toResources(proformaInvoicePage.getContent());
+		Page<ProformaInvoiceResource> resultPage = new PageImpl<ProformaInvoiceResource>(resources, page,
+				proformaInvoicePage.getTotalElements());
 
 		return ResponseEntity.ok(resultPage);
 
@@ -88,8 +88,7 @@ public class ProformaInvoiceController {
 	@RequestMapping(value = "/{id}/versions", method = RequestMethod.GET)
 	public ResponseEntity<?> getProformaInvoiceVersions(@PathVariable String id) {
 		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
-		
-		
+
 		return ResponseEntity.ok(proformaInvoice.getVersions());
 
 	}
@@ -115,17 +114,24 @@ public class ProformaInvoiceController {
 
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		} catch (DataNotFoundException e) {
-			
+
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 
 	}
-	
-	@RequestMapping(value = "/{id}/finalVersion", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<?> setFinalVersion(String versionId){
-		return null;
-		
+
+	@RequestMapping(value = "/{proformaInvoiceId}/versions/{versionId}", method = RequestMethod.GET)
+	public ResponseEntity<?> setFinalVersion(@PathVariable("proformaInvoiceId") String proformaInvoiceId,
+			@PathVariable("versionId") String versionId) {
+		ProformaInvoiceVersion invoice = null;
+		try {
+			invoice = proformaInvoiceService.findProformaInvoiceWithVersion(proformaInvoiceId, versionId);
+
+		} catch (DataNotFoundException e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(invoice);
+
 	}
-	
-	
+
 }

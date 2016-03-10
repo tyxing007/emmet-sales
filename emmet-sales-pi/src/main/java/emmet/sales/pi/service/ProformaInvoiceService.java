@@ -151,4 +151,15 @@ public class ProformaInvoiceService {
 
 	}
 
+	public ProformaInvoiceVersion findProformaInvoiceWithVersion(String proformaInvoiceId, String versionId) throws DataNotFoundException {
+
+		ProformaInvoiceVersion version = proformaInvoiceVersionRepsitory.findByProformaInvoiceIdAndId(proformaInvoiceId, versionId);
+		if(version == null){
+			throw new DataNotFoundException("The version is not existed.");
+		}
+		
+		return version;
+
+	}
+
 }

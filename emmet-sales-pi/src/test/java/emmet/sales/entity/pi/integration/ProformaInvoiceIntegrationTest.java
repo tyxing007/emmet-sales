@@ -130,6 +130,12 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(get("/proformaInvoices/" + id + "/versions"))//
 				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));//
+		
+		// Get specified version 
+		this.mvc.perform(get("/proformaInvoices/" + id + "/versions/" + id + "-2"))//
+		.andDo(print()).andExpect(status().isOk())//
+		.andExpect(jsonPath("id", equalTo(id + "-2")));
+
 
 		// Modify
 		String requestBody3 = "{" + //
