@@ -56,8 +56,9 @@ To modify a customer of a proforma invoice is not permitted.
 ### Get one by its ID
 ***GET*** /sales/proformaInvoice/proformaInvoices/{id}
 
-### Get versions
-***GET*** /sales/proformaInvoice/proformaInvoices/{id}/versions
+### Get specific version
+***GET*** /sales/proformaInvoice/proformaInvoices/{id}/versions/{versionId}
+
 
 ### Find by sales ID
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{id}
