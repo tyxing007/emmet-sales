@@ -46,14 +46,14 @@ public class ProformaInvoiceIntegrationTest {
 	@Before
 	public void setUp() {
 		this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
-		DateFormat df = new SimpleDateFormat("YYYYMMdd");
+		DateFormat df = new SimpleDateFormat("YYMMdd");
 		Date today = Calendar.getInstance().getTime();
 		dateInString = df.format(today);
 	}
 
 	@Test
 	public void savePiTest() throws Exception {
-		String id = "PI" + dateInString + "01";
+		String id = "PI" + dateInString + "0001";
 		String requestBody = "{" + //
 				"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
 				"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //

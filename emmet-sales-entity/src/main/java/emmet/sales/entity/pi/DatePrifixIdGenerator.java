@@ -22,7 +22,7 @@ import emmet.core.data.repository.EmployeeRepository;
 public class DatePrifixIdGenerator extends SequenceGenerator {
 
 	private static final String ID_PRIFIX = "PI";
-	private static final String SERIAL_NUM_FORAMT = "%02d";
+	private static final String SERIAL_NUM_FORAMT = "%04d";
 	private static final String SEQUENCE_TABLE_NAME_PREFIX = "order_sequence_";
 
 	private static final Log log = LogFactory.getLog(DatePrifixIdGenerator.class);
@@ -91,7 +91,7 @@ public class DatePrifixIdGenerator extends SequenceGenerator {
 	}
 	
 	private String getDatePrefix() {
-        DateFormat df = new SimpleDateFormat("YYYYMMdd");
+        DateFormat df = new SimpleDateFormat("YYMMdd");
         Date today = Calendar.getInstance().getTime();
         return df.format(today);
     }

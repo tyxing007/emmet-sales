@@ -49,7 +49,7 @@ public class ProformaInvoiceVersion implements Serializable {
 	@OneToMany(mappedBy = "version", cascade = CascadeType.ALL)
 	private List<ProformaInvoiceProductItem> productItems;
 
-	@Column(length = 2048)
+	@Column(length = 8192)
 	private String snapshot;
 
 	public String getId() {
