@@ -55,6 +55,7 @@ To modify a customer of a proforma invoice is not permitted.
 
 #### Set final version
 ***PUT*** /sales/proformaInvoice/proformaInvoices/{id}/setFinalVersion?{version}
+
 Example:
 ```
 curl -iX PUT \
@@ -63,6 +64,8 @@ http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/set
 #### Set confirmed
 
 ***PUT*** /sales/proformaInvoice/proformaInvoices/{id}/setConfirmed
+
+Example:
 ```
 curl -iX PUT \
 http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/setConfirmed
