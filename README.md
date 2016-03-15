@@ -53,21 +53,14 @@ The format is same to create. Every time update a proforma invoice there creates
 
 To modify a customer of a proforma invoice is not permitted.
 
-### Set final version
+#### Set final version
 ***PUT*** /sales/proformaInvoice/proformaInvoices/{id}/setFinalVersion?{version}
 Example:
 ```
 curl -iX PUT \
 http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/setFinalVersion?version=PI0603020001-1
 ```
-
-### Get one by its ID
-***GET*** /sales/proformaInvoice/proformaInvoices/{id}
-
-### Get specific version
-***GET*** /sales/proformaInvoice/proformaInvoices/{id}/versions/{versionId}
-
-### Set confirmed
+#### Set confirmed
 
 ***PUT*** /sales/proformaInvoice/proformaInvoices/{id}/setConfirmed
 ```
@@ -75,11 +68,19 @@ curl -iX PUT \
 http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/setConfirmed
 ```
 
-### Find by sales ID
+### Get data
+#### Find one by its ID
+***GET*** /sales/proformaInvoice/proformaInvoices/{id}
+
+#### Get specific version of a proforma invoice
+***GET*** /sales/proformaInvoice/proformaInvoices/{id}/versions/{versionId}
+
+
+#### Find by sales ID
 
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{?id}
 
-### Find by sales ID within status
+#### Find by sales ID within status
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{?id, status}
 
 the status could be empty or
