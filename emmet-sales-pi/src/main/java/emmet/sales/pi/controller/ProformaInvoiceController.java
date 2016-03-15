@@ -12,6 +12,7 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,10 +73,14 @@ public class ProformaInvoiceController {
 	}
 
 	@RequestMapping(value = "/search/findBySales", method = RequestMethod.GET)
-	public ResponseEntity<?> findProformaInvoiceBySels(@RequestParam("id") String id, Pageable page) {
-
-		Page<ProformaInvoice> proformaInvoicePage = proformaInvoiceRepsitory.findBySales(id, page);
-
+	public ResponseEntity<?> findProformaInvoiceBySels(@RequestParam("id") String id,
+			@RequestParam(name = "status", required = false) String status, Pageable page) {
+		Page<ProformaInvoice> proformaInvoicePage = null;
+		if (status == null) {
+			proformaInvoicePage = proformaInvoiceRepsitory.findBySales(id, page);
+		} else{
+			proformaInvoicePage = proformaInvoiceRepsitory.findBySalesAndStatus(id, status, page);
+		}
 		List<ProformaInvoiceResource> resources = proformaInvoiceResourceAssembler
 				.toResources(proformaInvoicePage.getContent());
 		Page<ProformaInvoiceResource> resultPage = new PageImpl<ProformaInvoiceResource>(resources, page,
@@ -121,7 +126,7 @@ public class ProformaInvoiceController {
 	}
 
 	@RequestMapping(value = "/{proformaInvoiceId}/versions/{versionId}", method = RequestMethod.GET)
-	public ResponseEntity<?> setFinalVersion(@PathVariable("proformaInvoiceId") String proformaInvoiceId,
+	public ResponseEntity<?> getVersion(@PathVariable("proformaInvoiceId") String proformaInvoiceId,
 			@PathVariable("versionId") String versionId) {
 		ProformaInvoiceVersion invoice = null;
 		try {
@@ -132,6 +137,39 @@ public class ProformaInvoiceController {
 		}
 		return ResponseEntity.ok(invoice);
 
+	}
+
+	@Transactional
+	@RequestMapping(value = "/{id}/setFinalVersion", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateFinalVersion(@PathVariable String id, @RequestParam("version") String versionId) {
+
+		int recordsCount = proformaInvoiceRepsitory.setFinalVersion(id, versionId);
+		if (recordsCount == 0) {
+			return new ResponseEntity<String>("Set final version fail, the id or version may invalid.",
+					HttpStatus.NOT_FOUND);
+
+		} else if (recordsCount != 1) {
+			throw new RuntimeException("There are troubles!");
+		}
+
+		return ResponseEntity.ok("The final version setted.");
+
+	}
+
+	@Transactional
+	@RequestMapping(value = "/{id}/confirmed", method = RequestMethod.PUT)
+	public ResponseEntity<?> confirm(@PathVariable String id) {
+
+		int recordsCount = proformaInvoiceRepsitory.setConfirmed(id);
+
+		if (recordsCount == 0) {
+			return new ResponseEntity<String>("Can't set confirmed, the id may invalid.", HttpStatus.NOT_FOUND);
+
+		} else if (recordsCount != 1) {
+			throw new RuntimeException("There are troubles!");
+		}
+
+		return ResponseEntity.ok("The proforma invoice is confirmed.");
 	}
 
 }

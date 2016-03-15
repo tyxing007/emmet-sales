@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import emmet.sales.entity.pi.ProformaInvoice;
+import emmet.sales.entity.pi.ProformaInvoice.ProformainvoiceStatus;
 import emmet.sales.entity.pi.ProformaInvoiceExtraCharge;
 import emmet.sales.entity.pi.ProformaInvoiceProductItem;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
@@ -37,7 +38,7 @@ public class ProformaInvoiceService {
 	public ProformaInvoice createProformaInvoice(ProformaInvoiceVersion thisVersion) {
 
 		ProformaInvoice newProformaInvoice = new ProformaInvoice();
-		newProformaInvoice.setConfirmed(false);
+		newProformaInvoice.setStatus(ProformainvoiceStatus.PROCESSING);
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		persistNewVersion(thisVersion, newProformaInvoice);
 		return thisVersion.getProformaInvoice();
@@ -55,7 +56,7 @@ public class ProformaInvoiceService {
 
 		thisVersion.setProformaInvoice(proformaInvoice);
 
-		if (proformaInvoice.isConfirmed()) {
+		if (! ProformainvoiceStatus.PROCESSING.equals(proformaInvoice.getStatus())) {
 			throw new OperationNotPermitException("This proforma invoice had comfirmed, you can not modify it.");
 		}
 

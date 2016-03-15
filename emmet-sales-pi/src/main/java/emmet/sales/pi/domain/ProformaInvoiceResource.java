@@ -4,6 +4,7 @@ import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import emmet.sales.entity.pi.ProformaInvoice.ProformainvoiceStatus;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 
 public class ProformaInvoiceResource extends ResourceSupport {
@@ -11,7 +12,7 @@ public class ProformaInvoiceResource extends ResourceSupport {
 	@JsonProperty("id")
 	private String invoiceId;
 	private ProformaInvoiceVersion finalVersion;
-	private Boolean confirmed;
+	private String status;
 
 	public String getInvoiceId() {
 		return invoiceId;
@@ -29,12 +30,13 @@ public class ProformaInvoiceResource extends ResourceSupport {
 		this.finalVersion = finalVersion;
 	}
 
-	public Boolean getConfirmed() {
-		return confirmed;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
+	public void setStatus(String status) {
+		this.status = status;
 	}
+
 
 }

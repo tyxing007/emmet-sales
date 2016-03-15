@@ -15,6 +15,7 @@ DELETE FROM partner_corporation;
 DELETE FROM core_customer;
 DELETE FROM core_partner;
 DELETE FROM common_country;
+DELETE FROM core_employee;
 
 
 COMMIT;

@@ -27,16 +27,13 @@ public class ProformaInvoice implements Serializable {
 	@GenericGenerator(name = "idGenerator", strategy = "emmet.sales.entity.pi.DatePrifixIdGenerator")
 	private String id;
 
-
 	@OneToMany(mappedBy = "proformaInvoice", cascade = CascadeType.ALL)
 	private List<ProformaInvoiceVersion> versions;
 
 	@OneToOne
 	private ProformaInvoiceVersion finalVersion;
-	
-	private Boolean confirmed;
-	
 
+	private String status;
 
 	public String getId() {
 		return id;
@@ -63,19 +60,19 @@ public class ProformaInvoice implements Serializable {
 		this.finalVersion = finalVersion;
 	}
 
-	public Boolean isConfirmed() {
-		return confirmed;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
+	public class ProformainvoiceStatus {
 
-	public Boolean getConfirmed() {
-		return confirmed;
+		public static final String PROCESSING = "PROCESSING";
+		public static final String CONFIRMED = "CONFIRMED";
+		public static final String ABANDONED = "ABANDONED";
 	}
-	
-	
 
 }
