@@ -81,6 +81,7 @@ http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/set
 
 ### Find by sales ID within status
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{?id, status}
+
 the status could be empty or
 * PROCESSING
 * CONFIRMED
