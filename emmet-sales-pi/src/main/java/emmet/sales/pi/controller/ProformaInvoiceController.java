@@ -157,7 +157,7 @@ public class ProformaInvoiceController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/{id}/confirmed", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/setConfirmed", method = RequestMethod.PUT)
 	public ResponseEntity<?> confirm(@PathVariable String id) {
 
 		int recordsCount = proformaInvoiceRepsitory.setConfirmed(id);

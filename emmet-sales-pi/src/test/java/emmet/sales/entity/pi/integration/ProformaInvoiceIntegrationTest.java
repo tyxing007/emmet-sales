@@ -169,8 +169,7 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("content[0].id", equalTo(id)));//
 
 		// Set confirmed
-
-		// Search by sales and status is COMFIRMED 
+		// Search by sales and status is COMFIRMED, it would not be found now.
 		this.mvc.perform(get("/proformaInvoices/search/findBySales/?id=EM001&status=CONFIRMED"))//
 				.andExpect(jsonPath("content", hasSize(0)));//
 
@@ -178,7 +177,7 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("id", equalTo(id)))//
 				.andExpect(jsonPath("status", equalTo("PROCESSING")));//
 
-		this.mvc.perform(put("/proformaInvoices/" + id + "/confirmed"))//
+		this.mvc.perform(put("/proformaInvoices/" + id + "/setConfirmed"))//
 				.andDo(print()).andExpect(status().isOk());//
 
 		this.mvc.perform(get("/proformaInvoices/" + id))//
