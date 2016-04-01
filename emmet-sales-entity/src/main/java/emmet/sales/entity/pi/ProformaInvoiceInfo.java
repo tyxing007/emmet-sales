@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import emmet.common.service.entity.Currency;
+import emmet.core.data.entity.Currency;
 import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
 import emmet.partner.entity.PartnerContact;

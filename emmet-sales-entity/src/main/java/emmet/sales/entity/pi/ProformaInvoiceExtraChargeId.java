@@ -3,7 +3,6 @@ package emmet.sales.entity.pi;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 @Embeddable
 public class ProformaInvoiceExtraChargeId implements Serializable {
 	private static final long serialVersionUID = 1L;

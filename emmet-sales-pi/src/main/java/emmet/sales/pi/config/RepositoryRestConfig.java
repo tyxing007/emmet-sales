@@ -1,10 +1,12 @@
 package emmet.sales.pi.config;
 
+
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
-import emmet.common.service.entity.Currency;
+import emmet.core.data.entity.Currency;
 import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
 import emmet.core.data.entity.Partner;
