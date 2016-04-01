@@ -17,16 +17,16 @@
 		</dependency>
 
 
-		<dependency>
+<!-- 		<dependency>
 			<groupId>emmet</groupId>
 			<artifactId>emmet-common-services</artifactId>
 			<version>0.1.3-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>emmet</groupId>
 			<artifactId>emmet-partner-contact</artifactId>
-			<version>0.1.1</version>
+			<version>0.1.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
