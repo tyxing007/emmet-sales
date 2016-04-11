@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import emmet.core.data.entity.Currency;
-import emmet.core.data.entity.Product;
+import emmet.core.data.entity.Material;
 
 @Entity
 @Table(name = "sales_proforma_invoice_products")
@@ -45,7 +45,7 @@ public class ProformaInvoiceProductItem implements Serializable {
 	private Currency currency;
 
 	@OneToOne
-	private Product product;
+	private Material material;
 	
 	public Integer getId() {
 		return id;
@@ -64,14 +64,16 @@ public class ProformaInvoiceProductItem implements Serializable {
 		this.version = version;
 	}
 
-	public Product getProduct() {
-		return product;
+
+	
+	public Material getMaterial() {
+		return material;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
-	
+
 	public Currency getCurrency() {
 		return currency;
 	}
