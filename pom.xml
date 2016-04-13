@@ -20,6 +20,7 @@
 		<module>emmet-sales-pi</module>
 		<module>emmet-sales-shipment</module>
 		<module>emmet-sales-entity</module>
+		<module>emmet-sales-order</module>
 	</modules>
 
 	<repositories>

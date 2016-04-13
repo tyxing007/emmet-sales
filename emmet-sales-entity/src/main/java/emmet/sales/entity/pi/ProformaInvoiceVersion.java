@@ -17,6 +17,8 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import emmet.core.data.entity.Order;
+
 @Entity
 @Table(name = "sales_proforma_invoice_versions", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "proforma_invoice_id", "versionSequence" }) })
@@ -50,6 +52,10 @@ public class ProformaInvoiceVersion implements Serializable {
 
 	@Column(length = 8192)
 	private String snapshot;
+	
+
+	@OneToOne(cascade = javax.persistence.CascadeType.ALL)
+	Order order;
 
 	public String getId() {
 		return id;
@@ -123,6 +129,14 @@ public class ProformaInvoiceVersion implements Serializable {
 
 	public void setSnapshot(String snapshot) {
 		this.snapshot = snapshot;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 }
