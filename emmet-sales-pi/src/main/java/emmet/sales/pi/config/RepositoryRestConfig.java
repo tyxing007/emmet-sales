@@ -10,7 +10,6 @@ import emmet.core.data.entity.Currency;
 import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
 import emmet.core.data.entity.Partner;
-import emmet.core.data.entity.Product;
 import emmet.partner.entity.PartnerContact;
 import emmet.partner.entity.PartnerCorporation;
 import emmet.sales.entity.pi.ProformaInvoice;
@@ -25,7 +24,7 @@ public class RepositoryRestConfig extends RepositoryRestMvcConfiguration {
 		config.exposeIdsFor(Customer.class);
 		config.exposeIdsFor(Employee.class);
 		config.exposeIdsFor(Partner.class);
-		config.exposeIdsFor(Product.class);
+		// config.exposeIdsFor(Product.class);
 		config.exposeIdsFor(PartnerCorporation.class);
 	
 		config.exposeIdsFor(Currency.class);
