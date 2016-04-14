@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import emmet.core.data.entity.Currency;
 import emmet.core.data.entity.Material;
+import emmet.core.data.entity.Product;
 
 @Entity
 @Table(name = "sales_proforma_invoice_products")
@@ -32,7 +33,6 @@ public class ProformaInvoiceProductItem implements Serializable {
 	@JoinColumn(name = "proforma_invoice_version_id")
 	private ProformaInvoiceVersion version;
 
-
 	private Integer quantity;
 	private String unit;
 	private BigDecimal unitPrice;
@@ -40,13 +40,12 @@ public class ProformaInvoiceProductItem implements Serializable {
 	private String note2;
 	private String note3;
 
-	
 	@OneToOne
 	private Currency currency;
 
 	@OneToOne
-	private Material material;
-	
+	private Product product;
+
 	public Integer getId() {
 		return id;
 	}
@@ -64,14 +63,12 @@ public class ProformaInvoiceProductItem implements Serializable {
 		this.version = version;
 	}
 
-
-	
-	public Material getMaterial() {
-		return material;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setMaterial(Material material) {
-		this.material = material;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public Currency getCurrency() {
@@ -81,7 +78,6 @@ public class ProformaInvoiceProductItem implements Serializable {
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
-
 
 	public Integer getQuantity() {
 		return quantity;
@@ -107,7 +103,6 @@ public class ProformaInvoiceProductItem implements Serializable {
 		this.unitPrice = unitPrice;
 	}
 
-
 	public String getNote1() {
 		return note1;
 	}
@@ -131,7 +126,5 @@ public class ProformaInvoiceProductItem implements Serializable {
 	public void setNote3(String note3) {
 		this.note3 = note3;
 	}
-	
-	
 
 }

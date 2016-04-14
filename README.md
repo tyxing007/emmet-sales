@@ -31,7 +31,7 @@ curl -iX POST -H "Content-Type: application/json" -d '
    },
   "productItems" : [ {
 
-    "material" : {
+    "product" : {
     "id" : "0000-0001"
     },
     "quantity" : 1,
