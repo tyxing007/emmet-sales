@@ -31,8 +31,8 @@ curl -iX POST -H "Content-Type: application/json" -d '
    },
   "productItems" : [ {
 
-    "product" : {
-      "id" : "0000-0001"
+    "material" : {
+    "id" : "0000-0001"
     },
     "quantity" : 1,
     "unit" : "PCS",
@@ -95,7 +95,7 @@ the status could be empty or
 ### Create a Sales Order by Proforma Invoice
 Example:
 ```json
-curl -iX POST -H "Content-Type: application/json" -d '{"piVersionId":"PI1603150002-2"}' 
+curl -iX POST -H "Content-Type: application/json" -d '{"piVersionId":"PI1603150002-2"}'
 http://api.mycompany.com/sales/order/orders/createFromPI
 ```
 
