@@ -103,7 +103,7 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("finalVersion.extraCharges[0].price", equalTo(100.5)))//
 				.andExpect(jsonPath("finalVersion.extraCharges[0].tax", equalTo(5.0)))//
 				//
-				.andExpect(jsonPath("finalVersion.productItems[0].product.id", equalTo("0000-0001")))//
+				.andExpect(jsonPath("finalVersion.productItems[0].material.id", equalTo("0000-0001")))//
 				.andExpect(jsonPath("finalVersion.productItems[0].product.name", equalTo("Bar")))//
 				.andExpect(jsonPath("finalVersion.productItems[0].unit", equalTo("PCS")))//
 				.andExpect(jsonPath("finalVersion.productItems[0].quantity", equalTo(1)))//
