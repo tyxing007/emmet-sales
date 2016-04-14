@@ -10,6 +10,6 @@ import emmet.sales.entity.pi.ProformaInvoiceVersion;
 @RepositoryRestResource(exported=false)
 public interface ProformaInvoiceVersionRepsitory extends PagingAndSortingRepository<ProformaInvoiceVersion, String> {
 	
-	List<ProformaInvoiceVersion> findByIdAndOrderIsNotNull(String id);
+	List<ProformaInvoiceVersion> findByProformaInvoiceIdAndOrderIsNotNull(String id);
 
 }

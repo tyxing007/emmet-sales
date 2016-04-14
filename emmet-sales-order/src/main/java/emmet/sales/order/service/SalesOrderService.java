@@ -22,6 +22,7 @@ import emmet.sales.entity.pi.ProformaInvoiceShipping;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.order.exception.DataNotFoundException;
 import emmet.sales.order.exception.OperationNotPermitException;
+import emmet.sales.order.model.SalesOrderCreateModel;
 import emmet.sales.order.repository.ProformaInvoiceVersionRepsitory;
 import emmet.sales.order.repository.SalesOrderRepsitory;
 
@@ -35,15 +36,15 @@ public class SalesOrderService {
 	ProformaInvoiceVersionRepsitory proformaInvoiceVersionRepsitory;
 	
 	@Transactional
-	public Order createOrderByPIVersion(String piVersionId) throws Exception {
+	public Order createOrderByPIVersion(SalesOrderCreateModel model) throws Exception {
 		
-		ProformaInvoiceVersion	proformaInvoiceVersion = proformaInvoiceVersionRepsitory.findOne(piVersionId);
+		ProformaInvoiceVersion	proformaInvoiceVersion = proformaInvoiceVersionRepsitory.findOne(model.getPiVersionId());
 		if(proformaInvoiceVersion == null){
 			throw new DataNotFoundException("can not find pi verson");
 		}
 		
-		List<ProformaInvoiceVersion>  dbPIList= proformaInvoiceVersionRepsitory.findByIdAndOrderIsNotNull(proformaInvoiceVersion.getId());
-	
+		List<ProformaInvoiceVersion>  dbPIList= proformaInvoiceVersionRepsitory.findByProformaInvoiceIdAndOrderIsNotNull(proformaInvoiceVersion.getProformaInvoice().getId());
+
 		if(dbPIList.size()>0){
 			throw new OperationNotPermitException("the pi has order,can not generate a new order");
 		}

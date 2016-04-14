@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import emmet.core.data.entity.BomVersion;
 import emmet.core.data.entity.Order;
+import emmet.sales.order.model.SalesOrderCreateModel;
 import emmet.sales.order.service.SalesOrderService;
 
 @RepositoryRestController()
@@ -22,12 +21,12 @@ public class SalesOrderController {
 	SalesOrderService salesOrderService;
 	
 	@RequestMapping(value = "/createFromPI", method = RequestMethod.POST)
-	public ResponseEntity<?> createOrderFromPI(@RequestParam("piVersionId") String piVersionId){
+	public ResponseEntity<?> createOrderFromPI(@RequestBody SalesOrderCreateModel model){
 		
 		Order order = null ;
 		
 		try {
-			order = salesOrderService.createOrderByPIVersion(piVersionId);
+			order = salesOrderService.createOrderByPIVersion(model);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

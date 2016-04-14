@@ -95,5 +95,6 @@ the status could be empty or
 ### Create a Sales Order by Proforma Invoice
 Example:
 ```json
-curl -iX POST -H "Content-Type: application/json" -d '' http://api.mycompany.com/sales/order/orders/createFromPI?piVersionId=PI1603150002-4
+curl -iX POST -H "Content-Type: application/json" -d '{"piVersionId":"PI1603150002-2"}' 
+http://api.mycompany.com/sales/order/orders/createFromPI
 ```
