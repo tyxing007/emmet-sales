@@ -136,4 +136,38 @@ public class SalesOrderService {
 		
 	}
 	
+	@Transactional
+	public Order updateOrder(Order order,String id) throws Exception{
+		
+		Order dbOrder = salesOrderRepsitory.findOne(id);
+		
+		if(dbOrder==null){
+			throw new DataNotFoundException("can not find Order");
+		}
+				
+		dbOrder.setInfo(order.getInfo());		
+		if(dbOrder.getInfo()!=null){
+			dbOrder.getInfo().setOrder(dbOrder);
+		}
+		
+		dbOrder.setOrderDate(order.getOrderDate());
+		
+		dbOrder.setProductItems(order.getProductItems());
+		if(dbOrder.getProductItems()!=null||!dbOrder.getProductItems().isEmpty()){
+			for(OrderProductItem productItem:dbOrder.getProductItems()){
+				productItem.setOrder(dbOrder);
+			}
+		}
+		
+		dbOrder.setShipping(order.getShipping());
+		
+		dbOrder.setExtraCharges(order.getExtraCharges());
+		
+		dbOrder.setCanceled(order.isCanceled());
+		
+		salesOrderRepsitory.save(dbOrder);
+		
+		return dbOrder;
+	}
+	
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +17,7 @@ import emmet.sales.order.repository.SalesOrderRepsitory;
 import emmet.sales.order.service.SalesOrderService;
 
 @RepositoryRestController()
-@RequestMapping("/orders")
+@RequestMapping("/orders/")
 public class SalesOrderController {
 
 
@@ -43,19 +44,53 @@ public class SalesOrderController {
 	
 	@RequestMapping(value = "/search/findByIdLike", method = RequestMethod.GET)
 	public ResponseEntity<?> createOrderFromPI(@RequestParam("id") String id ,Pageable page){
-		
-		
+				
 		try {
 			return ResponseEntity.ok(salesOrderRepsitory.findByIdLike(id, page));
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+				
+		
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateOrder(@RequestBody  Order order,@PathVariable String id){
+				
+		try {
+			//order = salesOrderService.createOrderByPIVersion(model);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 		
 			
-		
+		return ResponseEntity.ok(order);
 		
 	}
 
 
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ResponseEntity<?> listAllOrders(Pageable page){
+				
+		try {
+			return ResponseEntity.ok(salesOrderRepsitory.findAll(page));
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+							
+		
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> listAllOrders(@PathVariable String id){
+				
+		try {
+			return ResponseEntity.ok(salesOrderRepsitory.findOne(id));
+		} catch (Exception e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+							
+		
+	}
 
 }

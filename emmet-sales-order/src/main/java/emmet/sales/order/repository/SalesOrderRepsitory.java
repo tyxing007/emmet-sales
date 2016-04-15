@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import emmet.core.data.entity.Order;
 
-@RepositoryRestResource
+@RepositoryRestResource(exported=false)
 public interface SalesOrderRepsitory extends PagingAndSortingRepository<Order, String> {
 
 	@Query("select o from Order o where o.id like %:id%")

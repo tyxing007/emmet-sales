@@ -31,9 +31,12 @@ spring:
 spring:
   profiles: staging
 
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://192.168.1.14:6543/emmet
     username: emmet
     password: masterbuilder
+  jpa:
+    show-sql: true
     

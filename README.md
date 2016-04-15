@@ -91,6 +91,11 @@ the status could be empty or
 * CONFIRMED
 * ABANDONED
 
+
+#### Find by Order ID
+
+***GET*** /sales/proformaInvoice/proformaInvoices/versions/search/findByOrder{?id}
+
 ## Sales Order
 ### Create a Sales Order by Proforma Invoice
 Example:

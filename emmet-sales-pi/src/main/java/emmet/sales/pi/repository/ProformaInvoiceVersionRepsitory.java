@@ -18,5 +18,6 @@ public interface ProformaInvoiceVersionRepsitory extends PagingAndSortingReposit
 	
 	ProformaInvoiceVersion findByProformaInvoiceIdAndId(@Param("invoiceId") String pid, @Param("versionId") String vid);
 	
+	ProformaInvoiceVersion findByOrderId(String id);
 	
 }

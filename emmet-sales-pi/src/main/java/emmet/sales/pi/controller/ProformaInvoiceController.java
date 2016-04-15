@@ -26,6 +26,7 @@ import emmet.sales.pi.domain.ProformaInvoiceResourceAssembler;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
+import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
 import emmet.sales.pi.service.ProformaInvoiceService;
 
 @RepositoryRestController()
@@ -37,6 +38,9 @@ public class ProformaInvoiceController {
 
 	@Autowired
 	ProformaInvoiceRepsitory proformaInvoiceRepsitory;
+	
+	@Autowired
+	ProformaInvoiceVersionRepsitory proformaInvoiceVersionRepsitory;
 
 	ProformaInvoiceResourceAssembler proformaInvoiceResourceAssembler;
 
@@ -170,6 +174,21 @@ public class ProformaInvoiceController {
 		}
 
 		return ResponseEntity.ok("The proforma invoice is confirmed.");
+	}
+	
+	@RequestMapping(value = "/versions/search/findByOrder", method = RequestMethod.GET)
+	public ResponseEntity<?> findProformaInvoiceByOrderId(@RequestParam("id") String id) {
+
+		
+		ProformaInvoiceVersion piVersion = proformaInvoiceVersionRepsitory.findByOrderId(id);
+		
+		if(piVersion==null){
+			return new ResponseEntity<String>("Can't find ProformaInvoiceVersion", HttpStatus.NOT_FOUND);
+		}
+	
+
+		return ResponseEntity.ok(piVersion);
+
 	}
 
 }
