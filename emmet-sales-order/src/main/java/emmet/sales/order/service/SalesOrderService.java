@@ -23,6 +23,10 @@ import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.order.exception.DataNotFoundException;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.SalesOrderCreateModel;
+import emmet.sales.order.repository.OrderExtraChargeRepsitory;
+import emmet.sales.order.repository.OrderInfoRepsitory;
+import emmet.sales.order.repository.OrderProductItemRepsitory;
+import emmet.sales.order.repository.OrderShippingRepsitory;
 import emmet.sales.order.repository.ProformaInvoiceVersionRepsitory;
 import emmet.sales.order.repository.SalesOrderRepsitory;
 
@@ -30,10 +34,17 @@ import emmet.sales.order.repository.SalesOrderRepsitory;
 public class SalesOrderService {
 
 	@Autowired
-	SalesOrderRepsitory salesOrderRepsitory;
-	
+	SalesOrderRepsitory salesOrderRepsitory;	
 	@Autowired
-	ProformaInvoiceVersionRepsitory proformaInvoiceVersionRepsitory;
+	ProformaInvoiceVersionRepsitory proformaInvoiceVersionRepsitory;	
+	@Autowired
+	OrderInfoRepsitory orderInfoRepsitory;
+	@Autowired
+	OrderExtraChargeRepsitory orderExtraChargeRepsitory;
+	@Autowired
+	OrderShippingRepsitory orderShippingRepsitory;
+	@Autowired
+	OrderProductItemRepsitory orderProductItemRepsitory;
 	
 	@Transactional
 	public Order createOrderByPIVersion(SalesOrderCreateModel model) throws Exception {
@@ -144,14 +155,26 @@ public class SalesOrderService {
 		if(dbOrder==null){
 			throw new DataNotFoundException("can not find Order");
 		}
-				
-		dbOrder.setInfo(order.getInfo());		
-		if(dbOrder.getInfo()!=null){
-			dbOrder.getInfo().setOrder(dbOrder);
-		}
 		
-		dbOrder.setOrderDate(order.getOrderDate());
 		
+		OrderInfo dbOrdInfo = dbOrder.getInfo();	
+		OrderInfo ordInfo = order.getInfo();		
+		dbOrdInfo.setContact(ordInfo.getContact());
+		dbOrdInfo.setCorporation(ordInfo.getCorporation());
+		dbOrdInfo.setCurrency(ordInfo.getCurrency());
+		dbOrdInfo.setCustomer(ordInfo.getCustomer());
+		dbOrdInfo.setCustomerDocumentId(ordInfo.getCustomerDocumentId());
+		dbOrdInfo.setDataEntryClerk(ordInfo.getDataEntryClerk());
+		dbOrdInfo.setDiscount(ordInfo.getDiscount());
+		dbOrdInfo.setSales(ordInfo.getSales());
+		dbOrdInfo.setShippingDate(ordInfo.getShippingDate());
+		dbOrdInfo.setTax(ordInfo.getTax());
+		dbOrdInfo.setWarranty(ordInfo.getWarranty());
+		
+						
+		//dbOrder.setOrderDate(order.getOrderDate());
+		
+		orderProductItemRepsitory.delete(dbOrder.getProductItems());
 		dbOrder.setProductItems(order.getProductItems());
 		if(dbOrder.getProductItems()!=null||!dbOrder.getProductItems().isEmpty()){
 			for(OrderProductItem productItem:dbOrder.getProductItems()){
@@ -159,11 +182,23 @@ public class SalesOrderService {
 			}
 		}
 		
-		dbOrder.setShipping(order.getShipping());
 		
+		OrderShipping dbShipping = dbOrder.getShipping();
+		OrderShipping ordShipping = order.getShipping();		
+		dbShipping.setFare(ordShipping.getFare());
+		dbShipping.setInfo(ordShipping.getInfo());
+		dbShipping.setTax(ordShipping.getTax());
+
+		
+		orderExtraChargeRepsitory.delete(dbOrder.getExtraCharges());
 		dbOrder.setExtraCharges(order.getExtraCharges());
+		if(dbOrder.getExtraCharges()!=null||!dbOrder.getExtraCharges().isEmpty()){
+			for(OrderExtraCharge ordExtraCharge:dbOrder.getExtraCharges()){
+				ordExtraCharge.setOrder(dbOrder);
+			}
+		}
 		
-		dbOrder.setCanceled(order.isCanceled());
+		//dbOrder.setCanceled(order.isCanceled());
 		
 		salesOrderRepsitory.save(dbOrder);
 		

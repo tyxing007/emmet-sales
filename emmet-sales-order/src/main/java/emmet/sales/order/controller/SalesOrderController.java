@@ -56,15 +56,16 @@ public class SalesOrderController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateOrder(@RequestBody  Order order,@PathVariable String id){
-				
+		
+		
 		try {
-			//order = salesOrderService.createOrderByPIVersion(model);
+			return ResponseEntity.ok(salesOrderService.updateOrder(order, id));
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
 			
-		return ResponseEntity.ok(order);
+		
 		
 	}
 
