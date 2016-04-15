@@ -102,7 +102,7 @@ public class SalesOrderService {
 				
 				OrderProductItem ordItem = new OrderProductItem();
 				ordItem.setCurrency(piProductItem.getCurrency());
-				ordItem.setMaterial(piProductItem.getMaterial());
+				ordItem.setProduct(piProductItem.getProduct());
 				ordItem.setNote1(piProductItem.getNote1());
 				ordItem.setNote2(piProductItem.getNote2());
 				ordItem.setNote3(piProductItem.getNote3());
