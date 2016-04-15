@@ -153,5 +153,5 @@ curl -iX POST -H "Content-Type: application/json" -d '{
     "currency" : {"id":"USD"}
   } ]
 }'
-http://api.mycompany.com/sales/order/orders/createFromPI
+http://api.mycompany.com/sales/order/orders/OD2016041502
 ```
