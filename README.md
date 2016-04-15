@@ -104,7 +104,7 @@ curl -iX POST -H "Content-Type: application/json" -d '{"piVersionId":"PI16031500
 http://api.mycompany.com/sales/order/orders/createFromPI
 ```
 
-### List sales order by id like
+### List sales orders by id like
 ***GET*** /sales/order/orders/search/findByIdLike{?id,page,size}
 
 Example:
