@@ -111,6 +111,18 @@ Example:
 http://api.mycompany.com/sales/order/orders/search/findByIdLike?id=0&page=0&size=4
 
 
+### List all sales order
+***GET*** /sales/order/orders/{?,page,size}
+
+Example:
+http://api.mycompany.com/sales/order/orders/?page=0&size=4
+
+### Get a sales order by id
+***GET*** /sales/order/orders/{id}
+
+Example:
+http://api.mycompany.com/sales/order/orders/OD2016041502
+
 ### Update a Sales Order
 Example:
 ```json

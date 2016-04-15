@@ -69,7 +69,6 @@ public class SalesOrderController {
 		
 	}
 
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<?> listAllOrders(Pageable page){
 				
