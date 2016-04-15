@@ -114,7 +114,7 @@ http://api.mycompany.com/sales/order/orders/search/findByIdLike?id=0&page=0&size
 ### Update a Sales Order
 Example:
 ```json
-curl -iX POST -H "Content-Type: application/json" -d '{
+curl -iX PUT -H "Content-Type: application/json" -d '{
   "info" : {
     "customerDocumentId" : "8888",
     "createDate":"2016-04-15T06:30:11.665+0000",
