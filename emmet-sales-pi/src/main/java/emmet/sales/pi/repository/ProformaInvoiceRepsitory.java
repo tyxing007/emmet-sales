@@ -17,15 +17,15 @@ public interface ProformaInvoiceRepsitory extends PagingAndSortingRepository<Pro
 	@Query("SELECT pi FROM ProformaInvoice pi INNER JOIN pi.finalVersion piv WHERE piv.info.sales.id = :id ORDER BY piv.info.createDate DESC")
 	Page<ProformaInvoice> findBySales(@Param("id") String id, Pageable page);
 
+
+	
 	@Modifying
 	@Query("update ProformaInvoice pi set pi.finalVersion.id = :versionId where pi.id = :proformaInvoiceId")
 	int setFinalVersion(@Param("proformaInvoiceId") String proformaInvoiceId, @Param("versionId") String versionId);
 
-	@Modifying
-	@Query("update ProformaInvoice pi set pi.status = '" + ProformainvoiceStatus.CONFIRMED + "' where pi.id = ?1")
-	int setConfirmed(String proformaInvoiceId);
+//	@Modifying
+//	@Query("update ProformaInvoice pi set pi.status = '" + ProformainvoiceStatus.CONFIRMED + "' where pi.id = ?1")
+//	int setConfirmed(String proformaInvoiceId);
 
-	@Query("SELECT pi FROM ProformaInvoice pi INNER JOIN pi.finalVersion piv WHERE piv.info.sales.id = :id AND pi.status = :status ORDER BY piv.info.createDate DESC")
-	Page<ProformaInvoice> findBySalesAndStatus(@Param("id") String id, @Param("status") String status, Pageable page);
 
 }

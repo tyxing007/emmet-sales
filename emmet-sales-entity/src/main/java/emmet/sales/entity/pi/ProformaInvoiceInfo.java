@@ -66,6 +66,8 @@ public class ProformaInvoiceInfo implements Serializable {
 
 	private BigDecimal discount;
 
+	private String status;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -187,4 +189,13 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.discount = discount;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	
 }

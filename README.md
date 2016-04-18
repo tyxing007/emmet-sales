@@ -61,15 +61,26 @@ Example:
 curl -iX PUT \
 http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/setFinalVersion?version=PI0603020001-1
 ```
-#### Set confirmed
+#### Set version status
 
-***PUT*** /sales/proformaInvoice/proformaInvoices/{id}/setConfirmed
+***PUT*** /sales/proformaInvoice/proformaInvoices/versions/{id}/setStatus
 
 Example:
 ```
-curl -iX PUT \
-http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/setConfirmed
+curl -iX PUT -H "Content-Type: application/json" -d '{"status":"INITIALIZED"}'
+http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/versions/PI1604140022-4/setStatus
+
+
+the status could be 
+* INITIALIZED
+* PROCESSING
+* CONFIRMED
+* ABANDONED
+
 ```
+
+
+
 
 ### Get data
 #### Find one by its ID
@@ -83,13 +94,9 @@ http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/set
 
 ***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{?id}
 
-#### Find by sales ID within status
-***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{?id, status}
 
-the status could be empty or
-* PROCESSING
-* CONFIRMED
-* ABANDONED
+
+
 
 
 #### Find by Order ID

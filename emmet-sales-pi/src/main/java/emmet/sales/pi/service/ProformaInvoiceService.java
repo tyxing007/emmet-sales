@@ -19,14 +19,14 @@ import emmet.sales.entity.pi.ProformaInvoiceProductItem;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
+import emmet.sales.pi.model.SetStatusModel;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
 
 @Service
 public class ProformaInvoiceService {
 
-	@Autowired
-	ProformaInvoiceRepsitory proformaInvoiceRepsitory;
+
 
 	@Autowired
 	ProformaInvoiceRepsitory proformaInvoiceRepository;
@@ -38,7 +38,7 @@ public class ProformaInvoiceService {
 	public ProformaInvoice createProformaInvoice(ProformaInvoiceVersion thisVersion) {
 
 		ProformaInvoice newProformaInvoice = new ProformaInvoice();
-		newProformaInvoice.setStatus(ProformainvoiceStatus.PROCESSING);
+		thisVersion.setStatus(ProformainvoiceStatus.PROCESSING.getName());
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		persistNewVersion(thisVersion, newProformaInvoice);
 		return thisVersion.getProformaInvoice();
@@ -49,14 +49,14 @@ public class ProformaInvoiceService {
 	public ProformaInvoice updateProformaInvoice(ProformaInvoiceVersion thisVersion, String id)
 			throws OperationNotPermitException, DataNotFoundException {
 
-		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
+		ProformaInvoice proformaInvoice = proformaInvoiceRepository.findOne(id);
 		if (proformaInvoice == null) {
 			throw new DataNotFoundException("Can not find the proforma invoice, ID:" + id);
 		}
 
 		thisVersion.setProformaInvoice(proformaInvoice);
 
-		if (! ProformainvoiceStatus.PROCESSING.equals(proformaInvoice.getStatus())) {
+		if (! ProformainvoiceStatus.PROCESSING.getName().equals(thisVersion.getStatus())) {
 			throw new OperationNotPermitException("This proforma invoice had comfirmed, you can not modify it.");
 		}
 
@@ -77,6 +77,7 @@ public class ProformaInvoiceService {
 		thisVersion.setVersionSequence(getNextVersionSequence(proformaInvoice.getId()));
 		thisVersion.setId(getNewVersionId(proformaInvoice.getId()));
 
+		
 		thisVersion = linkAssociationEntities(thisVersion);
 
 		thisVersion = proformaInvoiceVersionRepsitory.save(thisVersion);
@@ -161,6 +162,34 @@ public class ProformaInvoiceService {
 		
 		return version;
 
+	}
+	
+	@Transactional
+	public ProformaInvoiceVersion setVersionStatus(String versionId,SetStatusModel model) throws DataNotFoundException{
+		
+		ProformaInvoiceVersion piVersion = proformaInvoiceVersionRepsitory.findOne(versionId);
+		
+		if(piVersion == null){
+			throw new DataNotFoundException("can not find pi version by id");
+		}
+		
+		//check if status is legal
+		boolean isSatusLegal = false;
+		
+		for(ProformainvoiceStatus pvStatus:ProformainvoiceStatus.values()){
+			if(pvStatus.getName().equals(model.getStatus())){
+				isSatusLegal = true;
+				break;
+			}
+		}
+			
+		if(!isSatusLegal){
+			throw new DataNotFoundException("status is error");
+		} 
+		
+		piVersion.setStatus(model.getStatus());		
+		proformaInvoiceVersionRepsitory.save(piVersion);
+		return piVersion;
 	}
 
 }

@@ -25,6 +25,7 @@ import emmet.sales.pi.domain.ProformaInvoiceResource;
 import emmet.sales.pi.domain.ProformaInvoiceResourceAssembler;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
+import emmet.sales.pi.model.SetStatusModel;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
 import emmet.sales.pi.service.ProformaInvoiceService;
@@ -77,14 +78,11 @@ public class ProformaInvoiceController {
 	}
 
 	@RequestMapping(value = "/search/findBySales", method = RequestMethod.GET)
-	public ResponseEntity<?> findProformaInvoiceBySels(@RequestParam("id") String id,
-			@RequestParam(name = "status", required = false) String status, Pageable page) {
+	public ResponseEntity<?> findProformaInvoiceBySels(@RequestParam("id") String id, Pageable page) {
 		Page<ProformaInvoice> proformaInvoicePage = null;
-		if (status == null) {
-			proformaInvoicePage = proformaInvoiceRepsitory.findBySales(id, page);
-		} else{
-			proformaInvoicePage = proformaInvoiceRepsitory.findBySalesAndStatus(id, status, page);
-		}
+		
+		proformaInvoicePage = proformaInvoiceRepsitory.findBySales(id, page);
+
 		List<ProformaInvoiceResource> resources = proformaInvoiceResourceAssembler
 				.toResources(proformaInvoicePage.getContent());
 		Page<ProformaInvoiceResource> resultPage = new PageImpl<ProformaInvoiceResource>(resources, page,
@@ -160,21 +158,21 @@ public class ProformaInvoiceController {
 
 	}
 
-	@Transactional
-	@RequestMapping(value = "/{id}/setConfirmed", method = RequestMethod.PUT)
-	public ResponseEntity<?> confirm(@PathVariable String id) {
-
-		int recordsCount = proformaInvoiceRepsitory.setConfirmed(id);
-
-		if (recordsCount == 0) {
-			return new ResponseEntity<String>("Can't set confirmed, the id may invalid.", HttpStatus.NOT_FOUND);
-
-		} else if (recordsCount != 1) {
-			throw new RuntimeException("There are troubles!");
-		}
-
-		return ResponseEntity.ok("The proforma invoice is confirmed.");
-	}
+//	@Transactional
+//	@RequestMapping(value = "/{id}/setConfirmed", method = RequestMethod.PUT)
+//	public ResponseEntity<?> confirm(@PathVariable String id) {
+//
+//		int recordsCount = proformaInvoiceRepsitory.setConfirmed(id);
+//
+//		if (recordsCount == 0) {
+//			return new ResponseEntity<String>("Can't set confirmed, the id may invalid.", HttpStatus.NOT_FOUND);
+//
+//		} else if (recordsCount != 1) {
+//			throw new RuntimeException("There are troubles!");
+//		}
+//
+//		return ResponseEntity.ok("The proforma invoice is confirmed.");
+//	}
 	
 	@RequestMapping(value = "/versions/search/findByOrder", method = RequestMethod.GET)
 	public ResponseEntity<?> findProformaInvoiceByOrderId(@RequestParam("id") String id) {
@@ -189,6 +187,21 @@ public class ProformaInvoiceController {
 
 		return ResponseEntity.ok(piVersion);
 
+	}
+	
+	@RequestMapping(value="/versions/{versionId}/setStatus",method=RequestMethod.PUT)
+	public ResponseEntity<?> setProformaInvoiceVersion(@RequestBody SetStatusModel model,@PathVariable String versionId){
+		
+		ProformaInvoiceVersion piVersion = null;
+		
+		try {
+			piVersion = proformaInvoiceService.setVersionStatus(versionId, model);
+		} catch (DataNotFoundException e) {
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.NOT_FOUND);
+		}
+				
+		return ResponseEntity.ok(piVersion);
 	}
 
 }

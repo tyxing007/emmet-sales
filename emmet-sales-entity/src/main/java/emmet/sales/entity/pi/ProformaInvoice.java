@@ -32,8 +32,6 @@ public class ProformaInvoice implements Serializable {
 	@OneToOne
 	private ProformaInvoiceVersion finalVersion;
 
-	private String status;
-
 	public String getId() {
 		return id;
 	}
@@ -59,19 +57,25 @@ public class ProformaInvoice implements Serializable {
 		this.finalVersion = finalVersion;
 	}
 
-	public String getStatus() {
-		return status;
-	}
+	public enum ProformainvoiceStatus {
+		
+		INITIALIZED("INITIALIZED"),PROCESSING("PROCESSING"),CONFIRMED("CONFIRMED"),ABANDONED("ABANDONED");
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+		private String name;
+		
+		private ProformainvoiceStatus(String name){
+			this.name=name;
+		}
 
-	public class ProformainvoiceStatus {
+		public String getName() {
+			return name;
+		}
 
-		public static final String PROCESSING = "PROCESSING";
-		public static final String CONFIRMED = "CONFIRMED";
-		public static final String ABANDONED = "ABANDONED";
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		
 	}
 
 }

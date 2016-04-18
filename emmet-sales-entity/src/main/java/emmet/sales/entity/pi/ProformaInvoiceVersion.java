@@ -33,6 +33,8 @@ public class ProformaInvoiceVersion implements Serializable {
 	private ProformaInvoice proformaInvoice;
 
 
+	private String status;
+	
 	private Integer versionSequence;
 
 
@@ -139,4 +141,14 @@ public class ProformaInvoiceVersion implements Serializable {
 		this.order = order;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	
+	
 }
