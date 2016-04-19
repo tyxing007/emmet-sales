@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -29,8 +28,7 @@ public class ProformaInvoice implements Serializable {
 	@OneToMany(mappedBy = "proformaInvoice", cascade = CascadeType.ALL)
 	private List<ProformaInvoiceVersion> versions;
 
-	@OneToOne
-	private ProformaInvoiceVersion finalVersion;
+	
 
 	public String getId() {
 		return id;
@@ -49,13 +47,6 @@ public class ProformaInvoice implements Serializable {
 		this.versions = versions;
 	}
 
-	public ProformaInvoiceVersion getFinalVersion() {
-		return finalVersion;
-	}
-
-	public void setFinalVersion(ProformaInvoiceVersion finalVersion) {
-		this.finalVersion = finalVersion;
-	}
 
 	public enum ProformainvoiceStatus {
 		

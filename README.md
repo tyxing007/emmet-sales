@@ -53,14 +53,6 @@ The format is same to create. Every time update a proforma invoice there creates
 
 To modify a customer of a proforma invoice is not permitted.
 
-#### Set final version
-***PUT*** /sales/proformaInvoice/proformaInvoices/{id}/setFinalVersion?{version}
-
-Example:
-```
-curl -iX PUT \
-http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI0603020001/setFinalVersion?version=PI0603020001-1
-```
 #### Set version status
 
 ***PUT*** /sales/proformaInvoice/proformaInvoices/versions/{id}/setStatus
@@ -90,10 +82,12 @@ the status could be
 ***GET*** /sales/proformaInvoice/proformaInvoices/{id}/versions/{versionId}
 
 
-#### Find by sales ID
+#### List by sales ID
 
-***GET*** /sales/proformaInvoice/proformaInvoices/search/findBySales{?id}
+***GET*** /sales/proformaInvoice/proformaInvoices/list/filterBySalesAndPiLike{?piId,salesId,size,page}
 
+Example:
+http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/list/filterBySalesAndPiLike?piId=05&salesId=admin
 
 
 

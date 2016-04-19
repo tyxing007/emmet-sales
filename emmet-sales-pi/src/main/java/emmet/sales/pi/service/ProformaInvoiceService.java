@@ -3,10 +3,14 @@ package emmet.sales.pi.service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ import emmet.sales.entity.pi.ProformaInvoiceProductItem;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
+import emmet.sales.pi.model.ProformaInvoiceModel;
 import emmet.sales.pi.model.SetStatusModel;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
@@ -60,11 +65,6 @@ public class ProformaInvoiceService {
 			throw new OperationNotPermitException("This proforma invoice had comfirmed, you can not modify it.");
 		}
 
-		if (!thisVersion.getInfo().getCustomer().getId()//
-				.equals(proformaInvoice.getFinalVersion().getInfo().getCustomer().getId())) {
-			throw new OperationNotPermitException("Modify the customer of an invoice is not permited.");
-		}
-
 		persistNewVersion(thisVersion, proformaInvoice);
 		return thisVersion.getProformaInvoice();
 	}
@@ -83,8 +83,8 @@ public class ProformaInvoiceService {
 		thisVersion = proformaInvoiceVersionRepsitory.save(thisVersion);
 		saveSnapshoot(thisVersion);
 
-		// Setting up the version
-		proformaInvoice.setFinalVersion(thisVersion);
+
+
 		proformaInvoiceRepository.save(proformaInvoice);
 
 		return thisVersion;
@@ -190,6 +190,32 @@ public class ProformaInvoiceService {
 		piVersion.setStatus(model.getStatus());		
 		proformaInvoiceVersionRepsitory.save(piVersion);
 		return piVersion;
+	}
+	
+	
+	public Page<ProformaInvoiceModel> getPiList(String piId,String salesId,Pageable page){
+		
+		Page<ProformaInvoice> piList= proformaInvoiceRepository.findBySales(piId, salesId, page);
+		
+		List<ProformaInvoiceModel> resultList = new ArrayList<ProformaInvoiceModel>();
+
+		for(ProformaInvoice pi:piList){
+			ProformaInvoiceModel pim = new ProformaInvoiceModel();
+			pim.setProformaInvoice(pi);
+			pim.setFinalVersion(proformaInvoiceVersionRepsitory.findFirstByProformaInvoiceIdOrderByIdDesc(pi.getId()));
+			if(proformaInvoiceVersionRepsitory.findVersionOrderCount(piId)>0){
+				pim.setHasOrder(true);
+			}else{
+				pim.setHasOrder(false);
+			}
+						
+			resultList.add(pim);
+		}	
+		
+		Page<ProformaInvoiceModel> resultPage = new PageImpl<ProformaInvoiceModel>(resultList, page,
+				piList.getTotalElements());
+		
+		return resultPage;
 	}
 
 }

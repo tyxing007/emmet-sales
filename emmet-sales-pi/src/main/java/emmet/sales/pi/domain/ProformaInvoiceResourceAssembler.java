@@ -18,7 +18,6 @@ public class ProformaInvoiceResourceAssembler
 		ProformaInvoiceResource resource = createResourceWithId(entity.getId(), entity);
 
 		resource.setInvoiceId(entity.getId());
-		resource.setFinalVersion(entity.getFinalVersion());
 		resource.add(new Link(resource.getId().getHref()+"/versions").withRel("versions"));
 
 		return resource;
