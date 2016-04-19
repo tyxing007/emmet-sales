@@ -68,7 +68,7 @@ public class ProformaInvoiceController {
 	public ResponseEntity<?> getProformaInvoice(@PathVariable String id) {
 		ProformaInvoice proformaInvoice = proformaInvoiceRepsitory.findOne(id);
 		if (proformaInvoice == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("cannot find proformaInvoice",HttpStatus.NOT_FOUND);
 		}
 
 		ProformaInvoiceResource resource = proformaInvoiceResourceAssembler.toResource(proformaInvoice);
@@ -94,8 +94,7 @@ public class ProformaInvoiceController {
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveProformaInvoice(@RequestBody ProformaInvoiceVersion invoice) {
 
-		return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.createProformaInvoice(invoice),
-				HttpStatus.CREATED);
+		return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(invoice),HttpStatus.CREATED);
 
 	}
 
@@ -106,6 +105,24 @@ public class ProformaInvoiceController {
 		try {
 
 			return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.updateProformaInvoice(invoice, id),
+					HttpStatus.CREATED);
+
+		} catch (OperationNotPermitException e) {
+
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		} catch (DataNotFoundException e) {
+
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+	
+	@RequestMapping(value = "/{id}/copyFrom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> generateFromProformaInvoice(@PathVariable String versionId) {
+
+		try {
+
+			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.generateNewProformaInvoiceVersion(versionId),
 					HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {
@@ -132,39 +149,7 @@ public class ProformaInvoiceController {
 
 	}
 
-//	@Transactional
-//	@RequestMapping(value = "/{id}/setFinalVersion", method = RequestMethod.PUT)
-//	public ResponseEntity<?> updateFinalVersion(@PathVariable String id, @RequestParam("version") String versionId) {
-//
-//		int recordsCount = proformaInvoiceRepsitory.setFinalVersion(id, versionId);
-//		if (recordsCount == 0) {
-//			return new ResponseEntity<String>("Set final version fail, the id or version may invalid.",
-//					HttpStatus.NOT_FOUND);
-//
-//		} else if (recordsCount != 1) {
-//			throw new RuntimeException("There are troubles!");
-//		}
-//
-//		return ResponseEntity.ok("The final version setted.");
-//
-//	}
 
-//	@Transactional
-//	@RequestMapping(value = "/{id}/setConfirmed", method = RequestMethod.PUT)
-//	public ResponseEntity<?> confirm(@PathVariable String id) {
-//
-//		int recordsCount = proformaInvoiceRepsitory.setConfirmed(id);
-//
-//		if (recordsCount == 0) {
-//			return new ResponseEntity<String>("Can't set confirmed, the id may invalid.", HttpStatus.NOT_FOUND);
-//
-//		} else if (recordsCount != 1) {
-//			throw new RuntimeException("There are troubles!");
-//		}
-//
-//		return ResponseEntity.ok("The proforma invoice is confirmed.");
-//	}
-	
 	@RequestMapping(value = "/versions/search/findByOrder", method = RequestMethod.GET)
 	public ResponseEntity<?> findProformaInvoiceByOrderId(@RequestParam("id") String id) {
 

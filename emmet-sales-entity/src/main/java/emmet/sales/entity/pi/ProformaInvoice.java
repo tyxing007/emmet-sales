@@ -50,7 +50,8 @@ public class ProformaInvoice implements Serializable {
 
 	public enum ProformainvoiceStatus {
 		
-		INITIALIZED("INITIALIZED"),PROCESSING("PROCESSING"),CONFIRMED("CONFIRMED"),ABANDONED("ABANDONED");
+		INITIALIZED("INITIALIZED"),PROCESSING("PROCESSING"),CONFIRMED("CONFIRMED"),
+		ABANDONED("ABANDONED"),ORDERED("ORDERED");
 
 		private String name;
 		

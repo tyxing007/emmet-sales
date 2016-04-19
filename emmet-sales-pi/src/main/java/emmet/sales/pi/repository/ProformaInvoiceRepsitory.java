@@ -17,19 +17,8 @@ public interface ProformaInvoiceRepsitory extends PagingAndSortingRepository<Pro
 			+ "select v.proformaInvoice.id from ProformaInvoiceVersion v "
 			+ "where v.proformaInvoice.id like %:piId% "
 			+ "and v.info.sales.id = :salesId group by v.proformaInvoice.id"
-			+ ")")
+			+ ") order by pi.id desc")
 	Page<ProformaInvoice> findBySales(@Param("piId") String piId, @Param("salesId") String salesId, Pageable page);
-
-
-		
-	
-//	@Modifying
-//	@Query("update ProformaInvoice pi set pi.finalVersion.id = :versionId where pi.id = :proformaInvoiceId")
-//	int setFinalVersion(@Param("proformaInvoiceId") String proformaInvoiceId, @Param("versionId") String versionId);
-
-//	@Modifying
-//	@Query("update ProformaInvoice pi set pi.status = '" + ProformainvoiceStatus.CONFIRMED + "' where pi.id = ?1")
-//	int setConfirmed(String proformaInvoiceId);
 
 
 }

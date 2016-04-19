@@ -1,5 +1,15 @@
 # emmet-sales
 ## Proforma Invoice
+
+### Create a new Proforma Invoice Version By Proforma Invoice Version id
+Example:
+```json
+curl -iX POST -H "Content-Type: application/json" -d '' 
+http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI1604190016-1/copyFrom
+```
+
+
+
 ### Create a new Proforma Invoice
 Example:
 ```json
@@ -88,9 +98,6 @@ the status could be
 
 Example:
 http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/list/filterBySalesAndPiLike?piId=05&salesId=admin
-
-
-
 
 
 #### Find by Order ID

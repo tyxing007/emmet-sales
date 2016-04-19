@@ -148,7 +148,7 @@ public class SalesOrderService {
 	}
 	
 	@Transactional
-	public Order updateOrder(Order order,String id) throws Exception{
+	public Order updateOrder(Order order,String id) throws DataNotFoundException{
 		
 		Order dbOrder = salesOrderRepsitory.findOne(id);
 		
