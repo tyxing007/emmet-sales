@@ -345,6 +345,7 @@ public class ProformaInvoiceService {
 			ProformaInvoiceModel pim = new ProformaInvoiceModel();
 			pim.setProformaInvoice(pi);
 			pim.setFinalVersion(proformaInvoiceVersionRepsitory.findFirstByProformaInvoiceIdOrderByIdDesc(pi.getId()));
+
 			pim.setHasOrder(checkPIhasOrder(pi));	
 						
 			resultList.add(pim);
