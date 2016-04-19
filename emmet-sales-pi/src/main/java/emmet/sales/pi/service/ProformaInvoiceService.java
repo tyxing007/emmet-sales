@@ -203,7 +203,7 @@ public class ProformaInvoiceService {
 			ProformaInvoiceModel pim = new ProformaInvoiceModel();
 			pim.setProformaInvoice(pi);
 			pim.setFinalVersion(proformaInvoiceVersionRepsitory.findFirstByProformaInvoiceIdOrderByIdDesc(pi.getId()));
-			if(proformaInvoiceVersionRepsitory.findVersionOrderCount(piId)>0){
+			if(proformaInvoiceVersionRepsitory.findVersionOrderCount(pi.getId())>0){
 				pim.setHasOrder(true);
 			}else{
 				pim.setHasOrder(false);
