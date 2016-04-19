@@ -22,7 +22,7 @@ public interface ProformaInvoiceVersionRepsitory extends PagingAndSortingReposit
 	
 	ProformaInvoiceVersion findFirstByProformaInvoiceIdOrderByIdDesc(String id);
 	
-	@Query("select count(piv) from ProformaInvoiceVersion piv where piv.id=:id and piv.order.id is not null")
+	@Query("select count(piv) from ProformaInvoiceVersion piv where piv.proformaInvoice.id=:id and piv.order.id is not null")
 	Integer findVersionOrderCount(@Param("id") String id );
 	
 	
