@@ -98,7 +98,7 @@ public class ProformaInvoiceController {
 
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/versions/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateProformaInvoice(@PathVariable String id,
 			@RequestBody ProformaInvoiceVersion invoice) {
 
@@ -117,7 +117,7 @@ public class ProformaInvoiceController {
 
 	}
 	
-	@RequestMapping(value = "/{id}/copyFrom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/versions/{id}/copyFrom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> generateFromProformaInvoice(@PathVariable String versionId) {
 
 		try {

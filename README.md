@@ -5,7 +5,7 @@
 Example:
 ```json
 curl -iX POST -H "Content-Type: application/json" -d '' 
-http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/PI1604190016-1/copyFrom
+http://api.mycompany.com/sales/proformaInvoice/proformaInvoices/versions/PI1604190016-1/copyFrom
 ```
 
 
@@ -57,7 +57,7 @@ curl -iX POST -H "Content-Type: application/json" -d '
 ```
 If you'd like to put the JSON to the notes fields, escape the quotes, make it like common string.
 ### Update
-***PUT*** /sales/proformaInvoice/proformaInvoices/{id}
+***PUT*** /sales/proformaInvoice/proformaInvoices/versions/{id}
 
 The format is same to create. Every time update a proforma invoice there creates a new version instead, and it becomes the final version automatically. The old version could find and set it to final version again.
 
