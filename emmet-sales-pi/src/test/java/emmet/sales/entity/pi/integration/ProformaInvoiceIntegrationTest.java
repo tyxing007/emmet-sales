@@ -55,6 +55,7 @@ public class ProformaInvoiceIntegrationTest {
 	@Test
 	public void savePiTest() throws Exception {
 		String id = "PI" + dateInString + "0001";
+		String versionId = id+"-1";
 		String requestBody = "{" + //
 				"\"extraCharges\":[{\"itemName\":\"Foo\",\"price\":100.5,\"tax\":5}]," + //
 				"\"productItems\":[{\"product\":{\"id\":\"0000-0001\"}, " + //
@@ -74,41 +75,33 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(post("/proformaInvoices").contentType(MediaType.APPLICATION_JSON_VALUE)//
 				.content(requestBody))//
-				.andDo(print()).andExpect(status().isCreated()).andExpect(jsonPath("id", equalTo(id)));//
+				.andDo(print())
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("id", equalTo(versionId)))
+				.andExpect(jsonPath("proformaInvoice.id", equalTo(id)));//
 
 		this.mvc.perform(get("/proformaInvoices"))//
 				.andDo(print()).andExpect(status().isOk())//
 				.andExpect(jsonPath("content[0].id", equalTo(id)));
 
-		this.mvc.perform(get("/proformaInvoices/" + id))//
+		this.mvc.perform(get("/proformaInvoices/"+id+"/versions/" + versionId))//
 				.andDo(print()).andExpect(status().isOk())//
-				.andExpect(jsonPath("id", equalTo(id)));//
-//				.andExpect(jsonPath("finalVersion.status", equalTo("PROCESSING")))//
-//				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-1")))//
-//				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
-//				.andExpect(jsonPath("finalVersion.info.proformaInvoiceDate", equalTo("2016-01-01")))//
-//				.andExpect(jsonPath("finalVersion.info.sales.id", equalTo("EM001")))//
-//				.andExpect(jsonPath("finalVersion.info.contact.id", equalTo(1)))//
-//				.andExpect(jsonPath("finalVersion.info.contact.firstName", equalTo("John")))//
-//				.andExpect(jsonPath("finalVersion.info.shippingDate", equalTo("2016-03-01")))//
-//				.andExpect(jsonPath("finalVersion.info.customer.id", equalTo("AU00000001")))//
-//				.andExpect(jsonPath("finalVersion.info.corporation.id", equalTo(10)))//
-//				.andExpect(jsonPath("finalVersion.info.customerDocumentId", equalTo("8888")))//
-//				//
-//				.andExpect(jsonPath("finalVersion.shipping.fare", equalTo(10.5)))//
-//				.andExpect(jsonPath("finalVersion.shipping.tax", equalTo(0.1)))//
-//				.andExpect(jsonPath("finalVersion.shipping.info", equalTo("TNT, ASAP")))//
-//				//
-//				.andExpect(jsonPath("finalVersion.extraCharges[0].itemName", equalTo("Foo")))//
-//				.andExpect(jsonPath("finalVersion.extraCharges[0].price", equalTo(100.5)))//
-//				.andExpect(jsonPath("finalVersion.extraCharges[0].tax", equalTo(5.0)))//
-//				//
-//				.andExpect(jsonPath("finalVersion.productItems[0].product.id", equalTo("0000-0001")))//
-//				.andExpect(jsonPath("finalVersion.productItems[0].product.name", equalTo("Bar")))//
-//				.andExpect(jsonPath("finalVersion.productItems[0].unit", equalTo("PCS")))//
-//				.andExpect(jsonPath("finalVersion.productItems[0].quantity", equalTo(1)))//
-//				.andExpect(jsonPath("finalVersion.productItems[0].unitPrice", equalTo(100.5)))//
-//				.andExpect(jsonPath("finalVersion.productItems[0].currency.id", equalTo("USD")));//
+				.andExpect(jsonPath("id", equalTo(versionId)))
+				.andExpect(jsonPath("status", equalTo("PROCESSING")))
+				.andExpect(jsonPath("versionSequence", equalTo(1)))
+				.andExpect(jsonPath("info.customerDocumentId", equalTo("8888")))
+				.andExpect(jsonPath("info.proformaInvoiceDate", equalTo("2016-01-01")))
+				.andExpect(jsonPath("info.contact.id", equalTo(1)))
+				.andExpect(jsonPath("info.shippingDate", equalTo("2016-03-01")))
+				.andExpect(jsonPath("info.sales.id", equalTo("EM001")))
+				.andExpect(jsonPath("info.corporation.id", equalTo(10)))
+				.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo")))
+				.andExpect(jsonPath("shipping.info", equalTo("TNT, ASAP")))
+				.andExpect(jsonPath("productItems[0].quantity", equalTo(1)))
+				.andExpect(jsonPath("productItems[0].note1", equalTo("123")))
+				.andExpect(jsonPath("productItems[0].currency.id", equalTo("USD")))
+				;//
+
 
 		// Modify
 		String requestBody2 = "{" + //
@@ -120,8 +113,11 @@ public class ProformaInvoiceIntegrationTest {
 				"\"customer\":{\"id\":\"AU00000001\"}" + //
 				"}}";
 
-		this.mvc.perform(put("/proformaInvoices/" + id).contentType(MediaType.APPLICATION_JSON_VALUE)//
-				.content(requestBody2))//
+		this.mvc.perform(
+				put("/proformaInvoices/versions/" + versionId)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)//
+				.content(requestBody2)
+				)//
 				.andDo(print()).andExpect(status().isCreated());//
 
 		this.mvc.perform(get("/proformaInvoices/" + id))//

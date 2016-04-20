@@ -55,8 +55,8 @@ public class ProformaInvoiceService {
 		ProformaInvoice newProformaInvoice = new ProformaInvoice();
 		thisVersion.setStatus(ProformainvoiceStatus.PROCESSING.getName());
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
-		persistNewVersion(thisVersion, newProformaInvoice);
-		return thisVersion;
+		ProformaInvoiceVersion returnVersion = persistNewVersion(thisVersion, newProformaInvoice);
+		return returnVersion;
 
 	}
 
@@ -133,10 +133,10 @@ public class ProformaInvoiceService {
 			}
 		}				
 		newVersion.setExtraCharges(newExtraCharges);
-
+		newVersion.setStatus(ProformainvoiceStatus.PROCESSING.getName());
 								
 		persistNewVersion(newVersion, thisVersion.getProformaInvoice());
-		return thisVersion;
+		return newVersion;
 	}
 
 	private ProformaInvoiceVersion persistNewVersion(ProformaInvoiceVersion thisVersion,
@@ -168,7 +168,7 @@ public class ProformaInvoiceService {
 
 	
 	@Transactional
-	public ProformaInvoice updateProformaInvoice(ProformaInvoiceVersion thisVersion, String pivId)
+	public ProformaInvoiceVersion updateProformaInvoiceVersion(ProformaInvoiceVersion thisVersion, String pivId)
 			throws OperationNotPermitException, DataNotFoundException {
 
 		ProformaInvoiceVersion piv = proformaInvoiceVersionRepsitory.findOne(pivId);
@@ -177,13 +177,13 @@ public class ProformaInvoiceService {
 		}
 
 		
-
 		if (! ProformainvoiceStatus.PROCESSING.getName().equals(piv.getStatus())) {
 			throw new OperationNotPermitException("This proforma invoice is read only, you can not modify it.");
 		}
 
-		persistVersion(thisVersion, piv);
-		return thisVersion.getProformaInvoice();
+	
+		
+		return persistVersion(thisVersion, piv);
 	}
 	
 	private ProformaInvoiceVersion persistVersion(ProformaInvoiceVersion thisVersion,
@@ -214,28 +214,39 @@ public class ProformaInvoiceService {
 		shipping.setInfo(thisShipping.getInfo());
 		shipping.setTax(thisShipping.getTax());
 		
-		proformaInvoiceProductItemRepository.delete(dbVersion.getProductItems());
+		List<ProformaInvoiceProductItem> dbProductItems =dbVersion.getProductItems();
+		proformaInvoiceProductItemRepository.deleteInBatch(dbProductItems);
+				
 		dbVersion.setProductItems(thisVersion.getProductItems());
+		
 		if(dbVersion.getProductItems()!=null||!dbVersion.getProductItems().isEmpty()){
 			for(ProformaInvoiceProductItem productItem:dbVersion.getProductItems()){
 				productItem.setVersion(dbVersion);
+				proformaInvoiceProductItemRepository.save(productItem);
 			}
+
 		}
 		
+			
+		
+		List<ProformaInvoiceExtraCharge> dbExtraCharges = dbVersion.getExtraCharges();
+		proformaInvoiceExtraChargeRepository.deleteInBatch(dbExtraCharges);	
 
-		proformaInvoiceExtraChargeRepository.delete(dbVersion.getExtraCharges());
 		dbVersion.setExtraCharges(thisVersion.getExtraCharges());
+
 		if(dbVersion.getExtraCharges()!=null||!dbVersion.getExtraCharges().isEmpty()){
 			for(ProformaInvoiceExtraCharge extraCharge:dbVersion.getExtraCharges()){
 				extraCharge.setVersion(dbVersion);
+				proformaInvoiceExtraChargeRepository.save(extraCharge);
 			}
+			
 		}
 		
-		thisVersion = proformaInvoiceVersionRepsitory.save(thisVersion);
-		saveSnapshoot(thisVersion);
+		proformaInvoiceVersionRepsitory.save(dbVersion);
+		saveSnapshoot(dbVersion);
 
 
-		return thisVersion;
+		return dbVersion;
 	}
 	
 	private void saveSnapshoot(ProformaInvoiceVersion piVersion) {

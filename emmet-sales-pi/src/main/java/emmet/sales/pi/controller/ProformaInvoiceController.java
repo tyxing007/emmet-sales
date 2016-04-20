@@ -104,7 +104,7 @@ public class ProformaInvoiceController {
 
 		try {
 
-			return new ResponseEntity<ProformaInvoice>(proformaInvoiceService.updateProformaInvoice(invoice, id),
+			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(invoice, id),
 					HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {
@@ -117,7 +117,7 @@ public class ProformaInvoiceController {
 
 	}
 	
-	@RequestMapping(value = "/versions/{id}/copyFrom", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/versions/{versionId}/copyFrom", method = RequestMethod.POST)
 	public ResponseEntity<?> generateFromProformaInvoice(@PathVariable String versionId) {
 
 		try {

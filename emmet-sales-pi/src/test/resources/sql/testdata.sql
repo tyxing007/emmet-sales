@@ -2,7 +2,6 @@ DELETE FROM sales_proforma_invoice_shipping;
 DELETE FROM sales_proforma_invoice_products;
 DELETE FROM sales_proforma_invoice_info;
 DELETE FROM sales_proforma_invoice_extra_charge;
-UPDATE sales_proforma_invoice SET final_version_id = null;
 DELETE FROM sales_proforma_invoice_versions;
 DELETE FROM sales_proforma_invoice;
 

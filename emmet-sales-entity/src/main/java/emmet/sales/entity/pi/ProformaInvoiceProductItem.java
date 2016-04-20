@@ -11,16 +11,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import emmet.core.data.entity.Currency;
-import emmet.core.data.entity.Material;
 import emmet.core.data.entity.Product;
 
 @Entity
-@Table(name = "sales_proforma_invoice_products")
+@Table(name = "sales_proforma_invoice_products", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "proforma_invoice_version_id", "product_id" })})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProformaInvoiceProductItem implements Serializable {
 	private static final long serialVersionUID = 1L;;
