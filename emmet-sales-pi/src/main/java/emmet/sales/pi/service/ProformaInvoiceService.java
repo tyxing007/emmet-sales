@@ -315,7 +315,7 @@ public class ProformaInvoiceService {
 			throw new DataNotFoundException("can not find pi version by id");
 		}
 		
-		//check if status is legal
+		//check if status is legal 
 		boolean isSatusLegal = false;
 		
 		for(ProformainvoiceStatus pvStatus:ProformainvoiceStatus.values()){

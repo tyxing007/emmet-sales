@@ -78,6 +78,7 @@ the status could be
 * PROCESSING
 * CONFIRMED
 * ABANDONED
+* ORDERED
 
 ```
 
