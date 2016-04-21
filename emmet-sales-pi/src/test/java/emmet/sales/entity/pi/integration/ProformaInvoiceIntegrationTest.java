@@ -105,31 +105,64 @@ public class ProformaInvoiceIntegrationTest {
 
 		// Modify
 		String requestBody2 = "{" + //
+				"\"extraCharges\":[{\"itemName\":\"Foo123\",\"price\":100.5,\"tax\":5}]," + //
 				"\"productItems\":[{\"product\":{\"id\":\"0000-0002\"}, " + //
 				"\"unit\":\"PCS\", \"currency\":{\"id\":\"USD\"}, \"quantity\":1, \"unitPrice\":100.5 , \"note1\":\"123\", \"note2\":\"456\" }],"
 				+ //
 				"\"info\":{" + //
 				"\"sales\":{\"id\":\"EM001\"}," + //
-				"\"customer\":{\"id\":\"AU00000001\"}" + //
-				"}}";
+				"\"customerDocumentId\":\"8888-11\"," + //
+				"\"proformaInvoiceDate\":\"2016-1-1\"," + //
+				"\"customer\":{\"id\":\"AU00000001\"}," + //
+				"\"corporation\":{\"id\":10}," + //
+				"\"contact\":{\"id\":1,\"firstName\":\"Jonh\",\"lastName\":\"Doe\"}," + //
+				"\"shippingDate\":\"2016-5-1\"" + //
+				"}," + //
+				"\"shipping\":{\"fare\":20.5,\"tax\": 0.2,\"info\":\"TNT, ASAP56789\"}" + //
+				"}";
 
 		this.mvc.perform(
 				put("/proformaInvoices/versions/" + versionId)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)//
 				.content(requestBody2)
 				)//
-				.andDo(print()).andExpect(status().isCreated());//
+				.andDo(print()).andExpect(status().isCreated())
+				.andExpect(jsonPath("id", equalTo(versionId)))//
+				.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
+				.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
+				.andExpect(jsonPath("info.customerDocumentId", equalTo("8888-11")))//
+				.andExpect(jsonPath("info.shippingDate", equalTo("2016-05-01")))//
+				.andExpect(jsonPath("shipping.fare", equalTo(20.5)))//
+				.andExpect(jsonPath("shipping.tax", equalTo(0.2)))//
+				.andExpect(jsonPath("shipping.info", equalTo("TNT, ASAP56789")))//
+				;//
 
-		this.mvc.perform(get("/proformaInvoices/" + id))//
+		this.mvc.perform(get("/proformaInvoices/"+id+"/versions/" + versionId))//
 				.andDo(print()).andExpect(status().isOk())//
-				.andExpect(jsonPath("id", equalTo(id)));//
+				.andExpect(jsonPath("id", equalTo(versionId)))//
+				.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
+				.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
+				.andExpect(jsonPath("info.customerDocumentId", equalTo("8888-11")))//
+				.andExpect(jsonPath("info.shippingDate", equalTo("2016-05-01")))//
+				.andExpect(jsonPath("shipping.fare", equalTo(20.5)))//
+				.andExpect(jsonPath("shipping.tax", equalTo(0.2)))//
+				.andExpect(jsonPath("shipping.info", equalTo("TNT, ASAP56789")))//
+				;//
+				
 
-				// version change to 2
-//				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")))
-//				.andExpect(jsonPath("finalVersion.productItems", hasSize(1)))//
-//				.andExpect(jsonPath("finalVersion.status", equalTo("PROCESSING")))//
-//				.andExpect(jsonPath("finalVersion.productItems[0].product.id", equalTo("0000-0002")));//
-
+		//generate new version from other version
+		this.mvc.perform(post("/proformaInvoices/versions/"+versionId+"/copyFrom"))//
+		.andDo(print())
+		.andExpect(jsonPath("id", equalTo(id+"-2")))
+		.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
+		.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
+		.andExpect(jsonPath("info.customerDocumentId", equalTo("8888-11")))//
+		.andExpect(jsonPath("info.shippingDate", equalTo("2016-05-01")))//
+		.andExpect(jsonPath("shipping.fare", equalTo(20.5)))//
+		.andExpect(jsonPath("shipping.tax", equalTo(0.2)))//
+		.andExpect(jsonPath("shipping.info", equalTo("TNT, ASAP56789")))//
+		;//
+		
 		this.mvc.perform(get("/proformaInvoices/" + id + "/versions"))//
 				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));//
 
@@ -138,54 +171,28 @@ public class ProformaInvoiceIntegrationTest {
 				.andDo(print()).andExpect(status().isOk())//
 				.andExpect(jsonPath("id", equalTo(id + "-2")));
 
-		// Modify
-		String requestBody3 = "{" + //
-				"\"info\":{" + //
-				"\"customer\":{\"id\":\"AU00000002\"}" + //
-				"}"//
-				+ "}";
 
-		this.mvc.perform(put("/proformaInvoices/" + id).contentType(MediaType.APPLICATION_JSON_VALUE)//
-				.content(requestBody3))//
-				.andDo(print()).andExpect(status().isConflict());//
-
-		// Set final version
-		this.mvc.perform(get("/proformaInvoices/" + id))//
-				.andExpect(jsonPath("id", equalTo(id)));//
-//				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-2")));//
-
-//		this.mvc.perform(put("/proformaInvoices/" + id + "/setFinalVersion?version=" + id + "-1"))//
-//				.andDo(print()).andExpect(status().isOk());//
-
-		this.mvc.perform(get("/proformaInvoices/" + id))//
-				.andExpect(jsonPath("id", equalTo(id)));//
-//				.andExpect(jsonPath("finalVersion.id", equalTo(id + "-1")));//
 
 		// Search by sales
-		this.mvc.perform(get("/proformaInvoices/search/findBySales/?id=EM001"))//
+		this.mvc.perform(get("/proformaInvoices/list/filterBySalesAndPiLike?piId=&salesId=EM001"))//
 				.andDo(print()).andExpect(jsonPath("content", hasSize(1)))//
-				.andExpect(jsonPath("content[0].id", equalTo(id)));//
+				.andExpect(jsonPath("content[0].finalVersion.versionSequence", equalTo(2)));//
 
 		// Set confirmed
-		// Search by sales and status is COMFIRMED, it would not be found now.
-		this.mvc.perform(get("/proformaInvoices/search/findBySales/?id=EM001&status=CONFIRMED"))//
-				.andExpect(jsonPath("content", hasSize(0)));//
 
-		this.mvc.perform(get("/proformaInvoices/" + id))//
-				.andExpect(jsonPath("id", equalTo(id)))//
-				.andExpect(jsonPath("status", equalTo("PROCESSING")));//
-
-		this.mvc.perform(put("/proformaInvoices/" + id + "/setConfirmed"))//
+		String requestBody3="{\"status\":\"CONFIRMED\"}";
+		
+		this.mvc.perform(put("/proformaInvoices/versions/" + versionId + "/setStatus")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)//
+				.content(requestBody3)
+				)//
 				.andDo(print()).andExpect(status().isOk());//
 
-		this.mvc.perform(get("/proformaInvoices/" + id))//
-				.andExpect(jsonPath("id", equalTo(id)))//
+		this.mvc.perform(get("/proformaInvoices/" + id + "/versions/" + versionId))//
+				.andExpect(jsonPath("id", equalTo(versionId)))//
 				.andExpect(jsonPath("status", equalTo("CONFIRMED")));//
 
-		// Search by sales and status is COMFIRMED
-		this.mvc.perform(get("/proformaInvoices/search/findBySales/?id=EM001&status=CONFIRMED"))//
-				.andDo(print()).andExpect(jsonPath("content", hasSize(1)))//
-				.andExpect(jsonPath("content[0].id", equalTo(id)));//
+
 
 	}
 
