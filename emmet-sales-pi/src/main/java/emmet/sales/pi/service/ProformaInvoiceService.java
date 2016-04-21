@@ -53,7 +53,7 @@ public class ProformaInvoiceService {
 	public ProformaInvoiceVersion createProformaInvoice(ProformaInvoiceVersion thisVersion) {
 
 		ProformaInvoice newProformaInvoice = new ProformaInvoice();
-		thisVersion.setStatus(ProformainvoiceStatus.PROCESSING.getName());
+		thisVersion.setStatus(ProformainvoiceStatus.PROCESSING);
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		ProformaInvoiceVersion returnVersion = persistNewVersion(thisVersion, newProformaInvoice);
 		return returnVersion;
@@ -133,7 +133,7 @@ public class ProformaInvoiceService {
 			}
 		}				
 		newVersion.setExtraCharges(newExtraCharges);
-		newVersion.setStatus(ProformainvoiceStatus.PROCESSING.getName());
+		newVersion.setStatus(ProformainvoiceStatus.PROCESSING);
 								
 		persistNewVersion(newVersion, thisVersion.getProformaInvoice());
 		return newVersion;
@@ -177,7 +177,7 @@ public class ProformaInvoiceService {
 		}
 
 		
-		if (! ProformainvoiceStatus.PROCESSING.getName().equals(piv.getStatus())) {
+		if (! ProformainvoiceStatus.PROCESSING.equals(piv.getStatus())) {
 			throw new OperationNotPermitException("This proforma invoice is read only, you can not modify it.");
 		}
 
@@ -330,7 +330,7 @@ public class ProformaInvoiceService {
 		boolean isSatusLegal = false;
 		
 		for(ProformainvoiceStatus pvStatus:ProformainvoiceStatus.values()){
-			if(pvStatus.getName().equals(model.getStatus())){
+			if(pvStatus.equals((ProformainvoiceStatus.valueOf(model.getStatus())))){
 				isSatusLegal = true;
 				break;
 			}
@@ -340,7 +340,7 @@ public class ProformaInvoiceService {
 			throw new DataNotFoundException("status is error");
 		} 
 		
-		piVersion.setStatus(model.getStatus());		
+		piVersion.setStatus(ProformainvoiceStatus.valueOf(model.getStatus()));		
 		proformaInvoiceVersionRepsitory.save(piVersion);
 		return piVersion;
 	}

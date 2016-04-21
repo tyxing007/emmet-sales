@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import emmet.core.data.entity.Order;
+import emmet.core.data.entity.Order.OrderStatus;
 import emmet.core.data.entity.OrderExtraCharge;
 import emmet.core.data.entity.OrderInfo;
 import emmet.core.data.entity.OrderProductItem;
@@ -65,9 +66,10 @@ public class SalesOrderService {
 		
 		Order order = new Order();
 		proformaInvoiceVersion.setOrder(order);
-		proformaInvoiceVersion.setStatus(ProformainvoiceStatus.ORDERED.getName());
+		proformaInvoiceVersion.setStatus(ProformainvoiceStatus.ORDERED);
 		order.setCanceled(Boolean.FALSE);
 		order.setOrderDate(now);
+		order.setStatus(OrderStatus.PROCESSING);
 		
 		OrderInfo orderInfo = new OrderInfo();
 		order.setInfo(orderInfo);
@@ -151,7 +153,7 @@ public class SalesOrderService {
 	}
 	
 	@Transactional
-	public Order updateOrder(Order order,String id) throws DataNotFoundException{
+	public Order updateOrder(Order order,String id) throws DataNotFoundException,OperationNotPermitException{
 		
 		Order dbOrder = salesOrderRepsitory.findOne(id);
 		
@@ -159,6 +161,9 @@ public class SalesOrderService {
 			throw new DataNotFoundException("can not find Order");
 		}
 		
+		if(!OrderStatus.PROCESSING.equals(dbOrder.getStatus())){
+			throw new OperationNotPermitException("Order Status is illegal");
+		}
 		
 		OrderInfo dbOrdInfo = dbOrder.getInfo();	
 		OrderInfo ordInfo = order.getInfo();		

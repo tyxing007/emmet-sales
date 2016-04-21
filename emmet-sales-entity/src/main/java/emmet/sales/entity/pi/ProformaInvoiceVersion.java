@@ -7,7 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import emmet.core.data.entity.Order;
+import emmet.sales.entity.pi.ProformaInvoice.ProformainvoiceStatus;
 
 @Entity
 @Table(name = "sales_proforma_invoice_versions", uniqueConstraints = {
@@ -35,8 +37,8 @@ public class ProformaInvoiceVersion implements Serializable {
 	@JoinColumn(name = "proforma_invoice_id", nullable = false)
 	private ProformaInvoice proformaInvoice;
 
-
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private ProformainvoiceStatus status;
 	
 	private Integer versionSequence;
 
@@ -144,14 +146,15 @@ public class ProformaInvoiceVersion implements Serializable {
 		this.order = order;
 	}
 
-	public String getStatus() {
+	public ProformainvoiceStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(ProformainvoiceStatus status) {
 		this.status = status;
 	}
 
+	
 	
 	
 }
