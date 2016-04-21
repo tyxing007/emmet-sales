@@ -15,6 +15,7 @@ import emmet.core.data.entity.OrderExtraCharge;
 import emmet.core.data.entity.OrderInfo;
 import emmet.core.data.entity.OrderProductItem;
 import emmet.core.data.entity.OrderShipping;
+import emmet.sales.entity.pi.ProformaInvoice.ProformainvoiceStatus;
 import emmet.sales.entity.pi.ProformaInvoiceExtraCharge;
 import emmet.sales.entity.pi.ProformaInvoiceInfo;
 import emmet.sales.entity.pi.ProformaInvoiceProductItem;
@@ -64,6 +65,7 @@ public class SalesOrderService {
 		
 		Order order = new Order();
 		proformaInvoiceVersion.setOrder(order);
+		proformaInvoiceVersion.setStatus(ProformainvoiceStatus.ORDERED.getName());
 		order.setCanceled(Boolean.FALSE);
 		order.setOrderDate(now);
 		
@@ -143,6 +145,7 @@ public class SalesOrderService {
 		
 		salesOrderRepsitory.save(order);
 		proformaInvoiceVersionRepsitory.save(proformaInvoiceVersion);
+				
 		return order;
 		
 	}
