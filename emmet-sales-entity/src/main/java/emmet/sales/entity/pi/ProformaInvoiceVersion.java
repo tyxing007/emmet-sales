@@ -42,7 +42,6 @@ public class ProformaInvoiceVersion implements Serializable {
 	
 	private Integer versionSequence;
 
-
 	private Calendar createDateTime;
 
 	@OneToOne(mappedBy = "version", cascade = CascadeType.ALL)
@@ -62,7 +61,7 @@ public class ProformaInvoiceVersion implements Serializable {
 	
 
 	@OneToOne(cascade = javax.persistence.CascadeType.ALL)
-	Order order;
+	private Order order;
 
 	public String getId() {
 		return id;
@@ -153,6 +152,7 @@ public class ProformaInvoiceVersion implements Serializable {
 	public void setStatus(ProformainvoiceStatus status) {
 		this.status = status;
 	}
+
 
 	
 	

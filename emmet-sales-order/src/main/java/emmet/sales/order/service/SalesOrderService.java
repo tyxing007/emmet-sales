@@ -25,6 +25,7 @@ import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.order.exception.DataNotFoundException;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.SalesOrderCreateModel;
+import emmet.sales.order.model.SetStatusModel;
 import emmet.sales.order.repository.OrderExtraChargeRepsitory;
 import emmet.sales.order.repository.OrderInfoRepsitory;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
@@ -211,6 +212,20 @@ public class SalesOrderService {
 		salesOrderRepsitory.save(dbOrder);
 		
 		return dbOrder;
+	}
+	
+	@Transactional
+	public Order setOrderStatus(String orderId,SetStatusModel model) throws DataNotFoundException{
+		
+		Order order = salesOrderRepsitory.findOne(orderId);
+		
+		if(order == null){
+			throw new DataNotFoundException("can not find sales order by id");
+		}
+				
+		order.setStatus(OrderStatus.valueOf(model.getStatus()));		
+		salesOrderRepsitory.save(order);
+		return order;
 	}
 	
 }

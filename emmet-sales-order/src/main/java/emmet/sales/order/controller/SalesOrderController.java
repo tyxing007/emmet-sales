@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import emmet.core.data.entity.Order;
+import emmet.sales.order.exception.DataNotFoundException;
 import emmet.sales.order.model.SalesOrderCreateModel;
+import emmet.sales.order.model.SetStatusModel;
 import emmet.sales.order.repository.SalesOrderRepsitory;
 import emmet.sales.order.service.SalesOrderService;
 
@@ -93,4 +95,22 @@ public class SalesOrderController {
 		
 	}
 
+	@RequestMapping(value="/{id}/setStatus",method=RequestMethod.PUT)
+	public ResponseEntity<?> setBomVersionSatus(@RequestBody SetStatusModel model,@PathVariable String id){
+		
+		Order order = null;
+		
+		try {
+			order = salesOrderService.setOrderStatus(id, model);
+		} catch (DataNotFoundException e) {
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.NOT_FOUND);
+		} catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.BAD_REQUEST);
+		}
+				
+		return ResponseEntity.ok(order);
+	}
+	
 }

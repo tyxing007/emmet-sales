@@ -175,6 +175,9 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 			return new ResponseEntity<String>(e.getMessage(),
 					HttpStatus.NOT_FOUND);
+		}catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.BAD_REQUEST);
 		}
 				
 		return ResponseEntity.ok(piVersion);

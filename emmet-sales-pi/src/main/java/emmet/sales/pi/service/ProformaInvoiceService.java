@@ -325,21 +325,7 @@ public class ProformaInvoiceService {
 		if(piVersion == null){
 			throw new DataNotFoundException("can not find pi version by id");
 		}
-		
-		//check if status is legal 
-		boolean isSatusLegal = false;
-		
-		for(ProformainvoiceStatus pvStatus:ProformainvoiceStatus.values()){
-			if(pvStatus.equals((ProformainvoiceStatus.valueOf(model.getStatus())))){
-				isSatusLegal = true;
-				break;
-			}
-		}
-			
-		if(!isSatusLegal){
-			throw new DataNotFoundException("status is error");
-		} 
-		
+				
 		piVersion.setStatus(ProformainvoiceStatus.valueOf(model.getStatus()));		
 		proformaInvoiceVersionRepsitory.save(piVersion);
 		return piVersion;
