@@ -184,7 +184,7 @@ http://api.mycompany.com/sales/order/orders/OD2016041502
 Example:
 ```
 curl -iX PUT -H "Content-Type: application/json" -d '{"status":"INITIALIZED"}'
-http://api.mycompany.com//sales/order/orders/PI1604140022-4/setStatus
+http://api.mycompany.com/sales/order/orders/PI1604140022-4/setStatus
 
 
 the status could be 
