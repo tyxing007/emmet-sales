@@ -42,16 +42,16 @@ INSERT INTO sales_proforma_invoice(id) VALUES ('PI1604200001');
 
 INSERT INTO sales_proforma_invoice_versions(id, create_date_time, snapshot, version_sequence, order_id, 
 	proforma_invoice_id,status)
-    VALUES ('PI1604090030-1', '2016-04-19 17:23:05.035', 'snapshot1231', 1, null, 'PI1604090030','CONFIRM');
+    VALUES ('PI1604090030-1', '2016-04-19 17:23:05.035', 'snapshot1231', 1, null, 'PI1604090030','CONFIRMED');
 INSERT INTO sales_proforma_invoice_versions(id, create_date_time, snapshot, version_sequence, order_id, 
 	proforma_invoice_id,status)
     VALUES ('PI1604090030-2', '2016-04-20 17:23:05.035', 'snapshot1232', 2, null, 'PI1604090030','PROCESSING');
 INSERT INTO sales_proforma_invoice_versions(id, create_date_time, snapshot, version_sequence, order_id, 
 	proforma_invoice_id,status)
-    VALUES ('PI1604090030-3', '2016-04-21 17:23:05.035', 'snapshot1233', 3, null, 'PI1604090030','CONFIRM');
+    VALUES ('PI1604090030-3', '2016-04-21 17:23:05.035', 'snapshot1233', 3, null, 'PI1604090030','CONFIRMED');
 INSERT INTO sales_proforma_invoice_versions(id, create_date_time, snapshot, version_sequence, order_id, 
 	proforma_invoice_id,status)
-    VALUES ('PI1604200001-1', '2016-04-22 17:23:05.035', 'snapshot1234', 1, null, 'PI1604200001','CONFIRM');
+    VALUES ('PI1604200001-1', '2016-04-22 17:23:05.035', 'snapshot1234', 1, null, 'PI1604200001','CONFIRMED');
 
     
 INSERT INTO sales_proforma_invoice_info(
@@ -59,19 +59,19 @@ INSERT INTO sales_proforma_invoice_info(
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
     VALUES (1,'2016-04-20','122',100.00,'2016-04-19','2016-05-01','{"name":"零稅"}','1 years, and bala...1',1,10,
-    'USD','AU00000001','EM001','EM001','PI1604190030-1');
+    'USD','AU00000001','EM001','EM001','PI1604090030-1');
 INSERT INTO sales_proforma_invoice_info(
             id, create_date, customer_document_id, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
     VALUES (2,'2016-04-21','aaa',100.00,'2016-04-19','2016-05-02','{"name":"零稅"}','2 years, and bala...2',1,10,
-    'USD','AU00000001','EM001','EM001','PI1604190030-2');
+    'USD','AU00000001','EM001','EM001','PI1604090030-2');
 INSERT INTO sales_proforma_invoice_info(
             id, create_date, customer_document_id, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
     VALUES (3,'2016-04-22','bbb',100.00,'2016-04-19','2016-05-03','{"name":"零稅"}','3 years, and bala...3',1,10,
-    'USD','AU00000001','EM001','EM001','PI1604190030-3');    
+    'USD','AU00000001','EM001','EM001','PI1604090030-3');    
 INSERT INTO sales_proforma_invoice_info(
             id, create_date, customer_document_id, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
@@ -80,32 +80,31 @@ INSERT INTO sales_proforma_invoice_info(
     'USD','AU00000001','EM001','EM001','PI1604200001-1');    
     
 INSERT INTO sales_proforma_invoice_shipping(id, fare, info, tax, proforma_invoice_version_id)
-    VALUES (1, 11, 'aaa', 5, 'PI1604190030-1');
+    VALUES (1, 11, 'aaa', 5, 'PI1604090030-1');
 INSERT INTO sales_proforma_invoice_shipping(id, fare, info, tax, proforma_invoice_version_id)
-    VALUES (2, 22, 'bbb', 5, 'PI1604190030-2');
+    VALUES (2, 22, 'bbb', 5, 'PI1604090030-2');
 INSERT INTO sales_proforma_invoice_shipping(id, fare, info, tax, proforma_invoice_version_id)
-    VALUES (3, 33, 'ccc', 5, 'PI1604190030-3');
+    VALUES (3, 33, 'ccc', 5, 'PI1604090030-3');
 INSERT INTO sales_proforma_invoice_shipping(id, fare, info, tax, proforma_invoice_version_id)
     VALUES (4, 44, 'ddd', 5, 'PI1604200001-1');    
     
-  2326528;"123";"456";"{"aaa":"ccc"}";1;"PCS";100.50;"USD";"";"PI1604200002-2";"0000-0001"  
     
 INSERT INTO sales_proforma_invoice_products(
             id, note1, note2, note3, quantity, unit, unit_price, currency_id, 
             proforma_invoice_version_id, product_id)
-    VALUES (1, 'note1', 'note2', 'note3', 5, 'PCS', 50, 'USD', 'PI1604190030-1', '0000-0001');    
+    VALUES (1, 'note1', 'note2', 'note3', 5, 'PCS', 50, 'USD', 'PI1604090030-1', '0000-0001');    
 INSERT INTO sales_proforma_invoice_products(
             id, note1, note2, note3, quantity, unit, unit_price, currency_id, 
             proforma_invoice_version_id, product_id)
-    VALUES (2, 'note1', 'note2', 'note3', 10, 'PCS', 50, 'USD', 'PI1604190030-1', '0000-0002'); 
+    VALUES (2, 'note1', 'note2', 'note3', 10, 'PCS', 50, 'USD', 'PI1604090030-1', '0000-0002'); 
 INSERT INTO sales_proforma_invoice_products(
             id, note1, note2, note3, quantity, unit, unit_price, currency_id, 
             proforma_invoice_version_id, product_id)
-    VALUES (3, 'note1', 'note2', 'note3', 6, 'PCS', 50, 'USD', 'PI1604190030-2', '0000-0001');
+    VALUES (3, 'note1', 'note2', 'note3', 6, 'PCS', 50, 'USD', 'PI1604090030-2', '0000-0001');
 INSERT INTO sales_proforma_invoice_products(
             id, note1, note2, note3, quantity, unit, unit_price, currency_id, 
             proforma_invoice_version_id, product_id)
-    VALUES (4, 'note1', 'note2', 'note3', 7, 'PCS', 50, 'USD', 'PI1604190030-3', '0000-0001');    
+    VALUES (4, 'note1', 'note2', 'note3', 7, 'PCS', 50, 'USD', 'PI1604090030-3', '0000-0001');    
 INSERT INTO sales_proforma_invoice_products(
             id, note1, note2, note3, quantity, unit, unit_price, currency_id, 
             proforma_invoice_version_id, product_id)
@@ -116,7 +115,14 @@ INSERT INTO sales_proforma_invoice_products(
     VALUES (6, 'note1', 'note2', 'note3', 36, 'PCS', 50, 'USD', 'PI1604200001-1', '0000-0002');        
     
     
-    
+INSERT INTO sales_proforma_invoice_extra_charge(id, item_name, price, tax, proforma_invoice_version_id)
+    VALUES (1, 'q11 yyhhj', 24, 5, 'PI1604090030-1');   
+INSERT INTO sales_proforma_invoice_extra_charge(id, item_name, price, tax, proforma_invoice_version_id)
+    VALUES (2, 'q22 yyhhj', 24, 5, 'PI1604090030-2');  
+INSERT INTO sales_proforma_invoice_extra_charge(id, item_name, price, tax, proforma_invoice_version_id)
+    VALUES (3, 'q33 yyhhj', 24, 5, 'PI1604090030-3');  
+INSERT INTO sales_proforma_invoice_extra_charge(id, item_name, price, tax, proforma_invoice_version_id)
+    VALUES (4, 'q44t yyhhj', 24, 5, 'PI1604200001-1');      
     
     
     
