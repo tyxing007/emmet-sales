@@ -26,6 +26,7 @@ import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
 import emmet.sales.pi.model.ProformaInvoiceModel;
+import emmet.sales.pi.model.PurchaseNumberModel;
 import emmet.sales.pi.model.SetStatusModel;
 import emmet.sales.pi.repository.ProformaInvoiceExtraChargeRepository;
 import emmet.sales.pi.repository.ProformaInvoiceProductItemRepository;
@@ -332,6 +333,20 @@ public class ProformaInvoiceService {
 	}
 	
 	
+	public ProformaInvoiceVersion setPurchaseNumber(String versionId, PurchaseNumberModel model) throws DataNotFoundException {
+		ProformaInvoiceVersion piVersion = proformaInvoiceVersionRepsitory.findOne(versionId);
+		
+		if(piVersion == null){
+			throw new DataNotFoundException("can not find pi version by id");
+		}
+				
+		piVersion.getInfo().setCustomerDocumentId(model.getNumber());
+		proformaInvoiceVersionRepsitory.save(piVersion);
+	
+		return piVersion;
+	} 
+	
+	
 	public Page<ProformaInvoiceModel> getPiList(String piId,String salesId,Pageable page){
 		
 		Page<ProformaInvoice> piList= proformaInvoiceRepository.findBySales(piId, salesId, page);
@@ -362,6 +377,7 @@ public class ProformaInvoiceService {
 		}
 		
 		return result;
-	} 
-	
+	}
+
+
 }

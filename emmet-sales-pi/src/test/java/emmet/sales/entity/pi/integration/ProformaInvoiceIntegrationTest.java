@@ -193,7 +193,18 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("status", equalTo("CONFIRMED")));//
 
 
+		// Set PurchaseNumber;
+		String requestBody4="{\"number\":\"PO888888\"}";
+		
+		this.mvc.perform(put("/proformaInvoices/versions/" + versionId + "/setPurchaseNumber")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)//
+				.content(requestBody4)
+				)//
+				.andDo(print()).andExpect(status().isOk());//
 
+		this.mvc.perform(get("/proformaInvoices/" + id + "/versions/" + versionId))//
+				.andExpect(jsonPath("id", equalTo(versionId)))//
+				.andExpect(jsonPath("info.customerDocumentId", equalTo("PO888888")));//
 	}
 
 	@Test

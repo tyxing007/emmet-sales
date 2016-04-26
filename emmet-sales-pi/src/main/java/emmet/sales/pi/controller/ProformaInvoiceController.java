@@ -24,6 +24,7 @@ import emmet.sales.pi.domain.ProformaInvoiceResource;
 import emmet.sales.pi.domain.ProformaInvoiceResourceAssembler;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
+import emmet.sales.pi.model.PurchaseNumberModel;
 import emmet.sales.pi.model.SetStatusModel;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
 import emmet.sales.pi.repository.ProformaInvoiceVersionRepsitory;
@@ -117,6 +118,25 @@ public class ProformaInvoiceController {
 
 	}
 	
+	@RequestMapping(value = "/versions/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> patchProformaInvoice(@PathVariable String id,
+			@RequestBody ProformaInvoiceVersion invoice) {
+
+		try {
+
+			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(invoice, id),
+					HttpStatus.CREATED);
+
+		} catch (OperationNotPermitException e) {
+
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		} catch (DataNotFoundException e) {
+
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
+	}
+	
 	@RequestMapping(value = "/versions/{versionId}/copyFrom", method = RequestMethod.POST)
 	public ResponseEntity<?> generateFromProformaInvoice(@PathVariable String versionId) {
 
@@ -182,5 +202,23 @@ public class ProformaInvoiceController {
 				
 		return ResponseEntity.ok(piVersion);
 	}
+	
+	@RequestMapping(value="/versions/{versionId}/setPurchaseNumber",method=RequestMethod.PUT)
+	public ResponseEntity<?> setProformaInvoicePonumber(@RequestBody PurchaseNumberModel number,@PathVariable String versionId){
+		
+		ProformaInvoiceVersion piVersion = null;
+		
+		try {
+			piVersion = proformaInvoiceService.setPurchaseNumber(versionId, number);
+		} catch (DataNotFoundException e) {
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.NOT_FOUND);
+		}catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.BAD_REQUEST);
+		}
+				
+		return ResponseEntity.ok(piVersion);
+	}	
 
 }
