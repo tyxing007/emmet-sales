@@ -24,6 +24,7 @@ import emmet.sales.pi.domain.ProformaInvoiceResource;
 import emmet.sales.pi.domain.ProformaInvoiceResourceAssembler;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
+import emmet.sales.pi.model.PiVersionModel;
 import emmet.sales.pi.model.PurchaseNumberModel;
 import emmet.sales.pi.model.SetStatusModel;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
@@ -93,19 +94,19 @@ public class ProformaInvoiceController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> saveProformaInvoice(@RequestBody ProformaInvoiceVersion invoice) {
+	public ResponseEntity<?> saveProformaInvoice(@RequestBody PiVersionModel model) {
 
-		return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(invoice),HttpStatus.CREATED);
+		return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(model),HttpStatus.CREATED);
 
 	}
 
 	@RequestMapping(value = "/versions/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateProformaInvoice(@PathVariable String id,
-			@RequestBody ProformaInvoiceVersion invoice) {
+			@RequestBody PiVersionModel model) {
 
 		try {
 
-			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(invoice, id),
+			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(model, id),
 					HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {
@@ -120,11 +121,11 @@ public class ProformaInvoiceController {
 	
 	@RequestMapping(value = "/versions/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> patchProformaInvoice(@PathVariable String id,
-			@RequestBody ProformaInvoiceVersion invoice) {
+			@RequestBody PiVersionModel model ) {
 
 		try {
 
-			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(invoice, id),
+			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(model, id),
 					HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {

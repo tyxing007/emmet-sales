@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import emmet.core.data.entity.Currency;
 import emmet.core.data.entity.Customer;
+import emmet.core.data.entity.CustomerPurchaseOrder;
 import emmet.core.data.entity.Employee;
 import emmet.partner.entity.PartnerContact;
 import emmet.partner.entity.PartnerCorporation;
@@ -36,7 +37,7 @@ public class ProformaInvoiceInfo implements Serializable {
 	@JoinColumn(name = "proforma_invoice_version_id")
 	private ProformaInvoiceVersion version;
 
-	private String customerDocumentId;
+	
 	private Date createDate;
 	private Date proformaInvoiceDate;
 
@@ -75,9 +76,7 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.id = id;
 	}
 
-	public String getCustomerDocumentId() {
-		return customerDocumentId;
-	}
+	
 
 	@JsonIgnore
 	public ProformaInvoiceVersion getVersion() {
@@ -88,10 +87,7 @@ public class ProformaInvoiceInfo implements Serializable {
 		this.version = version;
 	}
 
-	public void setCustomerDocumentId(String customerDocumentId) {
-		this.customerDocumentId = customerDocumentId;
-	}
-
+	
 	public Date getCreateDate() {
 		return createDate;
 	}

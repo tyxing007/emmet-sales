@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import emmet.core.data.entity.CustomerPurchaseOrder;
 import emmet.sales.entity.pi.ProformaInvoice;
 import emmet.sales.entity.pi.ProformaInvoice.ProformainvoiceStatus;
 import emmet.sales.entity.pi.ProformaInvoiceExtraCharge;
@@ -25,9 +26,11 @@ import emmet.sales.entity.pi.ProformaInvoiceShipping;
 import emmet.sales.entity.pi.ProformaInvoiceVersion;
 import emmet.sales.pi.exception.DataNotFoundException;
 import emmet.sales.pi.exception.OperationNotPermitException;
+import emmet.sales.pi.model.PiVersionModel;
 import emmet.sales.pi.model.ProformaInvoiceModel;
 import emmet.sales.pi.model.PurchaseNumberModel;
 import emmet.sales.pi.model.SetStatusModel;
+import emmet.sales.pi.repository.CustomerPurchaseOrderRepository;
 import emmet.sales.pi.repository.ProformaInvoiceExtraChargeRepository;
 import emmet.sales.pi.repository.ProformaInvoiceProductItemRepository;
 import emmet.sales.pi.repository.ProformaInvoiceRepsitory;
@@ -50,13 +53,26 @@ public class ProformaInvoiceService {
 	@Autowired
 	ProformaInvoiceProductItemRepository proformaInvoiceProductItemRepository;
 	
+	@Autowired
+	CustomerPurchaseOrderRepository customerPoRepository;
+	
 	@Transactional
-	public ProformaInvoiceVersion createProformaInvoice(ProformaInvoiceVersion thisVersion) {
+	public ProformaInvoiceVersion createProformaInvoice(PiVersionModel model) {
 
+		ProformaInvoiceVersion thisVersion=model.getProformaInvoiceVersion();
+		
 		ProformaInvoice newProformaInvoice = new ProformaInvoice();
 		thisVersion.setStatus(ProformainvoiceStatus.PROCESSING);
+		
+		CustomerPurchaseOrder custPo =new CustomerPurchaseOrder();
+		custPo.setCustomer(thisVersion.getInfo().getCustomer());
+		custPo.setPoNo(model.getCustPo().getPoNo());		
+		customerPoRepository.save(custPo);
+		
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
+		
 		ProformaInvoiceVersion returnVersion = persistNewVersion(thisVersion, newProformaInvoice);
+		
 		return returnVersion;
 
 	}
@@ -88,7 +104,7 @@ public class ProformaInvoiceService {
 		newInfo.setCorporation(thisVersion.getInfo().getCorporation());
 		newInfo.setCurrency(thisVersion.getInfo().getCurrency());
 		newInfo.setCustomer(thisVersion.getInfo().getCustomer());
-		newInfo.setCustomerDocumentId(thisVersion.getInfo().getCustomerDocumentId());
+
 		newInfo.setDataEntryClerk(thisVersion.getInfo().getDataEntryClerk());
 		newInfo.setDiscount(thisVersion.getInfo().getDiscount());
 		newInfo.setProformaInvoiceDate(thisVersion.getInfo().getProformaInvoiceDate());
@@ -169,9 +185,11 @@ public class ProformaInvoiceService {
 
 	
 	@Transactional
-	public ProformaInvoiceVersion updateProformaInvoiceVersion(ProformaInvoiceVersion thisVersion, String pivId)
+	public ProformaInvoiceVersion updateProformaInvoiceVersion(PiVersionModel model, String pivId)
 			throws OperationNotPermitException, DataNotFoundException {
 
+		ProformaInvoiceVersion thisVersion = model.getProformaInvoiceVersion();
+		
 		ProformaInvoiceVersion piv = proformaInvoiceVersionRepsitory.findOne(pivId);
 		if (piv == null) {
 			throw new DataNotFoundException("Can not find the proforma invoice version, ID:" + pivId);
@@ -182,7 +200,9 @@ public class ProformaInvoiceService {
 			throw new OperationNotPermitException("This proforma invoice is read only, you can not modify it.");
 		}
 
-	
+		CustomerPurchaseOrder custPo = piv.getProformaInvoice().getCustPo();
+		custPo.setPoNo(model.getCustPo().getPoNo());
+		
 		
 		return persistVersion(thisVersion, piv);
 	}
@@ -197,7 +217,7 @@ public class ProformaInvoiceService {
 		info.setCorporation(thisInfo.getCorporation());
 		info.setCurrency(thisInfo.getCurrency());
 		info.setCustomer(thisInfo.getCustomer());
-		info.setCustomerDocumentId(thisInfo.getCustomerDocumentId());
+
 		info.setDataEntryClerk(thisInfo.getDataEntryClerk());
 		info.setDiscount(thisInfo.getDiscount());
 		info.setProformaInvoiceDate(thisInfo.getProformaInvoiceDate());
@@ -339,10 +359,12 @@ public class ProformaInvoiceService {
 		if(piVersion == null){
 			throw new DataNotFoundException("can not find pi version by id");
 		}
-				
-		piVersion.getInfo().setCustomerDocumentId(model.getNumber());
-		proformaInvoiceVersionRepsitory.save(piVersion);
-	
+		
+		CustomerPurchaseOrder custPo= piVersion.getProformaInvoice().getCustPo();
+		custPo.setPoNo(model.getNumber());
+		
+		customerPoRepository.save(custPo);
+		
 		return piVersion;
 	} 
 	

@@ -93,7 +93,7 @@ public class SalesOrderService {
 			orderInfo.setCreateDate(new java.sql.Date(now.getTime().getTime()));
 			orderInfo.setCurrency(piInfo.getCurrency());
 			orderInfo.setCustomer(piInfo.getCustomer());
-			orderInfo.setCustomerDocumentId(piInfo.getCustomerDocumentId());
+			orderInfo.setCustPo(proformaInvoiceVersion.getProformaInvoice().getCustPo());
 			orderInfo.setDataEntryClerk(piInfo.getDataEntryClerk());
 			orderInfo.setDiscount(piInfo.getDiscount());
 			orderInfo.setSales(piInfo.getSales());
@@ -172,7 +172,6 @@ public class SalesOrderService {
 		dbOrdInfo.setCorporation(ordInfo.getCorporation());
 		dbOrdInfo.setCurrency(ordInfo.getCurrency());
 		dbOrdInfo.setCustomer(ordInfo.getCustomer());
-		dbOrdInfo.setCustomerDocumentId(ordInfo.getCustomerDocumentId());
 		dbOrdInfo.setDataEntryClerk(ordInfo.getDataEntryClerk());
 		dbOrdInfo.setDiscount(ordInfo.getDiscount());
 		dbOrdInfo.setSales(ordInfo.getSales());

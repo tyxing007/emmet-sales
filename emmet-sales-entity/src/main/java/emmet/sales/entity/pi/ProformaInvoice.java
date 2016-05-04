@@ -9,11 +9,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import emmet.core.data.entity.CustomerPurchaseOrder;
 
 @Entity
 @Table(name = "sales_proforma_invoice")
@@ -28,7 +31,8 @@ public class ProformaInvoice implements Serializable {
 	@OneToMany(mappedBy = "proformaInvoice", cascade = CascadeType.ALL)
 	private List<ProformaInvoiceVersion> versions;
 
-	
+	@OneToOne
+	private CustomerPurchaseOrder custPo;
 
 	public String getId() {
 		return id;
@@ -46,6 +50,21 @@ public class ProformaInvoice implements Serializable {
 	public void setVersions(List<ProformaInvoiceVersion> versions) {
 		this.versions = versions;
 	}
+
+	
+	
+	
+
+	public CustomerPurchaseOrder getCustPo() {
+		return custPo;
+	}
+
+	public void setCustPo(CustomerPurchaseOrder custPo) {
+		this.custPo = custPo;
+	}
+
+
+
 
 
 	public enum ProformainvoiceStatus {
