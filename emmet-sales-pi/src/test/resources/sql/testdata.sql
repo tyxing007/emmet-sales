@@ -11,6 +11,7 @@ DELETE FROM common_currency;
 DELETE FROM partner_contact;
 
 DELETE FROM partner_corporation;
+DELETE FROM core_customer_purchase_order;
 DELETE FROM core_customer;
 DELETE FROM core_partner;
 DELETE FROM common_country;

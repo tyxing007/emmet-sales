@@ -68,6 +68,7 @@ public class ProformaInvoiceService {
 		custPo.setCustomer(thisVersion.getInfo().getCustomer());
 		custPo.setPoNo(model.getCustPo().getPoNo());		
 		customerPoRepository.save(custPo);
+		newProformaInvoice.setCustPo(custPo);
 		
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		

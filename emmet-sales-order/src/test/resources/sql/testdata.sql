@@ -12,6 +12,7 @@ DELETE FROM partner_contact;
 
 DELETE FROM partner_corporation;
 DELETE FROM core_customer;
+DELETE FROM core_customer_purchase_order;
 DELETE FROM core_partner;
 DELETE FROM common_country;
 DELETE FROM core_employee;
@@ -23,6 +24,9 @@ INSERT INTO core_partner (id) VALUES ('PA00000001');
 INSERT INTO core_customer (id, partner_id) VALUES ('AU00000001', 'PA00000001');
 INSERT INTO core_partner (id) VALUES ('PA00000002');
 INSERT INTO core_customer (id, partner_id) VALUES ('AU00000002', 'PA00000002');
+
+INSERT INTO core_customer_purchase_order (id, customer_id,po_no) VALUES (1,'AU00000001', 'PO881');
+INSERT INTO core_customer_purchase_order (id, customer_id,po_no) VALUES (2,'AU00000001', 'PO882');
 
 INSERT INTO common_country(id, iso3166_two_letter_code, iana_country_codetld) VALUES ('9', 'AU', '.au');
 
@@ -37,8 +41,8 @@ INSERT INTO core_product (id,name) VALUES ('0000-0001','Bar');
 INSERT INTO core_product (id,name) VALUES ('0000-0002','Super Bar');
 INSERT INTO common_currency (id,name) VALUES ('USD','USD');
 
-INSERT INTO sales_proforma_invoice(id) VALUES ('PI1604090030');
-INSERT INTO sales_proforma_invoice(id) VALUES ('PI1604200001');
+INSERT INTO sales_proforma_invoice(id,cust_po_id) VALUES ('PI1604090030',1);
+INSERT INTO sales_proforma_invoice(id,cust_po_id) VALUES ('PI1604200001',2);
 
 INSERT INTO sales_proforma_invoice_versions(id, create_date_time, snapshot, version_sequence, order_id, 
 	proforma_invoice_id,status)
@@ -55,28 +59,28 @@ INSERT INTO sales_proforma_invoice_versions(id, create_date_time, snapshot, vers
 
     
 INSERT INTO sales_proforma_invoice_info(
-            id, create_date, customer_document_id, discount, proforma_invoice_date, 
+            id, create_date, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
-    VALUES (1,'2016-04-20','122',100.00,'2016-04-19','2016-05-01','{"name":"零稅"}','1 years, and bala...1',1,10,
+    VALUES (1,'2016-04-20',100.00,'2016-04-19','2016-05-01','{"name":"零稅"}','1 years, and bala...1',1,10,
     'USD','AU00000001','EM001','EM001','PI1604090030-1');
 INSERT INTO sales_proforma_invoice_info(
-            id, create_date, customer_document_id, discount, proforma_invoice_date, 
+            id, create_date, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
-    VALUES (2,'2016-04-21','aaa',100.00,'2016-04-19','2016-05-02','{"name":"零稅"}','2 years, and bala...2',1,10,
+    VALUES (2,'2016-04-21',100.00,'2016-04-19','2016-05-02','{"name":"零稅"}','2 years, and bala...2',1,10,
     'USD','AU00000001','EM001','EM001','PI1604090030-2');
 INSERT INTO sales_proforma_invoice_info(
-            id, create_date, customer_document_id, discount, proforma_invoice_date, 
+            id, create_date, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
-    VALUES (3,'2016-04-22','bbb',100.00,'2016-04-19','2016-05-03','{"name":"零稅"}','3 years, and bala...3',1,10,
+    VALUES (3,'2016-04-22',100.00,'2016-04-19','2016-05-03','{"name":"零稅"}','3 years, and bala...3',1,10,
     'USD','AU00000001','EM001','EM001','PI1604090030-3');    
 INSERT INTO sales_proforma_invoice_info(
-            id, create_date, customer_document_id, discount, proforma_invoice_date, 
+            id, create_date, discount, proforma_invoice_date, 
             shipping_date, tax, warranty, contact_id, corporation_id, currency_id, 
             customer_id, data_entry_clerk_id, sales_id, proforma_invoice_version_id)
-    VALUES (4,'2016-04-23','ccc',100.00,'2016-04-19','2016-05-04','{"name":"零稅"}','4 years, and bala...4',1,10,
+    VALUES (4,'2016-04-23',100.00,'2016-04-19','2016-05-04','{"name":"零稅"}','4 years, and bala...4',1,10,
     'USD','AU00000001','EM001','EM001','PI1604200001-1');    
     
 INSERT INTO sales_proforma_invoice_shipping(id, fare, info, tax, proforma_invoice_version_id)

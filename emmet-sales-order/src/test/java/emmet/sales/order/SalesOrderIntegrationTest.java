@@ -115,8 +115,8 @@ public class SalesOrderIntegrationTest {
 								equalTo("0000-0002")))
 				.andExpect(jsonPath("content[0].info.id", equalTo(1)))
 				.andExpect(
-						jsonPath("content[0].info.customerDocumentId",
-								equalTo("122")))
+						jsonPath("content[0].info.custPo.poNo",
+								equalTo("PO881")))
 				.andExpect(
 						jsonPath("content[0].info.sales.id", equalTo("EM001")))
 				.andExpect(
@@ -207,8 +207,8 @@ public class SalesOrderIntegrationTest {
 								equalTo("0000-0002")))
 				.andExpect(jsonPath("content[1].info.id", equalTo(2)))
 				.andExpect(
-						jsonPath("content[1].info.customerDocumentId",
-								equalTo("ccc")))
+						jsonPath("content[1].info.custPo.poNo",
+								equalTo("PO882")))
 				.andExpect(
 						jsonPath("content[1].info.sales.id", equalTo("EM001")))
 				.andExpect(
@@ -273,7 +273,7 @@ public class SalesOrderIntegrationTest {
 						jsonPath("productItems[1].product.id",
 								equalTo("0000-0002")))
 				.andExpect(jsonPath("info.id", equalTo(1)))
-				.andExpect(jsonPath("info.customerDocumentId", equalTo("122")))
+				.andExpect(jsonPath("info.custPo.poNo", equalTo("PO881")))
 				.andExpect(jsonPath("info.sales.id", equalTo("EM001")))
 				.andExpect(jsonPath("info.dataEntryClerk.id", equalTo("EM001")))
 				.andExpect(jsonPath("info.customer.id", equalTo("AU00000001")))
@@ -337,8 +337,8 @@ public class SalesOrderIntegrationTest {
 								equalTo("0000-0002")))
 				.andExpect(jsonPath("content[0].info.id", equalTo(1)))
 				.andExpect(
-						jsonPath("content[0].info.customerDocumentId",
-								equalTo("122")))
+						jsonPath("content[0].info.custPo.poNo",
+								equalTo("PO881")))
 				.andExpect(
 						jsonPath("content[0].info.sales.id", equalTo("EM001")))
 				.andExpect(
@@ -379,7 +379,6 @@ public class SalesOrderIntegrationTest {
 				+ "   \"product\" : {\"id\" : \"0000-0001\"  }"
 				+ " } ],"
 				+ "  \"info\" : {"
-				+ "    				\"customerDocumentId\" : \"122\","
 				+ "    				\"createDate\" : \"2016-04-25\","
 				+ "   			    \"contact\" : \"ass\","
 				+ "  			    \"shippingDate\" : \"2016-05-01\","
@@ -418,7 +417,7 @@ public class SalesOrderIntegrationTest {
 				.andExpect(
 						jsonPath("productItems[0].product.id",
 								equalTo("0000-0001")))
-				.andExpect(jsonPath("info.customerDocumentId", equalTo("122")))
+				.andExpect(jsonPath("info.custPo.poNo", equalTo("PO882")))
 				.andExpect(jsonPath("info.sales.id", equalTo("EM001")))
 				.andExpect(jsonPath("info.dataEntryClerk.id", equalTo("EM001")))
 				.andExpect(jsonPath("info.customer.id", equalTo("AU00000001")))
