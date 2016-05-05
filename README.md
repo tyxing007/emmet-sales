@@ -15,43 +15,43 @@ Example:
 ```json
 curl -iX POST -H "Content-Type: application/json" -d '
 {
-  "info" : {
-    "customerDocumentId" : "8888",
-    "proformaInvoiceDate" : "2016-1-1",
-    "contact" : {"id":557088},
-    "shippingDate" : "2016-2-1",
-    "sales" : {"id" : "EM0000112"},
-    "dataEntryClerk" : {"id" : "EM0000112"},
-    "customer" : {"id":"AU006"},
-    "corporation" : {"id":98336},
-    "warranty" : "2 years, and bala...",
-    "currency" : {"id":"USD"},
-    "tax" : "Extra"
-  },
-  "extraCharges" : [ {
-
-    "itemName" : "Foo",
-    "price" : 100.50,
-    "tax" : 5.00
-  } ],
-  "shipping" : {
-     "info" : "DHL, ...",
-     "fare" : 10.50,
-     "tax" : 0
-   },
-  "productItems" : [ {
-
-    "product" : {
-    "id" : "0000-0001"
-    },
-    "quantity" : 1,
-    "unit" : "PCS",
-    "unitPrice" : 100.50,
-    "note1" : "123",
-    "note2" : "456",
-    "note3" : "{\"aaa\":\"ccc\"}",
-    "currency" : {"id":"USD"}
-  } ]
+	"custPo":{"poNo":"EW2016-11-22-0001"},
+	"proformaInvoiceVersion":{
+	  "info" : {
+	    "proformaInvoiceDate" : "2016-1-1",
+	    "contact" : {"id":557088},
+	    "shippingDate" : "2016-2-1",
+	    "sales" : {"id" : "EM0000112"},
+	    "dataEntryClerk" : {"id" : "EM0000112"},
+	    "customer" : {"id":"AU006"},
+	    "corporation" : {"id":98336},
+	    "warranty" : "2 years, and bala...",
+	    "currency" : {"id":"USD"},
+	    "tax" : "Extra"
+	  },
+	  "extraCharges" : [ {	
+	    "itemName" : "Foo",
+	    "price" : 100.50,
+	    "tax" : 5.00
+	  } ],
+	  "shipping" : {
+	     "info" : "DHL, ...",
+	     "fare" : 10.50,
+	     "tax" : 0
+	   },
+	  "productItems" : [ {	
+	    "product" : {
+	    "id" : "0000-0001"
+	    },
+	    "quantity" : 1,
+	    "unit" : "PCS",
+	    "unitPrice" : 100.50,
+	    "note1" : "123",
+	    "note2" : "456",
+	    "note3" : "{\"aaa\":\"ccc\"}",
+	    "currency" : {"id":"USD"}
+	  } ]
+	}
 }
 ' http://api.mycompany.com/sales/proformaInvoice/proformaInvoices
 ```
@@ -137,7 +137,6 @@ Example:
 ```json
 curl -iX PUT -H "Content-Type: application/json" -d '{
   "info" : {
-    "customerDocumentId" : "8888",
     "createDate":"2016-04-15T06:30:11.665+0000",
     "contact" : "{\"id\":557714,\"firstName\":\"Wayne Whiteley\",\"lastName\":null}",
     "shippingDate" : "2016-2-1",
