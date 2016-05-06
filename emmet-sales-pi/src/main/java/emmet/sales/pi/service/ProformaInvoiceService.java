@@ -412,7 +412,7 @@ public class ProformaInvoiceService {
 		
 		ProformaInvoice pi = null;
 		if(piId!=null){
-			proformaInvoiceRepository.getOne(piId);
+			pi=proformaInvoiceRepository.getOne(piId);
 		}
 		
 		Long count=customerPoRepository.countByPoNo(poNo);
