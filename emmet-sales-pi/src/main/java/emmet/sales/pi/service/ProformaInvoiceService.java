@@ -57,7 +57,7 @@ public class ProformaInvoiceService {
 	CustomerPurchaseOrderRepository customerPoRepository;
 	
 	@Transactional
-	public ProformaInvoiceVersion createProformaInvoice(PiVersionModel model) {
+	public ProformaInvoiceVersion createProformaInvoice(PiVersionModel model) throws Exception {
 
 		ProformaInvoiceVersion thisVersion=model.getProformaInvoiceVersion();
 		
@@ -69,6 +69,8 @@ public class ProformaInvoiceService {
 		custPo.setPoNo(model.getCustPo().getPoNo());		
 		customerPoRepository.save(custPo);
 		newProformaInvoice.setCustPo(custPo);
+		
+		checkCustPoNoExist(model.getCustPo().getPoNo(), null);
 		
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		
@@ -187,7 +189,7 @@ public class ProformaInvoiceService {
 	
 	@Transactional
 	public ProformaInvoiceVersion updateProformaInvoiceVersion(PiVersionModel model, String pivId)
-			throws OperationNotPermitException, DataNotFoundException {
+			throws Exception {
 
 		ProformaInvoiceVersion thisVersion = model.getProformaInvoiceVersion();
 		
@@ -196,6 +198,7 @@ public class ProformaInvoiceService {
 			throw new DataNotFoundException("Can not find the proforma invoice version, ID:" + pivId);
 		}
 
+		checkCustPoNoExist(model.getCustPo().getPoNo(), piv.getProformaInvoice().getId());
 		
 		if (! ProformainvoiceStatus.PROCESSING.equals(piv.getStatus())) {
 			throw new OperationNotPermitException("This proforma invoice is read only, you can not modify it.");
@@ -354,12 +357,14 @@ public class ProformaInvoiceService {
 	}
 	
 	
-	public ProformaInvoiceVersion setPurchaseNumber(String versionId, PurchaseNumberModel model) throws DataNotFoundException {
+	public ProformaInvoiceVersion setPurchaseNumber(String versionId, PurchaseNumberModel model) throws Exception {
 		ProformaInvoiceVersion piVersion = proformaInvoiceVersionRepsitory.findOne(versionId);
 		
 		if(piVersion == null){
 			throw new DataNotFoundException("can not find pi version by id");
 		}
+		
+		checkCustPoNoExist(model.getNumber(),piVersion.getProformaInvoice().getId());
 		
 		CustomerPurchaseOrder custPo= piVersion.getProformaInvoice().getCustPo();
 		custPo.setPoNo(model.getNumber());
@@ -371,7 +376,7 @@ public class ProformaInvoiceService {
 	
 	
 	public Page<ProformaInvoiceModel> getPiList(String piId,String salesId,Pageable page){
-		
+						
 		Page<ProformaInvoice> piList= proformaInvoiceRepository.findBySales(piId, salesId, page);
 		
 		List<ProformaInvoiceModel> resultList = new ArrayList<ProformaInvoiceModel>();
@@ -402,5 +407,33 @@ public class ProformaInvoiceService {
 		return result;
 	}
 
+	private void checkCustPoNoExist(String poNo,String piId) throws Exception{
+		boolean result=false;
+		
+		ProformaInvoice pi = null;
+		if(piId!=null){
+			proformaInvoiceRepository.getOne(piId);
+		}
+		
+		Long count=customerPoRepository.countByPoNo(poNo);
+		
+		if(count>1){
+			if(piId==null){//create pi
+				result=true;
+			}else{//update pi						
+				if("poNo".endsWith(pi.getCustPo().getPoNo())){//pi's cust po didn't change
+					result=false;
+				}else{
+					result=true;
+				}
+			}
+		}
+		
+					
+		if(result){
+			throw new Exception("customer po number has exsited!");
+		}
+	}
+	
 
 }

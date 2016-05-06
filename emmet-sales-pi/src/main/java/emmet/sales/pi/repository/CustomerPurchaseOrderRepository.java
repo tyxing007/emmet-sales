@@ -8,5 +8,6 @@ import emmet.core.data.entity.CustomerPurchaseOrder;
 @RepositoryRestResource(exported=false)
 public interface CustomerPurchaseOrderRepository extends JpaRepository<CustomerPurchaseOrder, Integer> {
 
+	public Long countByPoNo(String poNo);
 
 }

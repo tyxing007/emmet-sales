@@ -96,7 +96,12 @@ public class ProformaInvoiceController {
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> saveProformaInvoice(@RequestBody PiVersionModel model) {
 
-		return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(model),HttpStatus.CREATED);
+		
+		try {
+			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(model),HttpStatus.CREATED);
+		} catch (Exception e) {		
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+		}
 
 	}
 
@@ -115,6 +120,8 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		} catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 
 	}
@@ -134,6 +141,8 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		} catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 
 	}

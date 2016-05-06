@@ -55,7 +55,7 @@ public class ProformaInvoiceIntegrationTest {
 	@Test
 	public void savePiTest() throws Exception {
 		String id = "PI" + dateInString + "0001";
-		String versionId = id+"-1";
+		String versionId = id+"-0";
 		String requestBody = "{" + //
 				"\"custPo\":{\"poNo\":\"EW2016-11-22-0001\"},"+
 				"\"proformaInvoiceVersion\":{" +
@@ -90,7 +90,7 @@ public class ProformaInvoiceIntegrationTest {
 				.andDo(print()).andExpect(status().isOk())//
 				.andExpect(jsonPath("id", equalTo(versionId)))
 				.andExpect(jsonPath("status", equalTo("PROCESSING")))
-				.andExpect(jsonPath("versionSequence", equalTo(1)))
+				.andExpect(jsonPath("versionSequence", equalTo(0)))
 				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo("EW2016-11-22-0001")))
 				.andExpect(jsonPath("info.proformaInvoiceDate", equalTo("2016-01-01")))
 				.andExpect(jsonPath("info.contact.id", equalTo(1)))
@@ -158,7 +158,7 @@ public class ProformaInvoiceIntegrationTest {
 		//generate new version from other version
 		this.mvc.perform(post("/proformaInvoices/versions/"+versionId+"/copyFrom"))//
 		.andDo(print())
-		.andExpect(jsonPath("id", equalTo(id+"-2")))
+		.andExpect(jsonPath("id", equalTo(id+"-1")))
 		.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
 		.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
 		.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo("EW2016-11-22-0002")))
@@ -172,16 +172,16 @@ public class ProformaInvoiceIntegrationTest {
 				.andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));//
 
 		// Get specified version
-		this.mvc.perform(get("/proformaInvoices/" + id + "/versions/" + id + "-2"))//
+		this.mvc.perform(get("/proformaInvoices/" + id + "/versions/" + id + "-1"))//
 				.andDo(print()).andExpect(status().isOk())//
-				.andExpect(jsonPath("id", equalTo(id + "-2")));
+				.andExpect(jsonPath("id", equalTo(id + "-1")));
 
 
 
 		// Search by sales
 		this.mvc.perform(get("/proformaInvoices/list/filterBySalesAndPiLike?piId=&salesId=EM001"))//
 				.andDo(print()).andExpect(jsonPath("content", hasSize(1)))//
-				.andExpect(jsonPath("content[0].finalVersion.versionSequence", equalTo(2)));//
+				.andExpect(jsonPath("content[0].finalVersion.versionSequence", equalTo(1)));//
 
 		// Set confirmed
 
