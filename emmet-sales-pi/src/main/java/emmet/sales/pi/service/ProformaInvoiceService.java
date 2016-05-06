@@ -57,7 +57,7 @@ public class ProformaInvoiceService {
 	CustomerPurchaseOrderRepository customerPoRepository;
 	
 	@Transactional
-	public ProformaInvoiceVersion createProformaInvoice(PiVersionModel model) throws Exception {
+	public ProformaInvoiceVersion createProformaInvoice(PiVersionModel model) throws OperationNotPermitException {
 
 		ProformaInvoiceVersion thisVersion=model.getProformaInvoiceVersion();
 		
@@ -188,8 +188,8 @@ public class ProformaInvoiceService {
 
 	
 	@Transactional
-	public ProformaInvoiceVersion updateProformaInvoiceVersion(PiVersionModel model, String pivId)
-			throws Exception {
+	public ProformaInvoiceVersion updateProformaInvoiceVersion(PiVersionModel model, String pivId) throws OperationNotPermitException, DataNotFoundException
+			 {
 
 		ProformaInvoiceVersion thisVersion = model.getProformaInvoiceVersion();
 		
@@ -357,7 +357,7 @@ public class ProformaInvoiceService {
 	}
 	
 	
-	public ProformaInvoiceVersion setPurchaseNumber(String versionId, PurchaseNumberModel model) throws Exception {
+	public ProformaInvoiceVersion setPurchaseNumber(String versionId, PurchaseNumberModel model) throws DataNotFoundException, OperationNotPermitException  {
 		ProformaInvoiceVersion piVersion = proformaInvoiceVersionRepsitory.findOne(versionId);
 		
 		if(piVersion == null){
@@ -407,7 +407,7 @@ public class ProformaInvoiceService {
 		return result;
 	}
 
-	private void checkCustPoNoExist(String poNo,String piId) throws Exception{
+	private void checkCustPoNoExist(String poNo,String piId) throws OperationNotPermitException{
 		boolean result=false;
 		
 		ProformaInvoice pi = null;
@@ -434,7 +434,7 @@ public class ProformaInvoiceService {
 		}
 					
 		if(result){
-			throw new Exception("customer po number has exsited!");
+			throw new OperationNotPermitException("customer po number has exsited!");
 		}
 	}
 	

@@ -99,7 +99,7 @@ public class ProformaInvoiceController {
 		
 		try {
 			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.createProformaInvoice(model),HttpStatus.CREATED);
-		} catch (Exception e) {		
+		} catch (OperationNotPermitException e) {		
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 
@@ -107,12 +107,11 @@ public class ProformaInvoiceController {
 
 	@RequestMapping(value = "/versions/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateProformaInvoice(@PathVariable String id,
-			@RequestBody PiVersionModel model) {
+			@RequestBody PiVersionModel model)  {
 
 		try {
-
 			return new ResponseEntity<ProformaInvoiceVersion>(proformaInvoiceService.updateProformaInvoiceVersion(model, id),
-					HttpStatus.CREATED);
+						HttpStatus.CREATED);
 
 		} catch (OperationNotPermitException e) {
 
@@ -120,9 +119,7 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-		} catch(Exception e){
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-		}
+		} 
 
 	}
 	
@@ -141,8 +138,6 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-		} catch(Exception e){
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 
 	}
@@ -205,9 +200,6 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 			return new ResponseEntity<String>(e.getMessage(),
 					HttpStatus.NOT_FOUND);
-		}catch(Exception e){
-			return new ResponseEntity<String>(e.getMessage(),
-					HttpStatus.BAD_REQUEST);
 		}
 				
 		return ResponseEntity.ok(piVersion);
@@ -223,11 +215,10 @@ public class ProformaInvoiceController {
 		} catch (DataNotFoundException e) {
 			return new ResponseEntity<String>(e.getMessage(),
 					HttpStatus.NOT_FOUND);
-		}catch(Exception e){
+		}catch (OperationNotPermitException e) {
 			return new ResponseEntity<String>(e.getMessage(),
 					HttpStatus.BAD_REQUEST);
-		}
-				
+		}		
 		return ResponseEntity.ok(piVersion);
 	}	
 
