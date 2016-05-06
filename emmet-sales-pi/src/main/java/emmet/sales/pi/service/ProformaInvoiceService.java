@@ -287,7 +287,7 @@ public class ProformaInvoiceService {
 
 	private Integer getNextVersionSequence(String proformaInvoiceId) {
 		if (proformaInvoiceVersionRepsitory.findByProformaInvoiceId(proformaInvoiceId).isEmpty()) {
-			return 1;
+			return 0;
 		}
 
 		return proformaInvoiceVersionRepsitory.findLastVersionSequenceOfProformainvoice(proformaInvoiceId) + 1;
