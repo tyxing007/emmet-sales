@@ -429,6 +429,9 @@ public class ProformaInvoiceService {
 			}
 		}
 		
+		if(poNo==null||"".equals(poNo.trim())){
+			result=false;
+		}
 					
 		if(result){
 			throw new Exception("customer po number has exsited!");
