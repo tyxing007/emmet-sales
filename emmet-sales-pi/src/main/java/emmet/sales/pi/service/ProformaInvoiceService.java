@@ -71,14 +71,13 @@ public class ProformaInvoiceService {
 		newProformaInvoice.setCustPo(custPo);
 		
 		
-		
+		checkCustPoNoExist(model.getCustPo().getPoNo(), model.getProformaInvoiceVersion().getInfo().getCustomer().getId());
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		
 		if(model.getCustPo()==null||model.getCustPo().getPoNo()==null||"".equals(model.getCustPo().getPoNo().trim())){
 			custPo.setPoNo(newProformaInvoice.getId());		
 		}else{
-			custPo.setPoNo(model.getCustPo().getPoNo());
-			checkCustPoNoExist(model.getCustPo().getPoNo(), model.getProformaInvoiceVersion().getInfo().getCustomer().getId());
+			custPo.setPoNo(model.getCustPo().getPoNo());			
 		}
 		customerPoRepository.save(custPo);
 		
