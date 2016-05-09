@@ -70,16 +70,20 @@ public class ProformaInvoiceService {
 		customerPoRepository.save(custPo);
 		newProformaInvoice.setCustPo(custPo);
 		
-		checkCustPoNoExist(model.getCustPo().getPoNo(), null);
+		
 		
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		
 		if(model.getCustPo()==null||model.getCustPo().getPoNo()==null||"".equals(model.getCustPo().getPoNo().trim())){
 			custPo.setPoNo(newProformaInvoice.getId());		
 		}else{
-			custPo.setPoNo(model.getCustPo().getPoNo());		
+			custPo.setPoNo(model.getCustPo().getPoNo());
+			checkCustPoNoExist(model.getCustPo().getPoNo(), model.getProformaInvoiceVersion().getInfo().getCustomer().getId());
 		}
 		customerPoRepository.save(custPo);
+		
+		
+		
 		ProformaInvoiceVersion returnVersion = persistNewVersion(thisVersion, newProformaInvoice);
 		
 		return returnVersion;
@@ -204,7 +208,11 @@ public class ProformaInvoiceService {
 			throw new DataNotFoundException("Can not find the proforma invoice version, ID:" + pivId);
 		}
 
-		checkCustPoNoExist(model.getCustPo().getPoNo(), piv.getProformaInvoice().getId());
+		if(! piv.getProformaInvoice().getCustPo().getPoNo().equals( model.getCustPo().getPoNo()) ){
+			checkCustPoNoExist(model.getCustPo().getPoNo(), piv.getInfo().getCustomer().getId());
+		}
+		
+		
 		
 		if (! ProformainvoiceStatus.PROCESSING.equals(piv.getStatus())) {
 			throw new OperationNotPermitException("This proforma invoice is read only, you can not modify it.");
@@ -420,26 +428,13 @@ public class ProformaInvoiceService {
 		return result;
 	}
 
-	private void checkCustPoNoExist(String poNo,String piId) throws OperationNotPermitException{
+	private void checkCustPoNoExist(String poNo,String customerId) throws OperationNotPermitException{
 		boolean result=false;
-		
-		ProformaInvoice pi = null;
-		if(piId!=null){
-			pi=proformaInvoiceRepository.getOne(piId);
-		}
-		
-		Long count=customerPoRepository.countByPoNo(poNo);
+				
+		Long count=customerPoRepository.countByPoNoAndCustomerId(poNo, customerId);
 		
 		if(count>1){
-			if(piId==null){//create pi
-				result=true;
-			}else{//update pi						
-				if("poNo".endsWith(pi.getCustPo().getPoNo())){//pi's cust po didn't change
-					result=false;
-				}else{
-					result=true;
-				}
-			}
+			result=true;
 		}
 							
 		if(result){
