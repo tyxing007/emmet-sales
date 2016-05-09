@@ -66,7 +66,7 @@ public class ProformaInvoiceService {
 		
 		CustomerPurchaseOrder custPo =new CustomerPurchaseOrder();
 		custPo.setCustomer(thisVersion.getInfo().getCustomer());
-		custPo.setPoNo(model.getCustPo().getPoNo());		
+						
 		customerPoRepository.save(custPo);
 		newProformaInvoice.setCustPo(custPo);
 		
@@ -74,6 +74,12 @@ public class ProformaInvoiceService {
 		
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		
+		if(model.getCustPo()==null||model.getCustPo().getPoNo()==null||"".equals(model.getCustPo().getPoNo().trim())){
+			custPo.setPoNo(newProformaInvoice.getId());		
+		}else{
+			custPo.setPoNo(model.getCustPo().getPoNo());		
+		}
+		customerPoRepository.save(custPo);
 		ProformaInvoiceVersion returnVersion = persistNewVersion(thisVersion, newProformaInvoice);
 		
 		return returnVersion;
@@ -205,7 +211,14 @@ public class ProformaInvoiceService {
 		}
 
 		CustomerPurchaseOrder custPo = piv.getProformaInvoice().getCustPo();
-		custPo.setPoNo(model.getCustPo().getPoNo());
+		
+		if(model.getCustPo()==null||model.getCustPo().getPoNo()==null||"".equals(model.getCustPo().getPoNo().trim())){
+			custPo.setPoNo(piv.getProformaInvoice().getId());		
+		}else{
+			custPo.setPoNo(model.getCustPo().getPoNo());		
+		}
+
+	
 		
 		
 		return persistVersion(thisVersion, piv);
@@ -428,11 +441,7 @@ public class ProformaInvoiceService {
 				}
 			}
 		}
-		
-		if(poNo==null||"".equals(poNo.trim())){
-			result=false;
-		}
-					
+							
 		if(result){
 			throw new OperationNotPermitException("customer po number has exsited!");
 		}

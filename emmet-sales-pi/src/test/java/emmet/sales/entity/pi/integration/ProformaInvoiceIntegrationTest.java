@@ -107,7 +107,7 @@ public class ProformaInvoiceIntegrationTest {
 
 		// Modify
 		String requestBody2 = "{" + //
-				"\"custPo\":{\"poNo\":\"EW2016-11-22-0002\"},"+
+				"\"custPo\":{},"+
 				"\"proformaInvoiceVersion\":{" +
 				"\"extraCharges\":[{\"itemName\":\"Foo123\",\"price\":100.5,\"tax\":5}]," + //
 				"\"productItems\":[{\"product\":{\"id\":\"0000-0002\"}, " + //
@@ -133,7 +133,7 @@ public class ProformaInvoiceIntegrationTest {
 				)//
 				.andDo(print()).andExpect(status().isCreated())
 				.andExpect(jsonPath("id", equalTo(versionId)))//
-				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo("EW2016-11-22-0002")))
+				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo(id)))
 				.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
 				.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
 				.andExpect(jsonPath("info.shippingDate", equalTo("2016-05-01")))//
@@ -147,7 +147,7 @@ public class ProformaInvoiceIntegrationTest {
 				.andExpect(jsonPath("id", equalTo(versionId)))//
 				.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
 				.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
-				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo("EW2016-11-22-0002")))
+				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo(id)))
 				.andExpect(jsonPath("info.shippingDate", equalTo("2016-05-01")))//
 				.andExpect(jsonPath("shipping.fare", equalTo(20.5)))//
 				.andExpect(jsonPath("shipping.tax", equalTo(0.2)))//
@@ -161,7 +161,7 @@ public class ProformaInvoiceIntegrationTest {
 		.andExpect(jsonPath("id", equalTo(id+"-1")))
 		.andExpect(jsonPath("extraCharges[0].itemName", equalTo("Foo123")))//
 		.andExpect(jsonPath("productItems[0].product.id", equalTo("0000-0002")))//
-		.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo("EW2016-11-22-0002")))
+		.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo(id)))
 		.andExpect(jsonPath("info.shippingDate", equalTo("2016-05-01")))//
 		.andExpect(jsonPath("shipping.fare", equalTo(20.5)))//
 		.andExpect(jsonPath("shipping.tax", equalTo(0.2)))//
