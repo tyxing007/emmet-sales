@@ -433,7 +433,7 @@ public class ProformaInvoiceService {
 				
 		Long count=customerPoRepository.countByPoNoAndCustomerId(poNo, customerId);
 		
-		if(count>1){
+		if(count>0){
 			result=true;
 		}
 							
