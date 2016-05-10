@@ -66,12 +66,12 @@ public class ProformaInvoiceService {
 		
 		CustomerPurchaseOrder custPo =new CustomerPurchaseOrder();
 		custPo.setCustomer(thisVersion.getInfo().getCustomer());
-						
-		customerPoRepository.save(custPo);
-		newProformaInvoice.setCustPo(custPo);
-		
 		
 		checkCustPoNoExist(model.getCustPo().getPoNo(), model.getProformaInvoiceVersion().getInfo().getCustomer().getId());
+		
+		customerPoRepository.save(custPo);
+		newProformaInvoice.setCustPo(custPo);
+						
 		newProformaInvoice = proformaInvoiceRepository.save(newProformaInvoice);
 		
 		if(model.getCustPo()==null||model.getCustPo().getPoNo()==null||"".equals(model.getCustPo().getPoNo().trim())){
@@ -79,10 +79,9 @@ public class ProformaInvoiceService {
 		}else{
 			custPo.setPoNo(model.getCustPo().getPoNo());			
 		}
+				
 		customerPoRepository.save(custPo);
-		
-		
-		
+						
 		ProformaInvoiceVersion returnVersion = persistNewVersion(thisVersion, newProformaInvoice);
 		
 		return returnVersion;
@@ -427,6 +426,7 @@ public class ProformaInvoiceService {
 		return result;
 	}
 
+	
 	private void checkCustPoNoExist(String poNo,String customerId) throws OperationNotPermitException{
 		boolean result=false;
 				
