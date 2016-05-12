@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import emmet.core.data.entity.Currency;
 import emmet.core.data.entity.Customer;
-import emmet.core.data.entity.CustomerPurchaseOrder;
 import emmet.core.data.entity.Employee;
 import emmet.partner.entity.PartnerContact;
 import emmet.partner.entity.PartnerCorporation;

@@ -60,7 +60,7 @@ public class ProformaInvoiceVersion implements Serializable {
 	private String snapshot;
 	
 
-	@OneToOne(cascade = javax.persistence.CascadeType.ALL)
+	@OneToOne
 	private Order order;
 
 	public String getId() {
