@@ -382,7 +382,9 @@ public class ProformaInvoiceService {
 		if(piVersion == null){
 			throw new DataNotFoundException("can not find pi version by id");
 		}
-		
+		if(model.getNumber()==null||"".equals(model.getNumber().trim())){
+			model.setNumber(piVersion.getProformaInvoice().getId());
+		}
 		checkCustPoNoExist(model.getNumber(),piVersion.getProformaInvoice().getId());
 		
 		CustomerPurchaseOrder custPo= piVersion.getProformaInvoice().getCustPo();

@@ -107,7 +107,7 @@ public class ProformaInvoiceIntegrationTest {
 
 		// Modify
 		String requestBody2 = "{" + //
-				"\"custPo\":{},"+
+				"\"custPo\":{\"poNo\":\"\"},"+
 				"\"proformaInvoiceVersion\":{" +
 				"\"extraCharges\":[{\"itemName\":\"Foo123\",\"price\":100.5,\"tax\":5}]," + //
 				"\"productItems\":[{\"product\":{\"id\":\"0000-0002\"}, " + //
@@ -199,7 +199,7 @@ public class ProformaInvoiceIntegrationTest {
 
 
 		// Set PurchaseNumber;
-		String requestBody4="{\"number\":\"PO888888\"}";
+		String requestBody4="{\"number\":\"\"}";
 		
 		this.mvc.perform(put("/proformaInvoices/versions/" + versionId + "/setPurchaseNumber")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)//
@@ -209,7 +209,7 @@ public class ProformaInvoiceIntegrationTest {
 
 		this.mvc.perform(get("/proformaInvoices/" + id + "/versions/" + versionId))//
 				.andExpect(jsonPath("id", equalTo(versionId)))//
-				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo("PO888888")));//
+				.andExpect(jsonPath("proformaInvoice.custPo.poNo", equalTo(id)));//
 	}
 
 	@Test
