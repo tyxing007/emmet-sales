@@ -96,6 +96,8 @@ public class SalesOrderIntegrationTest {
 				.andExpect(
 						jsonPath("content[0].productItems[0].product.id",
 								equalTo("0000-0001")))
+				.andExpect(jsonPath("content[0].productItems[0].status",equalTo("NORMAL")))
+				.andExpect(jsonPath("content[0].productItems[0].soldQty",equalTo(0)))					
 				.andExpect(
 						jsonPath("content[0].productItems[1].id", equalTo(2)))
 				.andExpect(
@@ -188,6 +190,8 @@ public class SalesOrderIntegrationTest {
 				.andExpect(
 						jsonPath("content[1].productItems[0].product.id",
 								equalTo("0000-0001")))
+				.andExpect(jsonPath("content[1].productItems[0].status",equalTo("NORMAL")))
+				.andExpect(jsonPath("content[1].productItems[0].soldQty",equalTo(0)))					
 				.andExpect(
 						jsonPath("content[1].productItems[1].id", equalTo(4)))
 				.andExpect(
@@ -417,6 +421,8 @@ public class SalesOrderIntegrationTest {
 				.andExpect(
 						jsonPath("productItems[0].product.id",
 								equalTo("0000-0001")))
+				.andExpect(jsonPath("productItems[0].status",equalTo("NORMAL")))
+				.andExpect(jsonPath("productItems[0].soldQty",equalTo(0)))					
 				.andExpect(jsonPath("info.custPo.poNo", equalTo("PO882")))
 				.andExpect(jsonPath("info.sales.id", equalTo("EM001")))
 				.andExpect(jsonPath("info.dataEntryClerk.id", equalTo("EM001")))

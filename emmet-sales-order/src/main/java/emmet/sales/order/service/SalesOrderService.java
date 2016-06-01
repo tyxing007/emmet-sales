@@ -15,6 +15,7 @@ import emmet.core.data.entity.Order.OrderStatus;
 import emmet.core.data.entity.OrderExtraCharge;
 import emmet.core.data.entity.OrderInfo;
 import emmet.core.data.entity.OrderProductItem;
+import emmet.core.data.entity.OrderProductItem.OrderItemStatus;
 import emmet.core.data.entity.OrderShipping;
 import emmet.sales.entity.pi.ProformaInvoice.ProformainvoiceStatus;
 import emmet.sales.entity.pi.ProformaInvoiceExtraCharge;
@@ -126,7 +127,8 @@ public class SalesOrderService {
 				ordItem.setQuantity(piProductItem.getQuantity());
 				ordItem.setUnit(piProductItem.getUnit());
 				ordItem.setUnitPrice(piProductItem.getUnitPrice());
-				
+				ordItem.setSoldQty(0);
+				ordItem.setStatus(OrderItemStatus.NORMAL);
 				ordItemlist.add(ordItem);
 			}
 		}
@@ -187,6 +189,8 @@ public class SalesOrderService {
 		if(dbOrder.getProductItems()!=null||!dbOrder.getProductItems().isEmpty()){
 			for(OrderProductItem productItem:dbOrder.getProductItems()){
 				productItem.setOrder(dbOrder);
+				productItem.setSoldQty(0);
+				productItem.setStatus(OrderItemStatus.NORMAL);
 			}
 		}
 		
