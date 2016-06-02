@@ -46,6 +46,10 @@ public class SalesSlipController {
 		
 	}
 	
+	public ResponseEntity<?> createSalesSlip(){
+		return null;
+	}
+	
 
 
 
