@@ -25,8 +25,8 @@ public class SalesSlipController {
 	@Autowired
 	OrderProductItemRepsitory productItemRepository;
 	
-	@RequestMapping(value = "/orderItemList/search/findBycustIdAndOrdId", method = RequestMethod.GET)
-	public ResponseEntity<?> getCustList(@RequestParam String custId,
+	@RequestMapping(value = "/orderItemList/search/findByCustIdAndOrdId", method = RequestMethod.GET)
+	public ResponseEntity<?> getOrderItemList(@RequestParam String custId,
 			@RequestParam(required=false) String ordId){
 		
 		if(ordId==null){
