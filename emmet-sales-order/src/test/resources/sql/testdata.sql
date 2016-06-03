@@ -16,9 +16,17 @@ DELETE FROM core_customer_purchase_order;
 DELETE FROM core_partner;
 DELETE FROM common_country;
 DELETE FROM core_employee;
-
-
+DELETE FROM core_warehouse;
+DELETE FROM core_organization;
+DELETE FROM core_batch_number;
 COMMIT;
+
+--core_organization	
+INSERT INTO core_organization(id, name, parent_organization)
+    VALUES ('org_factory', 'mobie-factory', null);
+	
+--core_warehouse
+insert into core_warehouse (id,organization_id) values ('0049','org_factory');  
 
 INSERT INTO core_partner (id) VALUES ('PA00000001');
 INSERT INTO core_customer (id, partner_id) VALUES ('AU00000001', 'PA00000001');
@@ -37,8 +45,12 @@ INSERT INTO partner_corporation (id, formal_name, common_name, partner_id, count
 
 INSERT INTO core_employee (id) values ('EM001');
 INSERT INTO partner_contact (id, last_name, first_name) values (1, 'Doe', 'John');
-INSERT INTO core_product (id,name) VALUES ('0000-0001','Bar');
-INSERT INTO core_product (id,name) VALUES ('0000-0002','Super Bar');
+
+insert into core_material(id,name,batch_no_ctr) values('0000-0001','Bar',true);
+insert into core_material(id,name,batch_no_ctr) values('0000-0002','Super Bar',true);
+
+INSERT INTO core_product (id,name,material_id) VALUES ('0000-0001','Bar','0000-0001');
+INSERT INTO core_product (id,name,material_id) VALUES ('0000-0002','Super Bar','0000-0002');
 INSERT INTO common_currency (id,name) VALUES ('USD','USD');
 
 INSERT INTO sales_proforma_invoice(id,cust_po_id) VALUES ('PI1604090030',1);

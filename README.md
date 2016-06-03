@@ -216,8 +216,8 @@ http://api.mycompany.com/sales/order/salesSlip/createSalesSlip
 
 
 ### Get a Order Item List that can be used to create Sales Slip
-***GET*** /sales/order/orderItemList/search/findByCustIdAndOrdId{?custId,ordId}
+***GET*** /sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId{?custId,ordId}
 
 Example:
-http://api.mycompany.com/sales/order/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
+http://api.mycompany.com/sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
 

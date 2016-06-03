@@ -145,6 +145,7 @@ public class SalesSlipService {
 		return salesSlipRepository.save(salesSlip);
 	}
 	
+	
 	private BatchNumber getBatchNumber(OrderProductItem ordItem) throws OperationNotPermitException{
 		
 		BatchNumber batchNumber=null;
