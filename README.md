@@ -193,3 +193,31 @@ the status could be
 * ABANDONED
 
 ```
+
+
+## Sales Slip
+
+### Create a Sales Slip by order Item List
+Example:
+```json
+curl -iX POST -H "Content-Type: application/json" -d '
+{
+  "userId":"EM0000112",
+  "warehouseId":"0049",
+  "orderItemList":[
+    {"id":1540108},
+    {"id":1540109},
+    {"id":1540110}
+  ]
+}
+'
+http://api.mycompany.com/sales/order/salesSlip/createSalesSlip
+```
+
+
+### Get a Order Item List that can be used to create Sales Slip
+***GET*** /sales/order/orderItemList/search/findByCustIdAndOrdId{?custId,ordId}
+
+Example:
+http://api.mycompany.com/sales/order/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
+
