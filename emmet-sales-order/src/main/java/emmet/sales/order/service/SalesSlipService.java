@@ -86,6 +86,10 @@ public class SalesSlipService {
 			sourceOrderItemList.add(dbOrderItem);
 		}
 		
+		if(sourceOrderItemList.size()==0){
+			throw new OperationNotPermitException("please choose some order Item for create sales slip !");
+		}
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		Calendar now = Calendar.getInstance();
 		
@@ -95,6 +99,7 @@ public class SalesSlipService {
 		salesSlip.setFormDate(Date.valueOf(sdf.format(now.getTime())));		
 		salesSlip.setNote("");
 		salesSlip.setStatus(SalesSlipStatus.PROCESSING);
+		salesSlip.setCustomer(sourceOrderItemList.get(0).getOrder().getInfo().getCustomer());
 		
 		salesSlipRepository.save(salesSlip);
 		

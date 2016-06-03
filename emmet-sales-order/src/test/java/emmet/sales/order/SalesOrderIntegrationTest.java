@@ -25,6 +25,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -442,7 +443,33 @@ public class SalesOrderIntegrationTest {
 		;
 
 		
+		// create a new sales
+		String requestBody_create_sales_slip = "{"
+				+" \"userId\":\"EM0000112\", "
+				+" \"warehouseId\":\"0049\", "
+				+" \"orderItemList\":[ "
+				+" 		{\"id\":1540108}, "
+				+"  	{\"id\":1540109}, "
+				+" 	] "
+				+ "}";
+		String fiId="FI"+dateInString+"0001";
 		
+//		this.mvc.perform( post("/salesSlip/createSalesSlip").contentType(MediaType.APPLICATION_JSON_VALUE)
+//				.content(requestBody_create_sales_slip) )
+//			.andDo(MockMvcResultHandlers.print())
+//			.andExpect(jsonPath("id", equalTo(moid2)))
+//			.andExpect(jsonPath("orderProductItem.id", equalTo(4)))
+//			.andExpect(jsonPath("status", equalTo("PROCESSING")))
+//			.andExpect(jsonPath("qty", equalTo(33)))
+//			.andExpect(jsonPath("product.id", equalTo("P001")))
+//			.andExpect(jsonPath("consumedMaterials[0].rawMaterial.id", equalTo("M002")))
+//			.andExpect(jsonPath("consumedMaterials[0].unitUsage", equalTo(20.0)))
+//			.andExpect(jsonPath("consumedMaterials[0].totalUsage", equalTo(660.0)))
+//			.andExpect(jsonPath("consumedMaterials[1].rawMaterial.id", equalTo("M003")))
+//			.andExpect(jsonPath("consumedMaterials[1].unitUsage", equalTo(30.0)))
+//			.andExpect(jsonPath("consumedMaterials[1].totalUsage", equalTo(990.0)))
+//			;
+//		
 	}
 
 }
