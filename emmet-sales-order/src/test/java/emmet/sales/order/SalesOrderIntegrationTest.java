@@ -441,6 +441,8 @@ public class SalesOrderIntegrationTest {
 				.andExpect(jsonPath("status", equalTo("PROCESSING")));
 		;
 
+		
+		
 	}
 
 }

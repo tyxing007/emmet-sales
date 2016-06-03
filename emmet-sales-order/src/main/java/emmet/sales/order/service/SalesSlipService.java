@@ -16,14 +16,15 @@ import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
 import emmet.core.data.entity.FormNumber;
 import emmet.core.data.entity.MaterialStock;
+import emmet.core.data.entity.Order.OrderStatus;
 import emmet.core.data.entity.OrderProductItem;
 import emmet.core.data.entity.SalesSlip;
 import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
 import emmet.core.data.entity.Warehouse;
-import emmet.core.data.repository.EmployeeRepository;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
+import emmet.sales.order.repository.EmployeeRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.repository.SalesSlipRepository;
 import emmet.sales.order.repository.WarehouseRepository;
@@ -54,7 +55,7 @@ public class SalesSlipService {
 		//check warehouse
 		Warehouse warehouse= warehouseRepository.findOne(model.getWarehouseId());
 		if(warehouse==null){
-			throw new  OperationNotPermitException("can not find warehouse by id!");
+			throw new  OperationNotPermitException("can not find warehouse by id: "+ model.getWarehouseId()+" !");
 		}
 		
 		List<OrderProductItem> orderItemList = model.getOrderItemList();
@@ -76,6 +77,10 @@ public class SalesSlipService {
 					throw new OperationNotPermitException("only the same customer,can can be create a sales slip!");
 				}
 			}
+			if(!OrderStatus.CONFIRMED.equals(dbOrderItem.getOrder().getStatus())){
+				throw new OperationNotPermitException("only oder status is confirmed,can be create a sales slip");
+			}
+			
 			customer=dbOrderItem.getOrder().getInfo().getCustomer();
 			
 			sourceOrderItemList.add(dbOrderItem);
