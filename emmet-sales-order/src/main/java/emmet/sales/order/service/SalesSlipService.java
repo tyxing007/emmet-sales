@@ -12,10 +12,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import emmet.core.data.entity.BatchNumber;
 import emmet.core.data.entity.Customer;
 import emmet.core.data.entity.Employee;
 import emmet.core.data.entity.FormNumber;
+import emmet.core.data.entity.Material;
 import emmet.core.data.entity.MaterialStock;
+import emmet.core.data.entity.Order;
 import emmet.core.data.entity.Order.OrderStatus;
 import emmet.core.data.entity.OrderProductItem;
 import emmet.core.data.entity.SalesSlip;
@@ -24,6 +27,7 @@ import emmet.core.data.entity.SalesSlipDetail;
 import emmet.core.data.entity.Warehouse;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
+import emmet.sales.order.repository.BatchNumberRepository;
 import emmet.sales.order.repository.EmployeeRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.repository.SalesSlipRepository;
@@ -41,6 +45,8 @@ public class SalesSlipService {
 	private SalesSlipRepository salesSlipRepository;
 	@Autowired
 	private WarehouseRepository warehouseRepository;
+	@Autowired
+	private BatchNumberRepository batchNumberRepository;
 	
 	
 	@Transactional
@@ -82,7 +88,6 @@ public class SalesSlipService {
 			}
 			
 			customer=dbOrderItem.getOrder().getInfo().getCustomer();
-			
 			sourceOrderItemList.add(dbOrderItem);
 		}
 		
@@ -127,7 +132,8 @@ public class SalesSlipService {
 			ms.setFormDate(salesSlip.getFormDate());
 			ms.setEnabled(false);
 			ms.setCreateDate(now);
-			ms.setBatchNumber(null);			
+			
+			ms.setBatchNumber(this.getBatchNumber(orderItem));			
 
 			salesSlipDetail.setMaterialStock(ms);
 			
@@ -137,6 +143,35 @@ public class SalesSlipService {
 		
 		
 		return salesSlipRepository.save(salesSlip);
+	}
+	
+	private BatchNumber getBatchNumber(OrderProductItem ordItem) throws OperationNotPermitException{
+		
+		BatchNumber batchNumber=null;
+		
+		Order order = ordItem.getOrder();
+		if(order==null){
+			throw new OperationNotPermitException("can not find order by id");
+		}
+		
+		Material material = ordItem.getProduct().getMaterial();
+		
+		
+		if(Boolean.TRUE.equals(material.getBatchNoCtr())){
+			//find a BatchNumber
+			batchNumber = batchNumberRepository.findByMaterialAndCode(material, order.getId());
+					
+			//if no BatchNumber , create one
+			if(batchNumber == null){
+				batchNumber= new BatchNumber();
+				batchNumber.setCode(order.getId());
+				batchNumber.setMaterial(material);
+				
+				batchNumberRepository.save(batchNumber);
+			}
+		}
+				
+		return batchNumber;
 	}
 	
 }
