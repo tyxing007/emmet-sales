@@ -25,9 +25,13 @@ import emmet.core.data.entity.SalesSlip;
 import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
 import emmet.core.data.entity.Warehouse;
+import emmet.partner.entity.PartnerCorporation;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
+import emmet.sales.order.model.CustomerModel;
 import emmet.sales.order.repository.BatchNumberRepository;
+import emmet.sales.order.repository.CorporationRepository;
+import emmet.sales.order.repository.CustomerRepository;
 import emmet.sales.order.repository.EmployeeRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.repository.SalesSlipRepository;
@@ -47,7 +51,12 @@ public class SalesSlipService {
 	private WarehouseRepository warehouseRepository;
 	@Autowired
 	private BatchNumberRepository batchNumberRepository;
-	
+	@Autowired
+	OrderProductItemRepsitory productItemRepository;
+	@Autowired
+	CorporationRepository corporationRepository;
+	@Autowired
+	CustomerRepository customerRepository;
 	
 	@Transactional
 	public SalesSlip  createNewSalesSlip(CreateSalesSlipModel model) throws OperationNotPermitException{
@@ -132,9 +141,10 @@ public class SalesSlipService {
 			ms.setFormDate(salesSlip.getFormDate());
 			ms.setEnabled(false);
 			ms.setCreateDate(now);
-			
-			ms.setBatchNumber(this.getBatchNumber(orderItem));			
-
+			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
+				ms.setBatchNumber(this.getBatchNumber(orderItem));		
+			}
+				
 			salesSlipDetail.setMaterialStock(ms);
 			
 			salesSlipDetails.add(salesSlipDetail);
@@ -175,4 +185,21 @@ public class SalesSlipService {
 		return batchNumber;
 	}
 	
+	public List<CustomerModel> getCustomerList(){
+		
+		List<String> custIdList = productItemRepository.findSalesSlipCustList();
+		List<CustomerModel> custList = new ArrayList<CustomerModel>();
+		for(String custId:custIdList){
+			Customer customer = customerRepository.findOne(custId);					
+			PartnerCorporation corporation =  corporationRepository.findByPartnerId(customer.getPartner().getId());
+			
+			CustomerModel model = new CustomerModel();
+			model.setCorporation(corporation);
+			model.setCustomer(customer);
+			custList.add(model);
+						
+		}
+		
+		return custList;
+	}
 }

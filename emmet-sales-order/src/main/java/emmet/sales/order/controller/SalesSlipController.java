@@ -61,6 +61,17 @@ public class SalesSlipController {
 	
 
 
+	@RequestMapping(value = "/customerList/", method = RequestMethod.GET)
+	public ResponseEntity<?> getCustomerList(){
+		try {
+			return ResponseEntity.ok(salesSlipService.getCustomerList());
+		} catch (Exception e) {
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/customerList/");
+			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
 
 	
 
