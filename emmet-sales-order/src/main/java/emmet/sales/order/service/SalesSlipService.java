@@ -26,7 +26,6 @@ import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
 import emmet.core.data.entity.Warehouse;
 import emmet.partner.entity.PartnerCorporation;
-import emmet.sales.order.exception.DataNotFoundException;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.CustomerModel;
@@ -65,7 +64,7 @@ public class SalesSlipService {
 	MaterialStockRepository materialStockRepository;
 	
 	@Transactional
-	public SalesSlip  createNewSalesSlip(CreateSalesSlipModel model) throws OperationNotPermitException, DataNotFoundException{
+	public SalesSlip  createNewSalesSlip(CreateSalesSlipModel model) throws OperationNotPermitException{
 		
 		//check employee
 		Employee createUser = employeeRepository.findOne(model.getUserId());
@@ -172,7 +171,13 @@ public class SalesSlipService {
 
 				ms.setWarehouse(ms.getWarehouse());
 				ms.setMaterial(orderItem.getProduct().getMaterial());
-				ms.setIoQty(mws.getStock().abs().negate());
+				
+				if(mws.getStock().longValue() > thisTotalQty){
+					ms.setIoQty(BigDecimal.valueOf(thisTotalQty).negate());
+				}else{
+					ms.setIoQty(mws.getStock().negate());
+				}
+				
 				ms.setFormNumber(formNumber);
 				ms.setFormDate(salesSlip.getFormDate());
 				ms.setEnabled(false);
@@ -277,9 +282,9 @@ public class SalesSlipService {
 		return modelList;
 	}
 	
-	private List<MaterialWarehouseStockModel> getMaterialWarehouseStockList(Material material,BatchNumber batchNumber) throws DataNotFoundException{
+	private List<MaterialWarehouseStockModel> getMaterialWarehouseStockList(Material material,BatchNumber batchNumber) throws OperationNotPermitException{
 		if(material==null||batchNumber==null){
-			throw new DataNotFoundException("material or batchNumber is null!");
+			throw new OperationNotPermitException("material or batchNumber is null!");
 		}
 		List<MaterialWarehouseStockModel> warehouseStockList = materialStockRepository.getMaterialStockList(material, batchNumber);
 		return warehouseStockList;

@@ -72,15 +72,5 @@ public class SalesSlipController {
 	
 	
 
-	@RequestMapping(value = "/testList/", method = RequestMethod.GET)
-	public ResponseEntity<?> testList(){
-		try {
-			return ResponseEntity.ok(salesSlipService.getMaterialWarehouseStockList());
-		} catch (Exception e) {
-			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/testList/");
-			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
-		}
-	}
-	
 
 }
