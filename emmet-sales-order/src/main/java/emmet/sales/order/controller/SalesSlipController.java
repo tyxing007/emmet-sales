@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import emmet.common.message.ErrorMessage;
-import emmet.core.data.entity.OrderProductItem;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
+import emmet.sales.order.model.NormalOrderItemModel;
+import emmet.sales.order.repository.MaterialStockRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.service.SalesSlipService;
 
@@ -27,25 +28,23 @@ public class SalesSlipController {
 	SalesSlipService salesSlipService;
 	@Autowired
 	OrderProductItemRepsitory productItemRepository;
+
 	
 	@RequestMapping(value = "/orderItemList/search/findByCustIdAndOrdId", method = RequestMethod.GET)
 	public ResponseEntity<?> getOrderItemList(@RequestParam String custId,
 			@RequestParam(required=false) String ordId){
 		
-		if(ordId==null){
-			ordId="";
-		}
-		
-		List<OrderProductItem> productItemList =null;
+		List<NormalOrderItemModel> modelList =null;
 		try {
-			productItemList= productItemRepository.findNormalOrderItemByCustAndOrdId(custId, "%"+ordId.trim()+"%");
+
+			modelList=salesSlipService.getCustOrderItemList(custId, ordId);
 		} catch (Exception e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/orderItemList/search/findBycustIdAndOrdId");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
 		}
 		
 					
-		return ResponseEntity.ok(productItemList);
+		return ResponseEntity.ok(modelList);
 		
 	}
 	
@@ -73,6 +72,15 @@ public class SalesSlipController {
 	
 	
 
+	@RequestMapping(value = "/testList/", method = RequestMethod.GET)
+	public ResponseEntity<?> testList(){
+		try {
+			return ResponseEntity.ok(salesSlipService.getMaterialWarehouseStockList());
+		} catch (Exception e) {
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/testList/");
+			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 
 }

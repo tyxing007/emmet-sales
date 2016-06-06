@@ -26,13 +26,17 @@ import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
 import emmet.core.data.entity.Warehouse;
 import emmet.partner.entity.PartnerCorporation;
+import emmet.sales.order.exception.DataNotFoundException;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.CustomerModel;
+import emmet.sales.order.model.MaterialWarehouseStockModel;
+import emmet.sales.order.model.NormalOrderItemModel;
 import emmet.sales.order.repository.BatchNumberRepository;
 import emmet.sales.order.repository.CorporationRepository;
 import emmet.sales.order.repository.CustomerRepository;
 import emmet.sales.order.repository.EmployeeRepository;
+import emmet.sales.order.repository.MaterialStockRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.repository.SalesSlipRepository;
 import emmet.sales.order.repository.WarehouseRepository;
@@ -57,9 +61,11 @@ public class SalesSlipService {
 	CorporationRepository corporationRepository;
 	@Autowired
 	CustomerRepository customerRepository;
+	@Autowired
+	MaterialStockRepository materialStockRepository;
 	
 	@Transactional
-	public SalesSlip  createNewSalesSlip(CreateSalesSlipModel model) throws OperationNotPermitException{
+	public SalesSlip  createNewSalesSlip(CreateSalesSlipModel model) throws OperationNotPermitException, DataNotFoundException{
 		
 		//check employee
 		Employee createUser = employeeRepository.findOne(model.getUserId());
@@ -84,7 +90,6 @@ public class SalesSlipService {
 		List<OrderProductItem> sourceOrderItemList =new ArrayList<OrderProductItem>();
 		
 		for(OrderProductItem orderItem:orderItemList){			
-			
 			OrderProductItem dbOrderItem=orderItemRepository.findOne(orderItem.getId());
 			
 			if(customer!=null){
@@ -95,7 +100,7 @@ public class SalesSlipService {
 			if(!OrderStatus.CONFIRMED.equals(dbOrderItem.getOrder().getStatus())){
 				throw new OperationNotPermitException("only oder status is confirmed,can be create a sales slip");
 			}
-			
+									
 			customer=dbOrderItem.getOrder().getInfo().getCustomer();
 			sourceOrderItemList.add(dbOrderItem);
 		}
@@ -128,26 +133,64 @@ public class SalesSlipService {
 		salesSlip.setSalesSlipDetails(salesSlipDetails);				
 		
 		for(OrderProductItem orderItem:sourceOrderItemList){
-			SalesSlipDetail salesSlipDetail = new SalesSlipDetail();
-			salesSlipDetail.setOrderItem(orderItem);
-			salesSlipDetail.setSalesSlip(salesSlip);
 			
-			MaterialStock ms = new MaterialStock();			
-
-			ms.setWarehouse(warehouse);
-			ms.setMaterial(orderItem.getProduct().getMaterial());
-			ms.setIoQty(BigDecimal.valueOf(orderItem.getQuantity()).abs().negate());
-			ms.setFormNumber(formNumber);
-			ms.setFormDate(salesSlip.getFormDate());
-			ms.setEnabled(false);
-			ms.setCreateDate(now);
+			//check ordItem Stock
+			BigDecimal ordItemStock = null;
 			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
-				ms.setBatchNumber(this.getBatchNumber(orderItem));		
+				ordItemStock = materialStockRepository.getAvailableStockWithBatchNo(orderItem.getProduct().getMaterial(), this.getBatchNumber(orderItem));
+			}else{
+				ordItemStock = materialStockRepository.getAvailableStockNoBatchNo(orderItem.getProduct().getMaterial());
+			}
+			if(ordItemStock.longValue()<=0){
+				throw new OperationNotPermitException(orderItem.getProduct().getName()+"'s stock less than 1 !");
+			}
+			
+			//total應銷數
+			Integer totalSalesQty = orderItem.getQuantity();
+			//total可銷數
+			Integer totalStock = ordItemStock.intValue();
+			//this total qty 本次銷貨數
+			Integer thisTotalQty;
+			
+			if(totalSalesQty>=totalStock){
+				thisTotalQty=totalStock;
+			}else{
+				thisTotalQty=totalSalesQty;
+			}
+			//商品可用庫存清單
+			List<MaterialWarehouseStockModel> MaterialWarehouseStockList = this.getMaterialWarehouseStockList(orderItem.getProduct().getMaterial(), this.getBatchNumber(orderItem));
+			int start = 0;
+			while(thisTotalQty>0){
+				MaterialWarehouseStockModel mws = MaterialWarehouseStockList.get(start);
+				
+				//依據倉庫數量由庫存量少到多開始扣帳
+				SalesSlipDetail salesSlipDetail = new SalesSlipDetail();
+				salesSlipDetail.setOrderItem(orderItem);
+				salesSlipDetail.setSalesSlip(salesSlip);
+				
+				MaterialStock ms = new MaterialStock();			
+
+				ms.setWarehouse(ms.getWarehouse());
+				ms.setMaterial(orderItem.getProduct().getMaterial());
+				ms.setIoQty(mws.getStock().abs().negate());
+				ms.setFormNumber(formNumber);
+				ms.setFormDate(salesSlip.getFormDate());
+				ms.setEnabled(false);
+				ms.setCreateDate(now);
+				if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
+					ms.setBatchNumber(this.getBatchNumber(orderItem));		
+				}
+					
+				salesSlipDetail.setMaterialStock(ms);
+				
+				salesSlipDetails.add(salesSlipDetail);
+				
+				
+				thisTotalQty = thisTotalQty - mws.getStock().abs().intValue();
+				start=start+1;
 			}
 				
-			salesSlipDetail.setMaterialStock(ms);
 			
-			salesSlipDetails.add(salesSlipDetail);
 			
 		}
 		
@@ -202,4 +245,45 @@ public class SalesSlipService {
 		
 		return custList;
 	}
+	
+	public List<NormalOrderItemModel> getCustOrderItemList(String custId,String ordId) throws OperationNotPermitException{
+		
+		if(custId==null){
+			custId="";
+		}
+		
+		if(ordId==null){
+			ordId="";
+		}
+				
+		List<OrderProductItem> productItemList= productItemRepository.findNormalOrderItemByCustAndOrdId(custId, "%"+ordId.trim()+"%");
+		List<NormalOrderItemModel> modelList = new ArrayList<NormalOrderItemModel>();
+		
+		for(OrderProductItem ordItem:productItemList){
+			NormalOrderItemModel model = new NormalOrderItemModel();
+			model.setOrderProductItem(ordItem);
+			BigDecimal ordItemStock = null;
+			if(Boolean.TRUE.equals(ordItem.getProduct().getMaterial().getBatchNoCtr())){
+				ordItemStock = materialStockRepository.getAvailableStockWithBatchNo(ordItem.getProduct().getMaterial(), this.getBatchNumber(ordItem));
+			}else{
+				ordItemStock = materialStockRepository.getAvailableStockNoBatchNo(ordItem.getProduct().getMaterial());
+			}
+
+			model.setAvailableStock(ordItemStock);
+			
+			modelList.add(model);
+		}
+		
+		return modelList;
+	}
+	
+	private List<MaterialWarehouseStockModel> getMaterialWarehouseStockList(Material material,BatchNumber batchNumber) throws DataNotFoundException{
+		if(material==null||batchNumber==null){
+			throw new DataNotFoundException("material or batchNumber is null!");
+		}
+		List<MaterialWarehouseStockModel> warehouseStockList = materialStockRepository.getMaterialStockList(material, batchNumber);
+		return warehouseStockList;
+	}
+	
+	
 }
