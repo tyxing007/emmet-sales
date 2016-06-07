@@ -203,7 +203,6 @@ Example:
 curl -iX POST -H "Content-Type: application/json" -d '
 {
   "userId":"EM0000112",
-  "warehouseId":"0049",
   "orderItemList":[
     {"id":1540108},
     {"id":1540109},
@@ -221,3 +220,8 @@ http://api.mycompany.com/sales/order/salesSlip/createSalesSlip
 Example:
 http://api.mycompany.com/sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
 
+### Get a Customer List to create Sales Slip
+***GET*** /sales/order/salesSlip/customerList/
+
+Example:
+http://api.mycompany.com/sales/order/salesSlip/customerList/
