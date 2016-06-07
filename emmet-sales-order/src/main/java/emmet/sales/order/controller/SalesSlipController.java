@@ -60,12 +60,12 @@ public class SalesSlipController {
 	
 
 
-	@RequestMapping(value = "/customerList/", method = RequestMethod.GET)
-	public ResponseEntity<?> getCustomerList(){
+	@RequestMapping(value = "/customerList/search/findByIdLike", method = RequestMethod.GET)
+	public ResponseEntity<?> getCustomerList(@RequestParam(required=false) String id){
 		try {
-			return ResponseEntity.ok(salesSlipService.getCustomerList());
+			return ResponseEntity.ok(salesSlipService.getCustomerList(id));
 		} catch (Exception e) {
-			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/customerList/");
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/customerList/search/findByIdLike");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
 		}
 	}

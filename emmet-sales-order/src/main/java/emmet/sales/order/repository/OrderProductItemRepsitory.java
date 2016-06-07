@@ -29,8 +29,9 @@ public interface OrderProductItemRepsitory extends PagingAndSortingRepository<Or
 			+ " join _order.info as info "
 			+ " where ordItem.status='NORMAL' "
 			+ " and _order.status='CONFIRMED' "
+			+ " and info.customer.id like %:custId% "
 			+ " order by info.customer.id"
 			)
-	public List<String> findSalesSlipCustList();
+	public List<String> findSalesSlipCustList(@Param("custId") String custId);
 	
 }

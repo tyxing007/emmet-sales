@@ -221,7 +221,7 @@ Example:
 http://api.mycompany.com/sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
 
 ### Get a Customer List for creatting Sales Slip
-***GET*** /sales/order/salesSlip/customerList/
+***GET*** /sales/order/salesSlip/customerList/search/findByNameLike{?id}
 
 Example:
-http://api.mycompany.com/sales/order/salesSlip/customerList/
+http://api.mycompany.com/sales/order/salesSlip/customerList/search/findByIdLike?id=US

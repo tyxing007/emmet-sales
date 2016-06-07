@@ -24,7 +24,6 @@ import emmet.core.data.entity.OrderProductItem;
 import emmet.core.data.entity.SalesSlip;
 import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
-import emmet.core.data.entity.Warehouse;
 import emmet.partner.entity.PartnerCorporation;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
@@ -230,9 +229,11 @@ public class SalesSlipService {
 		return batchNumber;
 	}
 	
-	public List<CustomerModel> getCustomerList(){
-		
-		List<String> custIdList = productItemRepository.findSalesSlipCustList();
+	public List<CustomerModel> getCustomerList(String customerId){
+		if(customerId==null){
+			customerId="";
+		}
+		List<String> custIdList = productItemRepository.findSalesSlipCustList(customerId.trim());
 		List<CustomerModel> custList = new ArrayList<CustomerModel>();
 		for(String custId:custIdList){
 			Customer customer = customerRepository.findOne(custId);					
