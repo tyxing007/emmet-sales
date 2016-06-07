@@ -220,7 +220,7 @@ http://api.mycompany.com/sales/order/salesSlip/createSalesSlip
 Example:
 http://api.mycompany.com/sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
 
-### Get a Customer List to create Sales Slip
+### Get a Customer List for creatting Sales Slip
 ***GET*** /sales/order/salesSlip/customerList/
 
 Example:
