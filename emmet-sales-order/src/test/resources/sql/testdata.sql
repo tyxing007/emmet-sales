@@ -18,7 +18,10 @@ DELETE FROM common_country;
 DELETE FROM core_employee;
 DELETE FROM core_warehouse;
 DELETE FROM core_organization;
+DELETE FROM core_material_stock;
 DELETE FROM core_batch_number;
+DELETE FROM core_form_number;   
+
 COMMIT;
 
 --core_organization	
@@ -26,7 +29,9 @@ INSERT INTO core_organization(id, name, parent_organization)
     VALUES ('org_factory', 'mobie-factory', null);
 	
 --core_warehouse
-insert into core_warehouse (id,organization_id) values ('0049','org_factory');  
+insert into core_warehouse (id,organization_id,is_available) values ('0049','org_factory',true);  
+insert into core_warehouse (id,organization_id,is_available) values ('0050','org_factory',true);  
+
 
 INSERT INTO core_partner (id) VALUES ('PA00000001');
 INSERT INTO core_customer (id, partner_id) VALUES ('AU00000001', 'PA00000001');
@@ -41,8 +46,8 @@ INSERT INTO common_country(id, iso3166_two_letter_code, iana_country_codetld) VA
 INSERT INTO partner_corporation (id, formal_name, common_name, partner_id, country_id, valid_date) 
 	VALUES (10, 'AU001 Corporation','AU1', 'PA00000001', '9', '2016-1-29');
 
-
-
+	
+	
 INSERT INTO core_employee (id) values ('EM001');
 INSERT INTO partner_contact (id, last_name, first_name) values (1, 'Doe', 'John');
 
@@ -51,6 +56,50 @@ insert into core_material(id,name,batch_no_ctr) values('0000-0002','Super Bar',t
 
 INSERT INTO core_product (id,name,material_id) VALUES ('0000-0001','Bar','0000-0001');
 INSERT INTO core_product (id,name,material_id) VALUES ('0000-0002','Super Bar','0000-0002');
+
+--core_batch_number
+INSERT INTO core_batch_number(
+            id, code, material_id)
+    VALUES (112, 'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0001');	
+INSERT INTO core_batch_number(
+            id, code, material_id)
+    VALUES (113, 'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0002');	    
+
+--core_form_number
+INSERT INTO core_form_number(id) values('OD'||to_char(now(),'yyyyMMdd')||'01');    
+    
+--core_material_stock
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10001, now(), true, '2016-5-12', 3, 112, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0001', '0049');
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10002, now(), true, '2016-5-12', -2, 112, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0001', '0049');            
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10003, now(), true, '2016-5-12', 30, 112, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0001', '0050');
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10004, now(), true, '2016-5-12', -5, 112, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0001', '0050');
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10005, now(), true, '2016-5-12', 34, 113, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0002', '0050');
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10006, now(), true, '2016-5-12', -25, 113, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0002', '0050');               
+            
 INSERT INTO common_currency (id,name) VALUES ('USD','USD');
 
 INSERT INTO sales_proforma_invoice(id,cust_po_id) VALUES ('PI1604090030',1);

@@ -72,11 +72,6 @@ public class SalesSlipService {
 			throw new OperationNotPermitException("can not find employee by id!");
 		}
 		
-		//check warehouse
-		Warehouse warehouse= warehouseRepository.findOne(model.getWarehouseId());
-		if(warehouse==null){
-			throw new  OperationNotPermitException("can not find warehouse by id: "+ model.getWarehouseId()+" !");
-		}
 		
 		List<OrderProductItem> orderItemList = model.getOrderItemList();
 		
@@ -141,12 +136,12 @@ public class SalesSlipService {
 				ordItemStock = materialStockRepository.getAvailableStockNoBatchNo(orderItem.getProduct().getMaterial());
 			}
 			if(ordItemStock.longValue()<=0){
-				throw new OperationNotPermitException(orderItem.getProduct().getName()+"'s stock less than 1 !");
+				throw new OperationNotPermitException(orderItem.getProduct().getId()+"'s stock less than 1 !");
 			}
 			
 			//total應銷數
-			Integer totalSalesQty = orderItem.getQuantity();
-			//total可銷數
+			Integer totalSalesQty = orderItem.getQuantity()-orderItem.getSoldQty();
+			//total可銷數(庫存數)
 			Integer totalStock = ordItemStock.intValue();
 			//this total qty 本次銷貨數
 			Integer thisTotalQty;
@@ -158,6 +153,8 @@ public class SalesSlipService {
 			}
 			//商品可用庫存清單
 			List<MaterialWarehouseStockModel> MaterialWarehouseStockList = this.getMaterialWarehouseStockList(orderItem.getProduct().getMaterial(), this.getBatchNumber(orderItem));
+
+			
 			int start = 0;
 			while(thisTotalQty>0){
 				MaterialWarehouseStockModel mws = MaterialWarehouseStockList.get(start);
@@ -169,13 +166,13 @@ public class SalesSlipService {
 				
 				MaterialStock ms = new MaterialStock();			
 
-				ms.setWarehouse(ms.getWarehouse());
+				ms.setWarehouse(mws.getWarehouse());
 				ms.setMaterial(orderItem.getProduct().getMaterial());
 				
 				if(mws.getStock().longValue() > thisTotalQty){
-					ms.setIoQty(BigDecimal.valueOf(thisTotalQty).negate());
+					ms.setIoQty(BigDecimal.valueOf(thisTotalQty.doubleValue()).negate());
 				}else{
-					ms.setIoQty(mws.getStock().negate());
+					ms.setIoQty(mws.getStock().abs().negate());
 				}
 				
 				ms.setFormNumber(formNumber);
@@ -263,7 +260,7 @@ public class SalesSlipService {
 				
 		List<OrderProductItem> productItemList= productItemRepository.findNormalOrderItemByCustAndOrdId(custId, "%"+ordId.trim()+"%");
 		List<NormalOrderItemModel> modelList = new ArrayList<NormalOrderItemModel>();
-		
+	
 		for(OrderProductItem ordItem:productItemList){
 			NormalOrderItemModel model = new NormalOrderItemModel();
 			model.setOrderProductItem(ordItem);

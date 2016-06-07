@@ -8,7 +8,7 @@ public class CreateSalesSlipModel {
 
 	private String userId;
 	private List<OrderProductItem> orderItemList;
-	private String warehouseId;
+
 
 	public String getUserId() {
 		if (userId == null) {
@@ -30,15 +30,5 @@ public class CreateSalesSlipModel {
 		this.orderItemList = orderItemList;
 	}
 
-	public String getWarehouseId() {
-		if (warehouseId == null) {
-			warehouseId = "";
-		}
-		return warehouseId;
-	}
-
-	public void setWarehouseId(String warehouseId) {
-		this.warehouseId = warehouseId;
-	}
 
 }

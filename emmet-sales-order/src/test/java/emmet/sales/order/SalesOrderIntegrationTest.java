@@ -447,8 +447,8 @@ public class SalesOrderIntegrationTest {
 		this.mvc.perform(get("/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=AU00000001"))//
 		.andDo(print()).andExpect(status().isOk())//
 		.andExpect(jsonPath("$", hasSize(2)))
-		.andExpect(jsonPath("$[0].id", equalTo(1)))
-		.andExpect(jsonPath("$[1].id", equalTo(2)))
+		.andExpect(jsonPath("$[0].orderProductItem.id", equalTo(1)))
+		.andExpect(jsonPath("$[1].orderProductItem.id", equalTo(2)))
 		;
 		
 		// create a new sales slip
@@ -472,18 +472,25 @@ public class SalesOrderIntegrationTest {
 			.andExpect(jsonPath("createUser.id", equalTo("EM001")))
 			.andExpect(jsonPath("salesSlipDetails[0].materialStock.material.id", equalTo("0000-0001")))
 			.andExpect(jsonPath("salesSlipDetails[0].materialStock.batchNumber.code", equalTo(id1)))
-			.andExpect(jsonPath("salesSlipDetails[0].materialStock.ioQty", equalTo(-5)))
+			.andExpect(jsonPath("salesSlipDetails[0].materialStock.ioQty", equalTo(-1.0)))
 			.andExpect(jsonPath("salesSlipDetails[0].materialStock.warehouse.id", equalTo("0049")))
 			.andExpect(jsonPath("salesSlipDetails[0].materialStock.enabled", equalTo(false)))
 			.andExpect(jsonPath("salesSlipDetails[0].materialStock.formNumber.id", equalTo(fiId1)))
 			.andExpect(jsonPath("salesSlipDetails[0].orderItem.id", equalTo(1)))
-			.andExpect(jsonPath("salesSlipDetails[1].materialStock.material.id", equalTo("0000-0002")))
+			.andExpect(jsonPath("salesSlipDetails[1].materialStock.material.id", equalTo("0000-0001")))
 			.andExpect(jsonPath("salesSlipDetails[1].materialStock.batchNumber.code", equalTo(id1)))
-			.andExpect(jsonPath("salesSlipDetails[1].materialStock.ioQty", equalTo(-10)))
-			.andExpect(jsonPath("salesSlipDetails[1].materialStock.warehouse.id", equalTo("0049")))
+			.andExpect(jsonPath("salesSlipDetails[1].materialStock.ioQty", equalTo(-4.0)))
+			.andExpect(jsonPath("salesSlipDetails[1].materialStock.warehouse.id", equalTo("0050")))
 			.andExpect(jsonPath("salesSlipDetails[1].materialStock.enabled", equalTo(false)))
 			.andExpect(jsonPath("salesSlipDetails[1].materialStock.formNumber.id", equalTo(fiId1)))
-			.andExpect(jsonPath("salesSlipDetails[1].orderItem.id", equalTo(2)))
+			.andExpect(jsonPath("salesSlipDetails[1].orderItem.id", equalTo(1)))
+			.andExpect(jsonPath("salesSlipDetails[2].materialStock.material.id", equalTo("0000-0002")))
+			.andExpect(jsonPath("salesSlipDetails[2].materialStock.batchNumber.code", equalTo(id1)))
+			.andExpect(jsonPath("salesSlipDetails[2].materialStock.ioQty", equalTo(-9.0)))
+			.andExpect(jsonPath("salesSlipDetails[2].materialStock.warehouse.id", equalTo("0050")))
+			.andExpect(jsonPath("salesSlipDetails[2].materialStock.enabled", equalTo(false)))
+			.andExpect(jsonPath("salesSlipDetails[2].materialStock.formNumber.id", equalTo(fiId1)))
+			.andExpect(jsonPath("salesSlipDetails[2].orderItem.id", equalTo(2)))
 			;
 		
 	}
