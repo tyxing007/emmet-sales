@@ -444,7 +444,7 @@ public class SalesOrderIntegrationTest {
 
 		
 		//Get a Order Item List that can be used to create Sales Slip
-		this.mvc.perform(get("/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=AU00000001"))//
+		this.mvc.perform(get("/salesSlips/orderItemList/search/findByCustIdAndOrdId?custId=AU00000001"))//
 		.andDo(print()).andExpect(status().isOk())//
 		.andExpect(jsonPath("$", hasSize(2)))
 		.andExpect(jsonPath("$[0].orderProductItem.id", equalTo(1)))
@@ -462,7 +462,7 @@ public class SalesOrderIntegrationTest {
 				+" }";
 		String fiId1="IN"+dateInString+"0001";
 		
-		this.mvc.perform( post("/salesSlip/createSalesSlip").contentType(MediaType.APPLICATION_JSON_VALUE)
+		this.mvc.perform( post("/salesSlips/createSalesSlip").contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(requestBody_create_sales_slip) )
 			.andDo(MockMvcResultHandlers.print())
 			.andExpect(jsonPath("id", equalTo(fiId1)))
