@@ -18,6 +18,7 @@ import emmet.core.data.entity.SalesSlip;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.NormalOrderItemModel;
+import emmet.sales.order.model.SalesSlipModel;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.repository.SalesSlipRepository;
 import emmet.sales.order.service.SalesSlipService;
@@ -94,8 +95,10 @@ public class SalesSlipController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getSalesSlipById(@PathVariable String id){
 		try {
-			SalesSlip salesSlip =salesSlipRepository.findOne(id);
-			return ResponseEntity.ok(salesSlipService.getSalesSlipModel(salesSlip));
+			SalesSlip salesSlip = salesSlipRepository.findOne(id);
+			SalesSlipModel model = salesSlipService.getSalesSlipModel(salesSlip);
+			model.getSalesSlip().setSalesSlipDetails(null);
+			return ResponseEntity.ok(model);
 		} catch (Exception e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);

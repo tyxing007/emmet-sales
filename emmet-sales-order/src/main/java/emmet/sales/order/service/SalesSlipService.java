@@ -361,9 +361,11 @@ public class SalesSlipService {
 			//check ordItem Stock
 			BigDecimal ordItemStock = null;
 			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
-				ordItemStock = materialStockRepository.getAvailableStockWithBatchNo(orderItem.getProduct().getMaterial(), this.getBatchNumber(orderItem));
+				ordItemStock=materialStockRepository.getWareHouseProductStockQtyWithBatchNo(orderItem.getProduct().getMaterial(),ssd.getMaterialStock().getWarehouse() , this.getBatchNumber(orderItem));
+				
 			}else{
-				ordItemStock = materialStockRepository.getAvailableStockNoBatchNo(orderItem.getProduct().getMaterial());
+				ordItemStock=materialStockRepository.getWareHouseProductStockNoBatchNo(orderItem.getProduct().getMaterial(), ssd.getMaterialStock().getWarehouse());
+
 			}
 			
 			SalesSlipDetailBo bo = new SalesSlipDetailBo();
