@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import emmet.common.message.ErrorMessage;
+import emmet.core.data.entity.SalesSlip;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.NormalOrderItemModel;
@@ -53,7 +54,9 @@ public class SalesSlipController {
 	@RequestMapping(value = "/createSalesSlip", method = RequestMethod.POST)
 	public ResponseEntity<?> createSalesSlip(@RequestBody CreateSalesSlipModel model){
 		try {
-			return ResponseEntity.ok(salesSlipService.createNewSalesSlip(model));
+			
+			SalesSlip salesSlip =salesSlipService.createNewSalesSlip(model);
+			return ResponseEntity.ok(salesSlipService.getSalesSlipModel(salesSlip));
 		} catch (OperationNotPermitException e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/createSalesSlip");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
@@ -91,8 +94,8 @@ public class SalesSlipController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getSalesSlipById(@PathVariable String id){
 		try {
-
-			return ResponseEntity.ok(salesSlipRepository.findOne(id));
+			SalesSlip salesSlip =salesSlipRepository.findOne(id);
+			return ResponseEntity.ok(salesSlipService.getSalesSlipModel(salesSlip));
 		} catch (Exception e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);

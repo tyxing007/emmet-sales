@@ -25,11 +25,13 @@ import emmet.core.data.entity.SalesSlip;
 import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
 import emmet.partner.entity.PartnerCorporation;
+import emmet.sales.order.bo.SalesSlipDetailBo;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.CustomerModel;
 import emmet.sales.order.model.MaterialWarehouseStockModel;
 import emmet.sales.order.model.NormalOrderItemModel;
+import emmet.sales.order.model.SalesSlipModel;
 import emmet.sales.order.repository.BatchNumberRepository;
 import emmet.sales.order.repository.CorporationRepository;
 import emmet.sales.order.repository.CustomerRepository;
@@ -292,19 +294,85 @@ public class SalesSlipService {
 	}
 	
 	@Transactional
-	public SalesSlip updateSalesSlip(SalesSlip salesSlip){
-		
-		
+	public SalesSlip updateSalesSlip(SalesSlip salesSlip) throws OperationNotPermitException{
+				
 		
 		SalesSlip dbSalesSlip=salesSlipRepository.findOne(salesSlip.getId());
 		
-//		dbSalesSlip.setFormDate(formDate);
-//		dbSalesSlip.setNote(note);
-//		
+		dbSalesSlip.setFormDate(salesSlip.getFormDate());
+		dbSalesSlip.setNote(salesSlip.getNote());
 		
+		salesSlipDetailRepository.delete(dbSalesSlip.getSalesSlipDetails());
 		
-		return null;
+		List<SalesSlipDetail> salesSlipDetails=new ArrayList<SalesSlipDetail>();
+		dbSalesSlip.setSalesSlipDetails(salesSlipDetails);
+		
+		for(SalesSlipDetail ssd :salesSlip.getSalesSlipDetails()){
+			SalesSlipDetail salesSlipDetail = new SalesSlipDetail();
+			
+			OrderProductItem orderItem = productItemRepository.findOne(ssd.getOrderItem().getId());
+			
+			if(orderItem==null){
+				throw new OperationNotPermitException("can not find orderItem by id : "+ssd.getOrderItem().getId()+" !");
+			}
+			
+			salesSlipDetail.setOrderItem(orderItem);
+			
+			
+			MaterialStock ms = new MaterialStock();			
+
+			ms.setWarehouse(ssd.getMaterialStock().getWarehouse());
+			ms.setMaterial(ssd.getMaterialStock().getMaterial());
+			
+			
+			ms.setIoQty(ssd.getMaterialStock().getIoQty().abs().negate());
+
+			
+			ms.setFormNumber(dbSalesSlip.getFormNumber());
+			ms.setFormDate(dbSalesSlip.getFormDate());
+			ms.setEnabled(false);
+			ms.setCreateDate(salesSlip.getCreateDate());
+			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
+				ms.setBatchNumber(this.getBatchNumber(orderItem));		
+			}
+			
+			salesSlipDetail.setMaterialStock(ms);
+			
+			
+			salesSlipDetail.setSalesSlip(dbSalesSlip);
+			
+			
+			salesSlipDetails.add(salesSlipDetail);
+		}
+		
+		return salesSlipRepository.save(dbSalesSlip);
 	}
 	
+	public SalesSlipModel getSalesSlipModel(SalesSlip salesSlip) throws OperationNotPermitException{
+		
+		SalesSlipModel model = new SalesSlipModel();
+		model.setSalesSlip(salesSlip);
+		 
+		List<SalesSlipDetailBo> boList = new ArrayList<SalesSlipDetailBo>();
+		model.setSalesSlipDetails(boList);
+		for(SalesSlipDetail ssd:salesSlip.getSalesSlipDetails()){
+			
+			OrderProductItem orderItem = ssd.getOrderItem();
+			//check ordItem Stock
+			BigDecimal ordItemStock = null;
+			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
+				ordItemStock = materialStockRepository.getAvailableStockWithBatchNo(orderItem.getProduct().getMaterial(), this.getBatchNumber(orderItem));
+			}else{
+				ordItemStock = materialStockRepository.getAvailableStockNoBatchNo(orderItem.getProduct().getMaterial());
+			}
+			
+			SalesSlipDetailBo bo = new SalesSlipDetailBo();
+			bo.setAvailableStock(ordItemStock);
+			bo.setSalesSlipDetail(ssd);
+		}
+		
+		return model;
+		
+	}
 	
 }
