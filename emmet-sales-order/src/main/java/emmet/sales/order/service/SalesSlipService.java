@@ -369,8 +369,10 @@ public class SalesSlipService {
 			SalesSlipDetailBo bo = new SalesSlipDetailBo();
 			bo.setAvailableStock(ordItemStock);
 			bo.setSalesSlipDetail(ssd);
+			
+			boList.add(bo);
 		}
-		
+		salesSlip.setSalesSlipDetails(null);
 		return model;
 		
 	}
