@@ -493,6 +493,6 @@ public class SalesOrderIntegrationTest {
 //			.andExpect(jsonPath("salesSlipDetails[2].orderItem.id", equalTo(2)))
 //			;
 //		
-//	}
+	}
 
 }
