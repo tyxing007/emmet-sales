@@ -210,18 +210,30 @@ curl -iX POST -H "Content-Type: application/json" -d '
   ]
 }
 '
-http://api.mycompany.com/sales/order/salesSlip/createSalesSlip
+http://api.mycompany.com/sales/order/salesSlips/createSalesSlip
 ```
 
 
 ### Get a Order Item List that can be used to create Sales Slip
-***GET*** /sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId{?custId,ordId}
+***GET*** /sales/order/salesSlips/orderItemList/search/findByCustIdAndOrdId{?custId,ordId}
 
 Example:
-http://api.mycompany.com/sales/order/salesSlip/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
+http://api.mycompany.com/sales/order/salesSlips/orderItemList/search/findByCustIdAndOrdId?custId=US001&ordId=OD2016
 
 ### Get a Customer List for creatting Sales Slip
-***GET*** /sales/order/salesSlip/customerList/search/findByNameLike{?id}
+***GET*** /sales/order/salesSlips/customerList/search/findByNameLike{?id}
 
 Example:
-http://api.mycompany.com/sales/order/salesSlip/customerList/search/findByIdLike?id=US
+http://api.mycompany.com/sales/order/salesSlips/customerList/search/findByIdLike?id=US
+
+
+### Find Sales Slip by its ID
+
+GET /sales/order/salesSlips/{id}
+
+
+### List sales Slip by id like
+
+GET /sales/order/salesSlips/search/findByIdLike{?id,page,size}
+
+Example: http://api.mycompany.com/sales/order/salesSlips/search/findByIdLike?id=0&page=0&size=4

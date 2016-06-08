@@ -36,6 +36,7 @@ import emmet.sales.order.repository.CustomerRepository;
 import emmet.sales.order.repository.EmployeeRepository;
 import emmet.sales.order.repository.MaterialStockRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
+import emmet.sales.order.repository.SalesSlipDetailRepository;
 import emmet.sales.order.repository.SalesSlipRepository;
 import emmet.sales.order.repository.WarehouseRepository;
 
@@ -54,13 +55,15 @@ public class SalesSlipService {
 	@Autowired
 	private BatchNumberRepository batchNumberRepository;
 	@Autowired
-	OrderProductItemRepsitory productItemRepository;
+	private OrderProductItemRepsitory productItemRepository;
 	@Autowired
-	CorporationRepository corporationRepository;
+	private CorporationRepository corporationRepository;
 	@Autowired
-	CustomerRepository customerRepository;
+	private CustomerRepository customerRepository;
 	@Autowired
-	MaterialStockRepository materialStockRepository;
+	private MaterialStockRepository materialStockRepository;
+	@Autowired
+	private SalesSlipDetailRepository salesSlipDetailRepository;
 	
 	@Transactional
 	public SalesSlip  createNewSalesSlip(CreateSalesSlipModel model) throws OperationNotPermitException{
@@ -286,6 +289,21 @@ public class SalesSlipService {
 		}
 		List<MaterialWarehouseStockModel> warehouseStockList = materialStockRepository.getMaterialStockList(material, batchNumber);
 		return warehouseStockList;
+	}
+	
+	@Transactional
+	public SalesSlip updateSalesSlip(SalesSlip salesSlip){
+		
+		
+		
+		SalesSlip dbSalesSlip=salesSlipRepository.findOne(salesSlip.getId());
+		
+//		dbSalesSlip.setFormDate(formDate);
+//		dbSalesSlip.setNote(note);
+//		
+		
+		
+		return null;
 	}
 	
 	

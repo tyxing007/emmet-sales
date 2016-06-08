@@ -3,9 +3,11 @@ package emmet.sales.order.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,12 +17,12 @@ import emmet.common.message.ErrorMessage;
 import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.NormalOrderItemModel;
-import emmet.sales.order.repository.MaterialStockRepository;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
+import emmet.sales.order.repository.SalesSlipRepository;
 import emmet.sales.order.service.SalesSlipService;
 
 @RepositoryRestController()
-@RequestMapping("/salesSlip/")
+@RequestMapping("/salesSlips/")
 public class SalesSlipController {
 
 
@@ -28,7 +30,8 @@ public class SalesSlipController {
 	SalesSlipService salesSlipService;
 	@Autowired
 	OrderProductItemRepsitory productItemRepository;
-
+	@Autowired
+	SalesSlipRepository salesSlipRepository;
 	
 	@RequestMapping(value = "/orderItemList/search/findByCustIdAndOrdId", method = RequestMethod.GET)
 	public ResponseEntity<?> getOrderItemList(@RequestParam String custId,
@@ -42,8 +45,7 @@ public class SalesSlipController {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/orderItemList/search/findBycustIdAndOrdId");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
 		}
-		
-					
+							
 		return ResponseEntity.ok(modelList);
 		
 	}
@@ -72,5 +74,30 @@ public class SalesSlipController {
 	
 	
 
+	@RequestMapping(value = "/search/findByIdLike", method = RequestMethod.GET)
+	public ResponseEntity<?> getSalesSlipList(@RequestParam(required=false) String id,Pageable page){
+		try {
+			if(id==null){
+				id="";
+			}
+			return ResponseEntity.ok(salesSlipRepository.findByIdLike("%"+id.trim()+"%", page));
+		} catch (Exception e) {
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/search/findByIdLike");
+			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> getSalesSlipById(@PathVariable String id){
+		try {
+
+			return ResponseEntity.ok(salesSlipRepository.findOne(id));
+		} catch (Exception e) {
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
+			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 
 }
