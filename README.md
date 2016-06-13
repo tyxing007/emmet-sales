@@ -213,6 +213,36 @@ curl -iX POST -H "Content-Type: application/json" -d '
 http://api.mycompany.com/sales/order/salesSlips/createSalesSlip
 ```
 
+### Updare  Sales Slip
+Example:
+```json
+curl -iX POST -H "Content-Type: application/json" -d '
+{
+
+}
+'
+http://api.mycompany.com/sales/order/salesSlips/IN1604140022
+```
+
+
+#### Set order slip status
+
+***PUT*** /sales/order/salesSlips/{id}/setStatus
+
+Example:
+```
+curl -iX PUT -H "Content-Type: application/json" -d '{"status":"CONFIRMED"}'
+http://api.mycompany.com/sales/order/salesSlips/IN1604140022/setStatus
+
+
+the status could be 
+* INITIALIZED
+* PROCESSING
+* CONFIRMED
+* ABANDONED
+
+```
+
 
 ### Get a Order Item List that can be used to create Sales Slip
 ***GET*** /sales/order/salesSlips/orderItemList/search/findByCustIdAndOrdId{?custId,ordId}

@@ -19,6 +19,7 @@ import emmet.sales.order.exception.OperationNotPermitException;
 import emmet.sales.order.model.CreateSalesSlipModel;
 import emmet.sales.order.model.NormalOrderItemModel;
 import emmet.sales.order.model.SalesSlipModel;
+import emmet.sales.order.model.SetStatusModel;
 import emmet.sales.order.repository.OrderProductItemRepsitory;
 import emmet.sales.order.repository.SalesSlipRepository;
 import emmet.sales.order.service.SalesSlipService;
@@ -99,6 +100,30 @@ public class SalesSlipController {
 			SalesSlipModel model = salesSlipService.getSalesSlipModel(salesSlip);
 			model.getSalesSlip().setSalesSlipDetails(null);
 			return ResponseEntity.ok(model);
+		} catch (Exception e) {
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
+			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> UpdateSalesSlip(@PathVariable String id,SalesSlip salesSlip){
+		try {
+			SalesSlip reaultSalesSlip = salesSlipService.updateSalesSlip(salesSlip);
+			SalesSlipModel model = salesSlipService.getSalesSlipModel(reaultSalesSlip);
+			return ResponseEntity.ok(model);
+		} catch (Exception e) {
+			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
+			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = "/{id}/setStatus", method = RequestMethod.PUT)
+	public ResponseEntity<?> setSalesSlipStatus(@PathVariable String id,SetStatusModel model){
+		try {
+			SalesSlip reaultSalesSlip = salesSlipService.setSalesSlipStatus(id, model);
+			SalesSlipModel ssmodel = salesSlipService.getSalesSlipModel(reaultSalesSlip);
+			return ResponseEntity.ok(ssmodel);
 		} catch (Exception e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
