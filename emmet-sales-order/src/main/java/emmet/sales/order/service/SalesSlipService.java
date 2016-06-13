@@ -21,9 +21,11 @@ import emmet.core.data.entity.MaterialStock;
 import emmet.core.data.entity.Order;
 import emmet.core.data.entity.Order.OrderStatus;
 import emmet.core.data.entity.OrderProductItem;
+import emmet.core.data.entity.OrderProductItem.OrderItemStatus;
 import emmet.core.data.entity.SalesSlip;
 import emmet.core.data.entity.SalesSlip.SalesSlipStatus;
 import emmet.core.data.entity.SalesSlipDetail;
+import emmet.core.data.entity.Warehouse;
 import emmet.partner.entity.PartnerCorporation;
 import emmet.sales.order.bo.SalesSlipDetailBo;
 import emmet.sales.order.exception.OperationNotPermitException;
@@ -32,6 +34,7 @@ import emmet.sales.order.model.CustomerModel;
 import emmet.sales.order.model.MaterialWarehouseStockModel;
 import emmet.sales.order.model.NormalOrderItemModel;
 import emmet.sales.order.model.SalesSlipModel;
+import emmet.sales.order.model.SetStatusModel;
 import emmet.sales.order.repository.BatchNumberRepository;
 import emmet.sales.order.repository.CorporationRepository;
 import emmet.sales.order.repository.CustomerRepository;
@@ -359,14 +362,8 @@ public class SalesSlipService {
 			
 			OrderProductItem orderItem = ssd.getOrderItem();
 			//check ordItem Stock
-			BigDecimal ordItemStock = null;
-			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
-				ordItemStock=materialStockRepository.getWareHouseProductStockQtyWithBatchNo(orderItem.getProduct().getMaterial(),ssd.getMaterialStock().getWarehouse() , this.getBatchNumber(orderItem));
-				
-			}else{
-				ordItemStock=materialStockRepository.getWareHouseProductStockNoBatchNo(orderItem.getProduct().getMaterial(), ssd.getMaterialStock().getWarehouse());
+			BigDecimal ordItemStock = this.getOrderItemStock(orderItem, ssd.getMaterialStock().getWarehouse() );
 
-			}
 			
 			SalesSlipDetailBo bo = new SalesSlipDetailBo();
 			bo.setAvailableStock(ordItemStock);
@@ -378,5 +375,81 @@ public class SalesSlipService {
 		return model;
 		
 	}
+	
+	@Transactional
+	public SalesSlip setSalesSlipStatus(String id,SetStatusModel model) throws OperationNotPermitException{
+		//set Sales Slip Satus
+		if(id==null){
+			id="";
+		}
+		
+		SalesSlip dbSalesSlip = salesSlipRepository.findOne(id);
+		dbSalesSlip.setStatus(SalesSlipStatus.valueOf(model.getStatus()));
+		
+		
+		
+		
+		
+		for(SalesSlipDetail dbSalesSlipDetail : dbSalesSlip.getSalesSlipDetails()){
+			
+			BigDecimal ordItemStock = this.getOrderItemStock(dbSalesSlipDetail.getOrderItem(),dbSalesSlipDetail.getMaterialStock().getWarehouse());
+			
+			BigDecimal soldQty = salesSlipDetailRepository.getSoldStock(dbSalesSlipDetail.getOrderItem());
+			
+			BigDecimal theQty = dbSalesSlipDetail.getMaterialStock().getIoQty();
+			
+			BigDecimal finalSoldQty = null;
+			
+			//驗證銷貨數不得超過庫存數
+			if(theQty.abs().doubleValue()>ordItemStock.abs().doubleValue()){
+				throw new OperationNotPermitException(dbSalesSlipDetail.getOrderItem().getProduct().getId()+" Stcok is not enough");
+			}
+			
+			if(SalesSlipStatus.CONFIRMED.equals(dbSalesSlip.getStatus())){
+				dbSalesSlipDetail.getMaterialStock().setEnabled(true);
+				
+				finalSoldQty = BigDecimal.valueOf(soldQty.doubleValue()+theQty.doubleValue()).abs();										
+			}else{
+				dbSalesSlipDetail.getMaterialStock().setEnabled(false);
+				
+				finalSoldQty = BigDecimal.valueOf(soldQty.doubleValue()-theQty.doubleValue()).abs();
+			}
+			//set order item sold qty
+			dbSalesSlipDetail.getOrderItem().setSoldQty(finalSoldQty.intValue());
+			//驗證銷貨數不得大於訂單數
+			if(dbSalesSlipDetail.getOrderItem().getQuantity()<dbSalesSlipDetail.getOrderItem().getSoldQty()){
+				throw new OperationNotPermitException("Order Item Sold Qty can not be greater than Order Item Qty");
+			}
+			
+			//set order item status
+			if(dbSalesSlipDetail.getOrderItem().getQuantity()>dbSalesSlipDetail.getOrderItem().getSoldQty()){
+				dbSalesSlipDetail.getOrderItem().setStatus(OrderItemStatus.NORMAL);
+			}else{
+				dbSalesSlipDetail.getOrderItem().setStatus(OrderItemStatus.CLOSE);
+			}
+
+			
+		}
+				
+		salesSlipRepository.save(dbSalesSlip);
+		return dbSalesSlip;
+	}
+	
+	
+	private BigDecimal getOrderItemStock(OrderProductItem orderItem,Warehouse warehouse) throws OperationNotPermitException{
+		
+		BigDecimal ordItemStock = null;
+		if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
+			ordItemStock=materialStockRepository.getWareHouseProductStockQtyWithBatchNo(orderItem.getProduct().getMaterial(),warehouse , this.getBatchNumber(orderItem));
+			
+		}else{
+			ordItemStock=materialStockRepository.getWareHouseProductStockNoBatchNo(orderItem.getProduct().getMaterial(), warehouse);
+
+		}
+		
+		return ordItemStock;
+	}
+	
+	
 	
 }
