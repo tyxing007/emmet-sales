@@ -222,9 +222,6 @@ curl -iX POST -H "Content-Type: application/json" -d '
     "salesSlipDetails" : [
       {
         "materialStock" : {
-          "material" : {
-            "id" : "0201-00001000486"
-          },
           "ioQty" : 5.00,
           "warehouse" : {"id" : "0050"}          
         },
@@ -232,9 +229,6 @@ curl -iX POST -H "Content-Type: application/json" -d '
       },
       {
         "materialStock" : {
-          "material" : {
-            "id" : "0201-00001000486"
-          },
           "ioQty" : 15.00,
           "warehouse" : {"id" : "0049"}          
         },

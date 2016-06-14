@@ -325,7 +325,7 @@ public class SalesSlipService {
 			MaterialStock ms = new MaterialStock();			
 
 			ms.setWarehouse(ssd.getMaterialStock().getWarehouse());
-			ms.setMaterial(ssd.getMaterialStock().getMaterial());
+			ms.setMaterial(orderItem.getProduct().getMaterial());
 			
 			
 			ms.setIoQty(ssd.getMaterialStock().getIoQty().abs().negate());
