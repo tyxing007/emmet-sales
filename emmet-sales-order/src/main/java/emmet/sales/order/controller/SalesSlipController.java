@@ -107,24 +107,24 @@ public class SalesSlipController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> UpdateSalesSlip(@PathVariable String id,SalesSlip salesSlip){
+	public ResponseEntity<?> UpdateSalesSlip(@PathVariable String id,@RequestBody SalesSlip salesSlip){
 		try {
 			SalesSlip reaultSalesSlip = salesSlipService.updateSalesSlip(salesSlip);
 			SalesSlipModel model = salesSlipService.getSalesSlipModel(reaultSalesSlip);
 			return ResponseEntity.ok(model);
-		} catch (Exception e) {
+		} catch (OperationNotPermitException e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@RequestMapping(value = "/{id}/setStatus", method = RequestMethod.PUT)
-	public ResponseEntity<?> setSalesSlipStatus(@PathVariable String id,SetStatusModel model){
+	public ResponseEntity<?> setSalesSlipStatus(@PathVariable String id,@RequestBody SetStatusModel model){
 		try {
 			SalesSlip reaultSalesSlip = salesSlipService.setSalesSlipStatus(id, model);
 			SalesSlipModel ssmodel = salesSlipService.getSalesSlipModel(reaultSalesSlip);
 			return ResponseEntity.ok(ssmodel);
-		} catch (Exception e) {
+		} catch (OperationNotPermitException e) {
 			ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST,e,"/{id}");
 			return new ResponseEntity<ErrorMessage>(errorMessage,HttpStatus.BAD_REQUEST);
 		}

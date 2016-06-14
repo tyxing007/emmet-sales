@@ -149,7 +149,6 @@ curl -iX PUT -H "Content-Type: application/json" -d '{
     "tax" : "Extra"
   },
   "extraCharges" : [ {
-
     "itemName" : "Foo",
     "price" : 100.50,
     "tax" : 5.00
@@ -160,7 +159,6 @@ curl -iX PUT -H "Content-Type: application/json" -d '{
      "tax" : 0
    },
   "productItems" : [ {
-
     "product" : {
     "id" : "0000-0001"
     },
@@ -218,7 +216,37 @@ Example:
 ```json
 curl -iX POST -H "Content-Type: application/json" -d '
 {
-
+    "id" : "IN201606130012",
+    "formDate" : "2016-06-13",
+    "note" : "2232",
+    "salesSlipDetails" : [
+      {
+        "materialStock" : {
+          "material" : {
+            "id" : "0201-00001000486"
+          },
+          "batchNumber" : {
+            "id" : 26034
+          },
+          "ioQty" : 5.00,
+          "warehouse" : {"id" : "0050"}          
+        },
+        "orderItem" : {"id" : 1540108}
+      },
+      {
+        "materialStock" : {
+          "material" : {
+            "id" : "0201-00001000486"
+          },
+          "batchNumber" : {
+            "id" : 26034
+          },
+          "ioQty" : 15.00,
+          "warehouse" : {"id" : "0049"}          
+        },
+        "orderItem" : {"id" : 1540108}
+      }
+    ]
 }
 '
 http://api.mycompany.com/sales/order/salesSlips/IN1604140022

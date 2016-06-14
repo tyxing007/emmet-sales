@@ -334,7 +334,7 @@ public class SalesSlipService {
 			ms.setFormNumber(dbSalesSlip.getFormNumber());
 			ms.setFormDate(dbSalesSlip.getFormDate());
 			ms.setEnabled(false);
-			ms.setCreateDate(salesSlip.getCreateDate());
+			ms.setCreateDate(dbSalesSlip.getCreateDate());
 			if(Boolean.TRUE.equals(orderItem.getProduct().getMaterial().getBatchNoCtr())){
 				ms.setBatchNumber(this.getBatchNumber(orderItem));		
 			}
