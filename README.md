@@ -225,9 +225,6 @@ curl -iX POST -H "Content-Type: application/json" -d '
           "material" : {
             "id" : "0201-00001000486"
           },
-          "batchNumber" : {
-            "id" : 26034
-          },
           "ioQty" : 5.00,
           "warehouse" : {"id" : "0050"}          
         },
@@ -237,9 +234,6 @@ curl -iX POST -H "Content-Type: application/json" -d '
         "materialStock" : {
           "material" : {
             "id" : "0201-00001000486"
-          },
-          "batchNumber" : {
-            "id" : 26034
           },
           "ioQty" : 15.00,
           "warehouse" : {"id" : "0049"}          
