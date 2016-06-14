@@ -109,7 +109,7 @@ public class SalesSlipController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> UpdateSalesSlip(@PathVariable String id,@RequestBody SalesSlip salesSlip){
 		try {
-			SalesSlip reaultSalesSlip = salesSlipService.updateSalesSlip(salesSlip);
+			SalesSlip reaultSalesSlip = salesSlipService.updateSalesSlip(salesSlip,id);
 			SalesSlipModel model = salesSlipService.getSalesSlipModel(reaultSalesSlip);
 			return ResponseEntity.ok(model);
 		} catch (OperationNotPermitException e) {

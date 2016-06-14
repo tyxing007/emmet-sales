@@ -493,6 +493,73 @@ public class SalesOrderIntegrationTest {
 			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.orderItem.id", equalTo(2)))
 			;
 		
+		
+	    //update sales slip
+		String requestBody_update_sales_slip = "{"
+			    +" \"id\" : \"IN201606130012\", "
+			    +" \"formDate\" : \"2016-06-13\", "
+			    +" \"note\" : \"2232\", "
+			    +" \"salesSlipDetails\" : [ "
+			    +"   { "
+			    +"     \"materialStock\" : { "
+			    +"       \"material\" : { "
+			    +"         \"id\" : \"0201-00001000486\" "
+			    +"       }, "
+			    +"       \"batchNumber\" : { "
+			    +"         \"id\" : 26034 "
+			    +"       }, "
+			    +"       \"ioQty\" : 5.00, "
+			    +"       \"warehouse\" : {\"id\" : \"0050\" "          
+			    +"     }, "
+			    +"     \"orderItem\" : {\"id\" : 1540108} "
+			    +"   }, "
+			    +"   { "
+			    +"     \"materialStock\" : { "
+			    +"       \"material\" : { "
+			    +"         \"id\" : \"0201-00001000486\" "
+			    +"       }, "
+			    +"       \"batchNumber\" : { "
+			    +"         \"id\" : 26034 "
+			    +"       }, "
+			    +"       \"ioQty\" : 15.00, "
+			    +"       \"warehouse\" : {\"id\" : \"0049\"}    "       
+			    +"     }, "
+			    +"     \"orderItem\" : {\"id\" : 1540108} "
+			    +"   } "
+			    +" ] "
+				+" }";	
+		
+//		this.mvc.perform( post("/salesSlips/"+fiId1).contentType(MediaType.APPLICATION_JSON_VALUE)
+//				.content(requestBody_create_sales_slip) )
+//			.andDo(MockMvcResultHandlers.print())
+//			.andExpect(jsonPath("salesSlip.id", equalTo(fiId1)))
+//			.andExpect(jsonPath("salesSlip.formNumber.id", equalTo(fiId1)))
+//			.andExpect(jsonPath("salesSlip.status", equalTo("PROCESSING")))
+//			.andExpect(jsonPath("salesSlip.customer.id", equalTo("AU00000001")))
+//			.andExpect(jsonPath("salesSlip.createUser.id", equalTo("EM001")))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.material.id", equalTo("0000-0001")))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.ioQty", equalTo(-1.0)))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.warehouse.id", equalTo("0049")))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.enabled", equalTo(false)))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
+//			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.orderItem.id", equalTo(1)))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.material.id", equalTo("0000-0001")))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.ioQty", equalTo(-4.0)))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.warehouse.id", equalTo("0050")))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.enabled", equalTo(false)))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
+//			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.orderItem.id", equalTo(1)))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.materialStock.material.id", equalTo("0000-0002")))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.materialStock.ioQty", equalTo(-9.0)))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.materialStock.warehouse.id", equalTo("0050")))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.materialStock.enabled", equalTo(false)))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
+//			.andExpect(jsonPath("salesSlipDetails[2].salesSlipDetail.orderItem.id", equalTo(2)))
+//			;
+		
 	}
 
 }

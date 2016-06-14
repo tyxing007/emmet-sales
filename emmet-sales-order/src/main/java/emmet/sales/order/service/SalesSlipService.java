@@ -297,10 +297,10 @@ public class SalesSlipService {
 	}
 	
 	@Transactional
-	public SalesSlip updateSalesSlip(SalesSlip salesSlip) throws OperationNotPermitException{
+	public SalesSlip updateSalesSlip(SalesSlip salesSlip,String id) throws OperationNotPermitException{
 				
 		
-		SalesSlip dbSalesSlip=salesSlipRepository.findOne(salesSlip.getId());
+		SalesSlip dbSalesSlip=salesSlipRepository.findOne(id);
 		
 		dbSalesSlip.setFormDate(salesSlip.getFormDate());
 		dbSalesSlip.setNote(salesSlip.getNote());
