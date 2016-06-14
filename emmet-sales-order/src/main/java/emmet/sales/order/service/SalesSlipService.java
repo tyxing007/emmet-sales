@@ -207,7 +207,7 @@ public class SalesSlipService {
 		return salesSlipRepository.save(salesSlip);
 	}
 	
-	
+	@Transactional
 	private BatchNumber getBatchNumber(OrderProductItem ordItem) throws OperationNotPermitException{
 		
 		BatchNumber batchNumber=null;
@@ -288,6 +288,7 @@ public class SalesSlipService {
 		return modelList;
 	}
 	
+	@Transactional
 	private List<MaterialWarehouseStockModel> getMaterialWarehouseStockList(Material material,BatchNumber batchNumber) throws OperationNotPermitException{
 		if(material==null||batchNumber==null){
 			throw new OperationNotPermitException("material or batchNumber is null!");
@@ -435,7 +436,7 @@ public class SalesSlipService {
 		return dbSalesSlip;
 	}
 	
-	
+	@Transactional
 	private BigDecimal getOrderItemStock(OrderProductItem orderItem,Warehouse warehouse) throws OperationNotPermitException{
 		
 		BigDecimal ordItemStock = null;

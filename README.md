@@ -216,7 +216,6 @@ Example:
 ```json
 curl -iX POST -H "Content-Type: application/json" -d '
 {
-    "id" : "IN201606130012",
     "formDate" : "2016-06-13",
     "note" : "2232",
     "salesSlipDetails" : [
