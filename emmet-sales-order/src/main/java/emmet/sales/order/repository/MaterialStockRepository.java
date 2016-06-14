@@ -17,20 +17,18 @@ import emmet.sales.order.model.MaterialWarehouseStockModel;
 @RepositoryRestResource(exported = false)
 public interface MaterialStockRepository extends PagingAndSortingRepository<MaterialStock, Long>{
 	
-	@Query(value = "SELECT sum(ms.ioQty) FROM MaterialStock ms WHERE ms.material = :material "
+	@Query(value = "SELECT coalesce(sum(ms.ioQty),0) FROM MaterialStock ms WHERE ms.material = :material "
 			+ " and ms.batchNumber = :batchNumber "
 			+ " and ms.warehouse = :warehouse "
-			+ " and ms.enabled=true "
-			+ " group by ms.material,ms.batchNumber,ms.warehouse")
+			+ " and ms.enabled=true ")
     public BigDecimal getWareHouseProductStockQtyWithBatchNo(@Param("material") Material material,
     		@Param("warehouse")Warehouse warehouse,@Param("batchNumber")BatchNumber batchNumber);
 	
 
-	@Query(value = "SELECT sum(ms.ioQty) FROM MaterialStock ms WHERE ms.material = :material "
+	@Query(value = "SELECT coalesce(sum(ms.ioQty),0) FROM MaterialStock ms WHERE ms.material = :material "
 			+ " and ms.batchNumber is null "
 			+ " and ms.warehouse = :warehouse "
-			+ " and ms.enabled=true "
-			+ " group by ms.material,ms.batchNumber,ms.warehouse")
+			+ " and ms.enabled=true ")
     public BigDecimal getWareHouseProductStockNoBatchNo(@Param("material") Material material,
     		@Param("warehouse")Warehouse warehouse);
 	

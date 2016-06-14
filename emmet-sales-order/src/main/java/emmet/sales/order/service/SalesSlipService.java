@@ -403,7 +403,7 @@ public class SalesSlipService {
 			
 			//驗證銷貨數不得超過庫存數
 			if(theQty.abs().doubleValue()>ordItemStock.abs().doubleValue()){
-				throw new OperationNotPermitException(dbSalesSlipDetail.getOrderItem().getProduct().getId()+" Stcok is not enough");
+				throw new OperationNotPermitException(dbSalesSlipDetail.getOrderItem().getProduct().getId()+"'s Stcok in "+ dbSalesSlipDetail.getMaterialStock().getWarehouse().getId() +" is not enough");
 			}
 			
 			if(SalesSlipStatus.CONFIRMED.equals(dbSalesSlip.getStatus())){

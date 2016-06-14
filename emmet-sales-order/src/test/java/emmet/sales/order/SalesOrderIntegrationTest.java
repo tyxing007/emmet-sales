@@ -509,7 +509,7 @@ public class SalesOrderIntegrationTest {
 			    +"   }, "
 			    +"   { "
 			    +"     \"materialStock\" : { "
-			    +"       \"ioQty\" : 15.00, "
+			    +"       \"ioQty\" : 3.00, "
 			    +"       \"warehouse\" : {\"id\" : \"0049\"}    "       
 			    +"     }, "
 			    +"     \"orderItem\" : {\"id\" : 2} "
@@ -534,7 +534,7 @@ public class SalesOrderIntegrationTest {
 			.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.orderItem.id", equalTo(1)))
 			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.material.id", equalTo("0000-0002")))
 			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
-			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.ioQty", equalTo(-15.0)))
+			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.ioQty", equalTo(-3.0)))
 			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.warehouse.id", equalTo("0049")))
 			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.enabled", equalTo(false)))
 			.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
@@ -545,31 +545,31 @@ public class SalesOrderIntegrationTest {
 
 		String requestBody_set_sales_slip_status = "{\"status\":\"CONFIRMED\"}";
 
-//		this.mvc.perform(put("/salesSlips/" + fiId1 + "/setStatus").contentType(MediaType.APPLICATION_JSON_VALUE)
-//				.content(requestBody_set_sales_slip_status))//
-//				.andDo(print()).andExpect(status().isOk())
-//				.andDo(MockMvcResultHandlers.print())
-//				.andExpect(jsonPath("salesSlip.id", equalTo(fiId1)))
-//				.andExpect(jsonPath("salesSlip.formNumber.id", equalTo(fiId1)))
-//				.andExpect(jsonPath("salesSlip.status", equalTo("CONFIRMED")))
-//				.andExpect(jsonPath("salesSlip.customer.id", equalTo("AU00000001")))
-//				.andExpect(jsonPath("salesSlip.createUser.id", equalTo("EM001")))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.material.id", equalTo("0000-0001")))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.ioQty", equalTo(-5.0)))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.warehouse.id", equalTo("0050")))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.enabled", equalTo(true)))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
-//				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.orderItem.id", equalTo(1)))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.material.id", equalTo("0000-0002")))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.ioQty", equalTo(-15.0)))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.warehouse.id", equalTo("0049")))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.enabled", equalTo(true)))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
-//				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.orderItem.id", equalTo(2)))
-//				;
-//		
+		this.mvc.perform(put("/salesSlips/" + fiId1 + "/setStatus").contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(requestBody_set_sales_slip_status))//
+				.andDo(print()).andExpect(status().isOk())
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(jsonPath("salesSlip.id", equalTo(fiId1)))
+				.andExpect(jsonPath("salesSlip.formNumber.id", equalTo(fiId1)))
+				.andExpect(jsonPath("salesSlip.status", equalTo("CONFIRMED")))
+				.andExpect(jsonPath("salesSlip.customer.id", equalTo("AU00000001")))
+				.andExpect(jsonPath("salesSlip.createUser.id", equalTo("EM001")))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.material.id", equalTo("0000-0001")))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.ioQty", equalTo(-5.0)))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.warehouse.id", equalTo("0050")))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.enabled", equalTo(true)))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
+				.andExpect(jsonPath("salesSlipDetails[0].salesSlipDetail.orderItem.id", equalTo(1)))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.material.id", equalTo("0000-0002")))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.batchNumber.code", equalTo(id1)))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.ioQty", equalTo(-3.0)))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.warehouse.id", equalTo("0049")))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.enabled", equalTo(true)))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.materialStock.formNumber.id", equalTo(fiId1)))
+				.andExpect(jsonPath("salesSlipDetails[1].salesSlipDetail.orderItem.id", equalTo(2)))
+				;
+		
 		
 	}
 
