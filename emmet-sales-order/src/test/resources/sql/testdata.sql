@@ -98,7 +98,12 @@ INSERT INTO core_material_stock(
             id, create_date, enabled, form_date, io_qty, batch_number_id, 
             form_number_id, material_id, warehouse_id)
     VALUES (10006, now(), true, '2016-5-12', -25, 113, 
-            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0002', '0050');               
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0002', '0050');
+INSERT INTO core_material_stock(
+            id, create_date, enabled, form_date, io_qty, batch_number_id, 
+            form_number_id, material_id, warehouse_id)
+    VALUES (10007, now(), true, '2016-5-12', 500, 113, 
+            'OD'||to_char(now(),'yyyyMMdd')||'01', '0000-0002', '0049');            
             
 INSERT INTO common_currency (id,name) VALUES ('USD','USD');
 

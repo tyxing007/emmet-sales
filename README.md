@@ -149,7 +149,6 @@ curl -iX PUT -H "Content-Type: application/json" -d '{
     "tax" : "Extra"
   },
   "extraCharges" : [ {
-
     "itemName" : "Foo",
     "price" : 100.50,
     "tax" : 5.00
@@ -160,7 +159,6 @@ curl -iX PUT -H "Content-Type: application/json" -d '{
      "tax" : 0
    },
   "productItems" : [ {
-
     "product" : {
     "id" : "0000-0001"
     },
@@ -211,6 +209,53 @@ curl -iX POST -H "Content-Type: application/json" -d '
 }
 '
 http://api.mycompany.com/sales/order/salesSlips/createSalesSlip
+```
+
+### Updare  Sales Slip
+Example:
+```json
+curl -iX POST -H "Content-Type: application/json" -d '
+{
+    "formDate" : "2016-06-13",
+    "note" : "2232",
+    "salesSlipDetails" : [
+      {
+        "materialStock" : {
+          "ioQty" : 5.00,
+          "warehouse" : {"id" : "0050"}          
+        },
+        "orderItem" : {"id" : 1540108}
+      },
+      {
+        "materialStock" : {
+          "ioQty" : 15.00,
+          "warehouse" : {"id" : "0049"}          
+        },
+        "orderItem" : {"id" : 1540108}
+      }
+    ]
+}
+'
+http://api.mycompany.com/sales/order/salesSlips/IN1604140022
+```
+
+
+#### Set order slip status
+
+***PUT*** /sales/order/salesSlips/{id}/setStatus
+
+Example:
+```
+curl -iX PUT -H "Content-Type: application/json" -d '{"status":"CONFIRMED"}'
+http://api.mycompany.com/sales/order/salesSlips/IN1604140022/setStatus
+
+
+the status could be 
+* INITIALIZED
+* PROCESSING
+* CONFIRMED
+* ABANDONED
+
 ```
 
 
